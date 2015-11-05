@@ -1,0 +1,9 @@
+[submodule "strapon"]
+	path = strapon
+	url = git@github.com:svenstaro/strapon.git
+[submodule "glm"]
+	path = glm
+	url = git@github.com:g-truc/glm.git
+[submodule "entityx"]
+	path = entityx
+	url = git@github.com:alecthomas/entityx.git
