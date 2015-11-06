@@ -34,6 +34,10 @@ int MainState::init() {
     player.assign<Drawable>("player", 80, 80);
     player.assign<Player>();
 
+    entityx::Entity background = m_entities.create();
+    background.assign<Position>(glm::vec2(0.f, 0.f));
+    background.assign<Drawable>("dirt", 1000, 1000);
+
     entityx::Entity fire = m_entities.create();
     fire.assign<Position>(glm::vec2(0.f, 0.f));
     fire.assign<Drawable>("fire", 100, 100);
