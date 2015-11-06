@@ -9,7 +9,7 @@ clang:
 	cd build; CXX=clang++ cmake ..; make -j
 
 run:
-	build/base_game
+	build/innojam9
 
 web:
 	mkdir -p build-web

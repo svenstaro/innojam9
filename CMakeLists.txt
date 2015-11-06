@@ -1,16 +1,16 @@
 cmake_minimum_required(VERSION 3.0)
-project(bgj09)
+project(innojam9)
 
 add_definitions("-g -Wall -Wextra -pedantic -Werror -std=c++14 -Wno-unused-parameter")
 
 file(GLOB sources src/*.cpp)
 
-add_executable(base_game ${sources})
+add_executable(innojam9 ${sources})
 
 if(${EMSCRIPTEN})
     set(CROSS_COMPILING ON)
-    add_definitions("-Oz -s USE_SDL=2 -s USE_SDL_IMAGE=2 -s USE_SDL_TTF=2")
-    set(CMAKE_CXX_LINK_FLAGS "-Oz -s USE_SDL=2 -s USE_SDL_IMAGE=2 -s USE_SDL_TTF=2 -s TOTAL_MEMORY=32000000 --preload-file ../res -o index.html")
+    add_definitions("-O3 -s USE_SDL=2 -s USE_SDL_IMAGE=2 -s USE_SDL_TTF=2 -s SDL2_IMAGE_FORMATS='[\"png\"]'")
+    set(CMAKE_CXX_LINK_FLAGS "-O3 -s USE_SDL=2 -s USE_SDL_IMAGE=2 -s USE_SDL_TTF=2 -s SDL2_IMAGE_FORMATS='[\"png\"]' -s TOTAL_MEMORY=32000000 --preload-file ../res -o index.html")
 else()
     include(FindPkgConfig)
     pkg_check_modules(SDL2 REQUIRED sdl2 SDL2_gfx SDL2_image SDL2_mixer SDL2_ttf)
@@ -26,7 +26,7 @@ include_directories(SYSTEM
     strapon/
 )
 
-target_link_libraries(base_game
+target_link_libraries(innojam9
     ${SDL2_LIBRARIES}
     entityx
 )
