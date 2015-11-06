@@ -7,6 +7,7 @@
 
 #include "entityx/entityx.h"
 #include <glm/vec2.hpp>
+#include <glm/glm.hpp>
 #include <glm/gtx/polar_coordinates.hpp>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
