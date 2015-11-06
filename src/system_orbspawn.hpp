@@ -53,13 +53,14 @@ class OrbSpawnSystem : public entityx::System<OrbSpawnSystem>,
   private:
 
     void spawn() {
+        float score = (float(std::rand()) / float(RAND_MAX)) * 40 + 10;
         entityx::Entity orb = m_entities->create();
         glm::vec2 pos = glm::vec2(50.f + 250.f * (float(std::rand()) / float(RAND_MAX)), (float(std::rand()) / float(RAND_MAX)) * glm::pi<float>() * 2.f);
         orb.assign<Position>(pos);
-        orb.assign<Drawable>("orb", 20, 20, 8);
+        orb.assign<Drawable>("orb", glm::ceil(score * 2), glm::ceil(score * 2), 8);
         orb.assign<Collectable>();
-        orb.assign<Collidable>(10);
-        orb.assign<Orb>(10);
+        orb.assign<Collidable>(score);
+        orb.assign<Orb>(score);
         //std::cout << "Spawning orb @" << pos.x << "," << pos.y << std::endl;
     }
 
