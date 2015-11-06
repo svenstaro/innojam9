@@ -38,7 +38,6 @@ class PathSystem : public entityx::System<PathSystem>
             new_position.y = angle_a + angle_b;
 */
             position->set_position(path->m_path_function(path->get_direction(), moving->speed(), path->get_current_lifetime()));
-            std::cout << glm::to_string(position->position()) <<  std::endl;
 
             path->update_current_lifetime(dt); 
             }

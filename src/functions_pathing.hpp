@@ -7,7 +7,6 @@
 glm::vec2 linear_path(glm::vec2 direction, float speed , float current_lifetime)
 {
     direction.x = speed * current_lifetime;
-    std::cout << glm::to_string(direction) << std::endl;
     return direction;         
 }
 
