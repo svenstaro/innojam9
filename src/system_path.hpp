@@ -22,8 +22,11 @@ class PathSystem : public entityx::System<PathSystem>
 
         for(entityx::Entity entity :  es.entities_with_components(path,position,moving))
         {
+            if(path->get_time_left() > 0)
+            {
+            /*
             (void)entity;
-            next_step = path->m_path_function(position->position(), moving->speed(), (float)dt); 
+            next_step = path->m_path_function(position->position(), moving->speed(), (float)dt);
 
             float radius_a = position->position().x;
             float radius_b = next_step.x;
@@ -33,8 +36,16 @@ class PathSystem : public entityx::System<PathSystem>
 
             new_position.x = glm::sqrt(glm::pow2((radius_a * cos(angle_a) + radius_b * cos(angle_b))) + glm::pow2(radius_a * sin(angle_a) + radius_b * sin(angle_b)));
             new_position.y = angle_a + angle_b;
+*/
+            position->set_position(path->m_path_function(path->get_direction(), moving->speed(), path->get_current_lifetime()));
 
-            position->set_position(new_position); 
+            path->update_current_lifetime(dt); 
+            }
+            else
+            {
+               entity.destroy(); 
+            }
+
 
         }
     }

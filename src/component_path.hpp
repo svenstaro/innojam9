@@ -8,13 +8,35 @@
     struct Path : entityx::Component<Path> { 
         Path(std::function<glm::vec2(glm::vec2, float, float)> path_function, glm::vec2 direction, float max_lifetime)
         : m_path_function(path_function), m_direction(direction),
-          m_max_lifetime(max_lifetime), m_current_life_time(0.0f){
+          m_max_lifetime(max_lifetime), m_current_lifetime(0.0f){
           }
     
+        float get_time_left()
+        {
+            return m_max_lifetime - m_current_lifetime;
+        }
+
+        float get_current_lifetime()
+        {
+            return m_current_lifetime;
+        }
+
+        void update_current_lifetime(float dt)
+        {
+            m_current_lifetime += dt;
+        }
+
+        glm::vec2 get_direction()
+        {
+            return m_direction;
+        }
+        
         std::function<glm::vec2(glm::vec2, float, float)> m_path_function;
         glm::vec2 m_direction;
         float m_max_lifetime;
-        float m_current_life_time;
+        float m_current_lifetime;
+
+
     };
 
 #endif

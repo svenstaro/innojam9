@@ -4,7 +4,7 @@
 #include "entityx/entityx.h"
 
 struct Collidable : entityx::Component<Collidable> {
-    Collidable(float radius = 1) {
+    Collidable(float radius = 1) : m_radius(radius) {
     }
 
     float radius() {
