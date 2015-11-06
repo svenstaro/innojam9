@@ -51,6 +51,10 @@ class DrawSystem : public entityx::System<DrawSystem> {
         glm::vec2 player_pos;
         for(entityx::Entity entity : es.entities_with_components(player, position)) {
             player_pos = polar_to_euclid(entity.component<Position>()->position());
+            std::ostringstream os;
+            os << "Score: " << (int)player->score;
+            SDL_Color c = { 200, 200, 200, 0 };
+            draw_text(m_game->renderer(), m_game->res_manager(), os.str(), "font20", 0, 0, 10,40, c);
         }
 
         for (entityx::Entity entity : es.entities_with_components(drawable, position)) {
@@ -78,15 +82,6 @@ class DrawSystem : public entityx::System<DrawSystem> {
             SDL_RenderCopyEx(m_game->renderer(),
                              m_game->res_manager().texture(drawable->texture_key()), NULL, &dest, 0,
                              NULL, SDL_FLIP_NONE);
-            
-            auto player = entity.component<Player>();
-            if(player)
-            {
-                std::ostringstream os;
-                os << "Score: " << (int)player->score;
-                SDL_Color c = { 200, 200, 200, 0 };
-                draw_text(m_game->renderer(), m_game->res_manager(), os.str(), "font20", 0, 0, 10,40, c);
-            }
         }
 
         // Render to final window
