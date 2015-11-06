@@ -21,11 +21,11 @@ class ControlSystem : public entityx::System<ControlSystem> {
             if (state[SDL_SCANCODE_W])
                 radius -= 1.0f;
             if (state[SDL_SCANCODE_A])
-                angle -= 1.0f;
+                angle += 1.0f;
             if (state[SDL_SCANCODE_S])
                 radius += 1.0f;
             if (state[SDL_SCANCODE_D])
-                angle += 1.0f;
+                angle -= 1.0f;
 
             if (angle != 0.0f || radius != 0.0f) {
                 auto moving = entity.component<Moving>();

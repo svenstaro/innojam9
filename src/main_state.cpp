@@ -1,13 +1,17 @@
 #include "main_state.hpp"
 
+#include "functions_pathing.hpp"
+
 #include "component_drawable.hpp"
 #include "component_position.hpp"
+#include "component_path.hpp"
 #include "component_player.hpp"
 #include "component_moving.hpp"
 #include "system_collision.hpp"
 #include "system_controls.hpp"
 #include "system_draw.hpp"
 #include "system_movement.hpp"
+#include "system_path.hpp"
 #include "system_highscore.hpp"
 #include "system_orbspawn.hpp"
 
@@ -25,6 +29,7 @@ int MainState::init() {
     m_systems.add<DrawSystem>(m_game);
     m_systems.add<ControlSystem>();
     m_systems.add<CollisionSystem>();
+    m_systems.add<PathSystem>();
     m_systems.add<MovementSystem>(50, 300);
     m_systems.add<HighscoreSystem>();
     m_systems.add<OrbSpawnSystem>(&m_entities);
@@ -39,14 +44,28 @@ int MainState::init() {
 
     entityx::Entity background = m_entities.create();
     background.assign<Position>(glm::vec2(0.f, 0.f));
-    background.assign<Drawable>("dirt", 2000, 2000);
+    background.assign<Drawable>("dirt", 2000, 2000, 0);
+
+    entityx::Entity inner_bound = m_entities.create();
+    inner_bound.assign<Position>(glm::vec2(0.f, 0.f));
+    inner_bound.assign<Drawable>("inner_bound", 100, 100, 1);
+
+    entityx::Entity outer_bound = m_entities.create();
+    outer_bound.assign<Position>(glm::vec2(0.f, 0.f));
+    outer_bound.assign<Drawable>("outer_bound", 600, 600, 1);
 
     entityx::Entity fire = m_entities.create();
     fire.assign<Position>(glm::vec2(0.f, 0.f));
-    fire.assign<Drawable>("fire", 100, 100);
+    fire.assign<Drawable>("fire", 100, 100, 1);
 
+    entityx::Entity test = m_entities.create();
+    test.assign<Position>(glm::vec2(40.f, 225.f));
+    test.assign<Path>(linear_path, glm::vec2(1.f,45.f),20.f);
+    test.assign<Moving>(100.f);
+    test.assign<Drawable>("player", 20 , 20);
     return 0;
 }
+
 
 void MainState::update(double dt) {
     SDL_Event e;
@@ -67,4 +86,5 @@ void MainState::update(double dt) {
     m_systems.update<MovementSystem>(dt);
     m_systems.update<HighscoreSystem>(dt);
     m_systems.update<OrbSpawnSystem>(dt);
+    m_systems.update<PathSystem>(dt);
 }

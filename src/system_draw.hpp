@@ -93,13 +93,11 @@ class DrawSystem : public entityx::System<DrawSystem> {
                 }
             }
         }
-
-        auto surf = TTF_RenderText_Blended(m_game->res_manager().font("font20"), "LOL",
-                                           {200, 100, 100, 150});
-        auto text = SDL_CreateTextureFromSurface(m_game->renderer(), surf);
-        SDL_Rect dest = {0, 0, 50, 50};
-        SDL_RenderCopy(m_game->renderer(), text, NULL, &dest);
-        SDL_FreeSurface(surf);
+        
+        std::ostringstream os;
+        os << "Score: " << (int)player->score;
+        SDL_Color c = { 200, 200, 200, 0 };
+        draw_text(m_game->renderer(), m_game->res_manager(), os.str(), "font20", 0, 0,  c);
 
         // Render to final window
         SDL_SetRenderTarget(m_game->renderer(), nullptr);
