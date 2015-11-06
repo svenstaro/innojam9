@@ -66,8 +66,8 @@ class DrawSystem : public entityx::System<DrawSystem> {
             dest.x = coord_euclid[0];
             dest.y = coord_euclid[1];
             // Center on entity
-            dest.x += drawable->width() / 2;
-            dest.y += drawable->height() / 2;
+            dest.x -= drawable->width() / 2;
+            dest.y -= drawable->height() / 2;
             // Translate onto player. In fact will do this later. Too confusing w/o other entities
             dest.x += m_camera.w / 2;
             dest.y += m_camera.h / 2;
