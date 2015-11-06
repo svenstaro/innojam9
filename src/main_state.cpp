@@ -2,6 +2,7 @@
 
 #include "component_drawable.hpp"
 #include "component_position.hpp"
+#include "component_moving.hpp"
 #include "system_collision.hpp"
 #include "system_controls.hpp"
 #include "system_draw.hpp"
@@ -25,7 +26,8 @@ int MainState::init() {
     m_systems.configure();
 
     entityx::Entity player = m_entities.create();
-    player.assign<Position>(glm::vec2(300.f, 400.f));
+    player.assign<Position>(glm::vec2(0.f, 0.f));
+    player.assign<Moving>(10.f);
     player.assign<Drawable>("gradient", 100, 100);
 
     return 0;
