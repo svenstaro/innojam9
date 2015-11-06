@@ -33,7 +33,6 @@ class DrawSystem : public entityx::System<DrawSystem> {
         return cart;
     }
 
-
     void update(entityx::EntityManager &es, entityx::EventManager &events,
                 entityx::TimeDelta dt) override {
 
@@ -47,40 +46,53 @@ class DrawSystem : public entityx::System<DrawSystem> {
         entityx::ComponentHandle<Player> player;
 
         glm::vec2 player_pos;
-        for(entityx::Entity entity : es.entities_with_components(player, position)) {
+        for (entityx::Entity entity : es.entities_with_components(player, position)) {
             player_pos = polar_to_euclid(entity.component<Position>()->position());
         }
 
-        for (entityx::Entity entity : es.entities_with_components(drawable, position)) {
-
-            (void)entity; // why?
-
-            auto coord_polar = entity.component<Position>();
-            SDL_Rect dest;
-            // now follow the player
-            glm::vec2 coord_euclid = polar_to_euclid(coord_polar->position());
-            // Converted position
-            dest.x = coord_euclid[0];
-            dest.y = coord_euclid[1];
-            // Center on entity
-            dest.x -= drawable->width() / 2;
-            dest.y -= drawable->height() / 2;
-            // Translate onto player. In fact will do this later. Too confusing w/o other entities
-            dest.x += m_camera.w / 2;
-            dest.y += m_camera.h / 2;
-
-            dest.x -= player_pos.x;
-            dest.y -= player_pos.y;
-
-            dest.w = drawable->width();
-            dest.h = drawable->height();
-
-            SDL_RenderCopyEx(m_game->renderer(),
-                             m_game->res_manager().texture(drawable->texture_key()), NULL, &dest, 0,
-                             NULL, SDL_FLIP_NONE);
+        std::set<int> layers;
+        for (entityx::Entity entity : es.entities_with_components(drawable)) {
+            (void)entity;
+            layers.insert(drawable->layer());
         }
 
-        auto surf = TTF_RenderText_Blended(m_game->res_manager().font("font20"), "LOL", {200, 100, 100, 150});
+        for (auto layer : layers) {
+            for (entityx::Entity entity : es.entities_with_components(drawable, position)) {
+                if (drawable->layer() == layer) {
+                    auto coord_polar = entity.component<Position>();
+                    SDL_Rect dest;
+
+                    // now follow the player
+                    glm::vec2 coord_euclid = polar_to_euclid(coord_polar->position());
+
+                    // Converted position
+                    dest.x = coord_euclid[0];
+                    dest.y = coord_euclid[1];
+
+                    // Center on entity
+                    dest.x -= drawable->width() / 2;
+                    dest.y -= drawable->height() / 2;
+
+                    // Translate onto player. In fact will do this later. Too confusing w/o other
+                    // entities
+                    dest.x += m_camera.w / 2;
+                    dest.y += m_camera.h / 2;
+
+                    dest.x -= player_pos.x;
+                    dest.y -= player_pos.y;
+
+                    dest.w = drawable->width();
+                    dest.h = drawable->height();
+
+                    SDL_RenderCopyEx(m_game->renderer(),
+                                     m_game->res_manager().texture(drawable->texture_key()), NULL,
+                                     &dest, 0, NULL, SDL_FLIP_NONE);
+                }
+            }
+        }
+
+        auto surf = TTF_RenderText_Blended(m_game->res_manager().font("font20"), "LOL",
+                                           {200, 100, 100, 150});
         auto text = SDL_CreateTextureFromSurface(m_game->renderer(), surf);
         SDL_Rect dest = {0, 0, 50, 50};
         SDL_RenderCopy(m_game->renderer(), text, NULL, &dest);
