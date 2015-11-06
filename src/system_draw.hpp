@@ -2,13 +2,15 @@
 #include "component_drawable.hpp"
 #include "component_position.hpp"
 
-#include "strapon/resource_manager/resource_manager.hpp"
-
 #include "entityx/entityx.h"
 #include <glm/vec2.hpp>
 #include <glm/gtx/polar_coordinates.hpp>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include <sstream>
+
+#include "strapon/resource_manager/resource_manager.hpp"
+#include "strapon/sdl_helpers/sdl_helpers.hpp"
 
 class DrawSystem : public entityx::System<DrawSystem> {
   public:
@@ -56,8 +58,6 @@ class DrawSystem : public entityx::System<DrawSystem> {
 
         for (entityx::Entity entity : es.entities_with_components(drawable, position)) {
 
-            (void)entity; // why?
-
             auto coord_polar = entity.component<Position>();
             SDL_Rect dest;
             // now follow the player
@@ -78,13 +78,16 @@ class DrawSystem : public entityx::System<DrawSystem> {
             SDL_RenderCopyEx(m_game->renderer(),
                              m_game->res_manager().texture(drawable->texture_key()), NULL, &dest, 0,
                              NULL, SDL_FLIP_NONE);
+            
+            auto player = entity.component<Player>();
+            if(player)
+            {
+                std::ostringstream os;
+                os << "Score: " << (int)player->score;
+                SDL_Color c = { 200, 200, 200, 0 };
+                draw_text(m_game->renderer(), m_game->res_manager(), os.str(), "font20", 0, 0, 10,40, c);
+            }
         }
-
-        auto surf = TTF_RenderText_Blended(m_game->res_manager().font("font20"), "LOL", {200, 100, 100, 150});
-        auto text = SDL_CreateTextureFromSurface(m_game->renderer(), surf);
-        SDL_Rect dest = {0, 0, 50, 50};
-        SDL_RenderCopy(m_game->renderer(), text, NULL, &dest);
-        SDL_FreeSurface(surf);
 
         // Render to final window
         SDL_SetRenderTarget(m_game->renderer(), nullptr);
