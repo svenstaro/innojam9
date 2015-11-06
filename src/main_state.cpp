@@ -26,6 +26,7 @@ int MainState::init() {
 
     entityx::Entity player = m_entities.create();
     player.assign<Position>(glm::vec2(300.f, 400.f));
+    player.assign<Movable>(100);
     player.assign<Drawable>("gradient", 100, 100);
 
     return 0;

@@ -1,7 +1,7 @@
 #ifndef SYSTEM_CONTROLS_HPP
 #define SYSTEM_CONTROLS_HPP
 
-#include "component_position.hpp"
+#include "component_movable.hpp"
 #include "events.hpp"
 
 #include <glm/vec2.hpp>
@@ -10,9 +10,9 @@
 class ControlSystem : public entityx::System<ControlSystem> {
   public:
     void update(entityx::EntityManager &es, entityx::EventManager &events, double dt) {
-        entityx::ComponentHandle<Position> position;
+        entityx::ComponentHandle<Movable> movable;
 
-        for (entityx::Entity entity : es.entities_with_components(position)) {
+        for (entityx::Entity entity : es.entities_with_components(movable)) {
             float x = 0.0f;
             float y = 0.0f;
 
@@ -29,7 +29,8 @@ class ControlSystem : public entityx::System<ControlSystem> {
 
             if (x != 0.0f || y != 0.0f) {
                 glm::vec2 direction(x, y);
-                direction = glm::normalize(direction);
+                // Calculate the direction relative to the speed of the entity and the time difference
+                direction = float(entity.component<Movable>()->speed() * dt) * glm::normalize(direction);
                 events.emit<PlayerInstructionEvent>(direction, entity);
             }
         }
