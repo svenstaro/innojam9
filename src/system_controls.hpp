@@ -28,8 +28,19 @@ class ControlSystem : public entityx::System<ControlSystem> {
                 angle += 1.0f;
 
             if (angle != 0.0f || radius != 0.0f) {
+                auto moving = entity.component<Moving>();
+                auto position = entity.component<Position>();
+
                 glm::vec2 direction(radius, angle);
-                direction = float(dt) * entity.component<Moving>()->speed() * glm::normalize(direction);
+                direction = float(dt) * glm::normalize(direction);
+                direction[0] *= moving->speed();
+
+                //adjust angle speed to match "radial" speed via arc length
+                float arc_speed = 0;
+                if(position->position()[0] != 0){ //only adjust if radius != 0
+                    arc_speed = moving->speed()/position->position()[0];
+                }
+                direction[1] *= arc_speed;
                 events.emit<PlayerInstructionEvent>(direction, entity);
             }
         }
