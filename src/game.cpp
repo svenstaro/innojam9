@@ -44,6 +44,11 @@ int Game::init() {
         return 1;
     }
 
+    auto swap_interval = SDL_GL_SetSwapInterval(-1);
+    if (swap_interval != 0) {
+        SDL_GL_SetSwapInterval(1);
+    }
+
     if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) != 0) {
         std::cerr << "SDL_mixer could not initialize! SDL_mixer Error: " << Mix_GetError()
                   << std::endl;
