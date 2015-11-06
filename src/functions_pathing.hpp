@@ -4,6 +4,7 @@
 glm::vec2 linear_path(glm::vec2 direction, float speed , float dt)
 {
     direction.x = speed *dt;
+    direction.y = 0.f;
     return direction;         
 }
 

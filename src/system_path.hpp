@@ -9,7 +9,8 @@
 #include "component_path.hpp"
 
 class PathSystem : public entityx::System<PathSystem>
-{ 
+{
+    public:
     void update(entityx::EntityManager &es, entityx::EventManager &events, double dt)
     {
         entityx::ComponentHandle<Path> path;
@@ -21,6 +22,7 @@ class PathSystem : public entityx::System<PathSystem>
 
         for(entityx::Entity entity :  es.entities_with_components(path,position,moving))
         {
+            (void)entity;
             next_step = path->m_path_function(position->position(), moving->speed(), (float)dt); 
 
             float radius_a = position->position().x;
