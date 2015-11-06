@@ -1,6 +1,7 @@
 #include "game.hpp"
 #include "component_drawable.hpp"
 #include "component_position.hpp"
+#include "component_player.hpp"
 
 #include "entityx/entityx.h"
 #include <glm/vec2.hpp>
@@ -45,16 +46,12 @@ class DrawSystem : public entityx::System<DrawSystem> {
 
         entityx::ComponentHandle<Drawable> drawable;
         entityx::ComponentHandle<Position> position;
+        entityx::ComponentHandle<Player> player;
 
-        /*auto player;
-        bool found = false;
-        for(entityx::Entity entity : es.entities_with_components(player)) {
-            if(found) {
-                // Shit is fucked up! We have 2 players
-            }
-            player = entity;
-            found = true;
-        }*/ // Becomes relevant when sascha finished the player crap
+        glm::vec2 player_pos;
+        for(entityx::Entity entity : es.entities_with_components(player, position)) {
+            player_pos = polar_to_euclid(entity.component<Position>()->position());
+        }
 
         for (entityx::Entity entity : es.entities_with_components(drawable, position)) {
 
@@ -71,6 +68,9 @@ class DrawSystem : public entityx::System<DrawSystem> {
             // Translate onto player. In fact will do this later. Too confusing w/o other entities
             dest.x += m_camera.w / 2;
             dest.y += m_camera.h / 2;
+
+            dest.x -= player_pos.x;
+            dest.y -= player_pos.y;
 
             dest.w = drawable->width();
             dest.h = drawable->height();
