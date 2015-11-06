@@ -97,7 +97,7 @@ class DrawSystem : public entityx::System<DrawSystem> {
         std::ostringstream os;
         os << "Score: " << (int)player->score;
         SDL_Color c = { 200, 200, 200, 0 };
-        draw_text(m_game->renderer(), m_game->res_manager(), os.str(), "font20", 0, 0, 10, 40, c);
+        draw_text(m_game->renderer(), m_game->res_manager(), os.str(), "font20", 0, 0,  c);
 
         // Render to final window
         SDL_SetRenderTarget(m_game->renderer(), nullptr);
