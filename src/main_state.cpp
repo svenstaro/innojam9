@@ -43,6 +43,14 @@ int MainState::init() {
     background.assign<Position>(glm::vec2(0.f, 0.f));
     background.assign<Drawable>("dirt", 2000, 2000);
 
+    entityx::Entity inner_bound = m_entities.create();
+    inner_bound.assign<Position>(glm::vec2(0.f, 0.f));
+    inner_bound.assign<Drawable>("inner_bound", 100, 100);
+
+    entityx::Entity outer_bound = m_entities.create();
+    outer_bound.assign<Position>(glm::vec2(0.f, 0.f));
+    outer_bound.assign<Drawable>("outer_bound", 600, 600);
+
     entityx::Entity fire = m_entities.create();
     fire.assign<Position>(glm::vec2(0.f, 0.f));
     fire.assign<Drawable>("fire", 100, 100);
