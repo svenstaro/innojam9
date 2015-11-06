@@ -5,11 +5,14 @@
 #include "component_drawable.hpp"
 #include "component_position.hpp"
 #include "component_path.hpp"
+#include "component_player.hpp"
+#include "component_moving.hpp"
 #include "system_collision.hpp"
 #include "system_controls.hpp"
 #include "system_draw.hpp"
 #include "system_movement.hpp"
 #include "system_path.hpp"
+#include "system_highscore.hpp"
 
 #include "entityx/entityx.h"
 
@@ -25,15 +28,21 @@ int MainState::init() {
     m_systems.add<DrawSystem>(m_game);
     m_systems.add<ControlSystem>();
     m_systems.add<CollisionSystem>();
-    m_systems.add<MovementSystem>();
     m_systems.add<PathSystem>();
+    m_systems.add<MovementSystem>(50, 300);
+    m_systems.add<HighscoreSystem>();
     m_systems.configure();
 
     entityx::Entity player = m_entities.create();
-    player.assign<Position>(glm::vec2(0.f, 0.f));
-    player.assign<Moving>(10.f);
-    player.assign<Drawable>("player", 80, 80);
-    
+    player.assign<Position>(glm::vec2(100.f, 0.f));
+    player.assign<Moving>(100.f);
+    player.assign<Drawable>("player", 80, 80, 10);
+    player.assign<Player>();
+
+    entityx::Entity background = m_entities.create();
+    background.assign<Position>(glm::vec2(0.f, 0.f));
+    background.assign<Drawable>("dirt", 2000, 2000);
+
     entityx::Entity fire = m_entities.create();
     fire.assign<Position>(glm::vec2(0.f, 0.f));
     fire.assign<Drawable>("fire", 100, 100);
@@ -64,4 +73,5 @@ void MainState::update(double dt) {
     m_systems.update<ControlSystem>(dt);
     m_systems.update<CollisionSystem>(dt);
     m_systems.update<MovementSystem>(dt);
+    m_systems.update<HighscoreSystem>(dt);
 }

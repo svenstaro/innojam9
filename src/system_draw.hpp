@@ -1,14 +1,18 @@
 #include "game.hpp"
 #include "component_drawable.hpp"
 #include "component_position.hpp"
-
-#include "strapon/resource_manager/resource_manager.hpp"
+#include "component_player.hpp"
 
 #include "entityx/entityx.h"
 #include <glm/vec2.hpp>
+#include <glm/glm.hpp>
 #include <glm/gtx/polar_coordinates.hpp>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include <sstream>
+
+#include "strapon/resource_manager/resource_manager.hpp"
+#include "strapon/sdl_helpers/sdl_helpers.hpp"
 
 class DrawSystem : public entityx::System<DrawSystem> {
   public:
@@ -32,7 +36,6 @@ class DrawSystem : public entityx::System<DrawSystem> {
         return cart;
     }
 
-
     void update(entityx::EntityManager &es, entityx::EventManager &events,
                 entityx::TimeDelta dt) override {
 
@@ -43,48 +46,58 @@ class DrawSystem : public entityx::System<DrawSystem> {
 
         entityx::ComponentHandle<Drawable> drawable;
         entityx::ComponentHandle<Position> position;
+        entityx::ComponentHandle<Player> player;
 
-        /*auto player;
-        bool found = false;
-        for(entityx::Entity entity : es.entities_with_components(player)) {
-            if(found) {
-                // Shit is fucked up! We have 2 players
-            }
-            player = entity;
-            found = true;
-        }*/ // Becomes relevant when sascha finished the player crap
-
-        for (entityx::Entity entity : es.entities_with_components(drawable, position)) {
-
-            (void)entity; // why?
-
-            auto coord_polar = entity.component<Position>();
-            SDL_Rect dest;
-            // now follow the player
-            glm::vec2 coord_euclid = polar_to_euclid(coord_polar->position());
-            // Converted position
-            dest.x = coord_euclid[0];
-            dest.y = coord_euclid[1];
-            // Center on entity
-            dest.x -= drawable->width() / 2;
-            dest.y -= drawable->height() / 2;
-            // Translate onto player. In fact will do this later. Too confusing w/o other entities
-            dest.x += m_camera.w / 2;
-            dest.y += m_camera.h / 2;
-
-            dest.w = drawable->width();
-            dest.h = drawable->height();
-
-            SDL_RenderCopyEx(m_game->renderer(),
-                             m_game->res_manager().texture(drawable->texture_key()), NULL, &dest, 0,
-                             NULL, SDL_FLIP_NONE);
+        glm::vec2 player_pos;
+        for (entityx::Entity entity : es.entities_with_components(player, position)) {
+            player_pos = polar_to_euclid(entity.component<Position>()->position());
         }
 
-        auto surf = TTF_RenderText_Blended(m_game->res_manager().font("font20"), "LOL", {200, 100, 100, 150});
-        auto text = SDL_CreateTextureFromSurface(m_game->renderer(), surf);
-        SDL_Rect dest = {0, 0, 50, 50};
-        SDL_RenderCopy(m_game->renderer(), text, NULL, &dest);
-        SDL_FreeSurface(surf);
+        std::set<int> layers;
+        for (entityx::Entity entity : es.entities_with_components(drawable)) {
+            (void)entity;
+            layers.insert(drawable->layer());
+        }
+
+        for (auto layer : layers) {
+            for (entityx::Entity entity : es.entities_with_components(drawable, position)) {
+                if (drawable->layer() == layer) {
+                    auto coord_polar = entity.component<Position>();
+                    SDL_Rect dest;
+
+                    // now follow the player
+                    glm::vec2 coord_euclid = polar_to_euclid(coord_polar->position());
+
+                    // Converted position
+                    dest.x = coord_euclid[0];
+                    dest.y = coord_euclid[1];
+
+                    // Center on entity
+                    dest.x -= drawable->width() / 2;
+                    dest.y -= drawable->height() / 2;
+
+                    // Translate onto player. In fact will do this later. Too confusing w/o other
+                    // entities
+                    dest.x += m_camera.w / 2;
+                    dest.y += m_camera.h / 2;
+
+                    dest.x -= player_pos.x;
+                    dest.y -= player_pos.y;
+
+                    dest.w = drawable->width();
+                    dest.h = drawable->height();
+
+                    SDL_RenderCopyEx(m_game->renderer(),
+                                     m_game->res_manager().texture(drawable->texture_key()), NULL,
+                                     &dest, 0, NULL, SDL_FLIP_NONE);
+                }
+            }
+        }
+        
+        std::ostringstream os;
+        os << "Score: " << (int)player->score;
+        SDL_Color c = { 200, 200, 200, 0 };
+        draw_text(m_game->renderer(), m_game->res_manager(), os.str(), "font20", 0, 0, 10, 40, c);
 
         // Render to final window
         SDL_SetRenderTarget(m_game->renderer(), nullptr);

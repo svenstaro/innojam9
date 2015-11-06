@@ -2,12 +2,14 @@
 #define COLLISION_SYSTEM_CPP
 
 #include "component_position.hpp"
+#include "component_collidable.hpp"
 #include "events.hpp"
 #include "game.hpp"
 
 #include "entityx/entityx.h"
 
 #include <glm/vec2.hpp>
+#include <glm/glm.hpp>
 #include <SDL2/SDL.h>
 
 class CollisionSystem : public entityx::System<CollisionSystem> {
@@ -16,12 +18,20 @@ class CollisionSystem : public entityx::System<CollisionSystem> {
     }
 
     void update(entityx::EntityManager &es, entityx::EventManager &events, double dt) {
-        entityx::ComponentHandle<Position> first_position, second_position;
-        for (entityx::Entity first_entity : es.entities_with_components(first_position)) {
-            for (entityx::Entity second_entity : es.entities_with_components(second_position)) {
-                if (first_entity != second_entity &&
-                    SDL_HasIntersection(&first_position->rect(), &second_position->rect())) {
-                    events.emit<CollisionEvent>(first_entity, second_entity);
+        entityx::ComponentHandle<Position> position1, position2;
+        entityx::ComponentHandle<Collidable> collidable1, collidable2;
+        for (entityx::Entity entity1 : es.entities_with_components(position1, collidable1)) {
+            for (entityx::Entity entity2 : es.entities_with_components(position2, collidable2)) {
+                if (entity1 != entity2) {
+                    glm::vec2 p1 = position1->position(),
+                        p2 = position2->position();
+                    float x = glm::cos(p1.x) * p1.y - glm::cos(p2.x) * p2.y;
+                    float y = glm::sin(p1.x) * p1.y - glm::sin(p2.x) * p2.y;
+                    glm::vec2 intersect = glm::vec2(x, y);
+                    float dist = glm::length(intersect);
+                    if(dist <= collidable1->radius() + collidable2->radius()) {
+                        events.emit<CollisionEvent>(entity1, entity2);
+                    }
                 }
             }
         }
