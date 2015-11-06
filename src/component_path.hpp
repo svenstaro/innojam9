@@ -25,6 +25,11 @@
         {
             m_current_lifetime += dt;
         }
+
+        glm::vec2 get_direction()
+        {
+            return m_direction;
+        }
         
         std::function<glm::vec2(glm::vec2, float, float)> m_path_function;
         glm::vec2 m_direction;

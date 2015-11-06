@@ -2,11 +2,12 @@
 #define FUNCTIONS_PATHING_HPP
 
 #include <glm/glm.hpp>
+#include <glm/gtx/string_cast.hpp>
 
 glm::vec2 linear_path(glm::vec2 direction, float speed , float current_lifetime)
 {
     direction.x = speed * current_lifetime;
-    direction.y = 0.f;
+    std::cout << glm::to_string(direction) << std::endl;
     return direction;         
 }
 
