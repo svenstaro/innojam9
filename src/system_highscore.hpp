@@ -29,6 +29,9 @@ class HighscoreSystem : public entityx::System<HighscoreSystem>,
           (void)entity;
           player->score += pts_per_sec;
         }
+        
+        
+        
     }
 
     void receive(const CollisionEvent &collision_event) {

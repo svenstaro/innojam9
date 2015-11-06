@@ -3,13 +3,15 @@
 #include "component_position.hpp"
 #include "component_player.hpp"
 
-#include "strapon/resource_manager/resource_manager.hpp"
-
 #include "entityx/entityx.h"
 #include <glm/vec2.hpp>
 #include <glm/gtx/polar_coordinates.hpp>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include <sstream>
+
+#include "strapon/resource_manager/resource_manager.hpp"
+#include "strapon/sdl_helpers/sdl_helpers.hpp"
 
 class DrawSystem : public entityx::System<DrawSystem> {
   public:
