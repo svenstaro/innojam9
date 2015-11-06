@@ -10,6 +10,7 @@
 
 #include <glm/vec2.hpp>
 #include <glm/glm.hpp>
+#include <iostream>
 #include <SDL2/SDL.h>
 
 class CollisionSystem : public entityx::System<CollisionSystem> {
@@ -25,8 +26,8 @@ class CollisionSystem : public entityx::System<CollisionSystem> {
                 if (entity1 != entity2) {
                     glm::vec2 p1 = position1->position(),
                         p2 = position2->position();
-                    float x = glm::cos(p1.x) * p1.y - glm::cos(p2.x) * p2.y;
-                    float y = glm::sin(p1.x) * p1.y - glm::sin(p2.x) * p2.y;
+                    float x = glm::cos(p1.y) * p1.x - glm::cos(p2.y) * p2.x;
+                    float y = glm::sin(p1.y) * p1.x - glm::sin(p2.y) * p2.x;
                     glm::vec2 intersect = glm::vec2(x, y);
                     float dist = glm::length(intersect);
                     if(dist <= collidable1->radius() + collidable2->radius()) {

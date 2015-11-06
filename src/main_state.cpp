@@ -9,6 +9,7 @@
 #include "system_draw.hpp"
 #include "system_movement.hpp"
 #include "system_highscore.hpp"
+#include "system_orbspawn.hpp"
 
 #include "entityx/entityx.h"
 
@@ -26,11 +27,13 @@ int MainState::init() {
     m_systems.add<CollisionSystem>();
     m_systems.add<MovementSystem>(50, 300);
     m_systems.add<HighscoreSystem>();
+    m_systems.add<OrbSpawnSystem>(&m_entities);
     m_systems.configure();
 
     entityx::Entity player = m_entities.create();
     player.assign<Position>(glm::vec2(100.f, 0.f));
     player.assign<Moving>(100.f);
+    player.assign<Collidable>(40);
     player.assign<Drawable>("player", 80, 80, 10);
     player.assign<Player>();
 
@@ -63,4 +66,5 @@ void MainState::update(double dt) {
     m_systems.update<CollisionSystem>(dt);
     m_systems.update<MovementSystem>(dt);
     m_systems.update<HighscoreSystem>(dt);
+    m_systems.update<OrbSpawnSystem>(dt);
 }
