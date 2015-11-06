@@ -44,15 +44,34 @@ class DrawSystem : public entityx::System<DrawSystem> {
         entityx::ComponentHandle<Drawable> drawable;
         entityx::ComponentHandle<Position> position;
 
+        /*auto player;
+        bool found = false;
+        for(entityx::Entity entity : es.entities_with_components(player)) {
+            if(found) {
+                // Shit is fucked up! We have 2 players
+            }
+            player = entity;
+            found = true;
+        }*/ // Becomes relevant when sascha finished the player crap
+
         for (entityx::Entity entity : es.entities_with_components(drawable, position)) {
 
             (void)entity; // why?
 
             auto coord_polar = entity.component<Position>();
             SDL_Rect dest;
+            // now follow the player
             glm::vec2 coord_euclid = polar_to_euclid(coord_polar->position());
-            dest.x = coord_euclid[0] + m_camera.w / 2 - drawable->width() / 2;
-            dest.y = coord_euclid[1] + m_camera.h / 2 - drawable->height() / 2;
+            // Converted position
+            dest.x = coord_euclid[0];
+            dest.y = coord_euclid[1];
+            // Center on entity
+            dest.x += drawable->width() / 2;
+            dest.y += drawable->height() / 2;
+            // Translate onto player. In fact will do this later. Too confusing w/o other entities
+            dest.x += m_camera.w / 2;
+            dest.y += m_camera.h / 2;
+
             dest.w = drawable->width();
             dest.h = drawable->height();
 

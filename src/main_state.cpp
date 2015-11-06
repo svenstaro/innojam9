@@ -28,7 +28,11 @@ int MainState::init() {
     entityx::Entity player = m_entities.create();
     player.assign<Position>(glm::vec2(0.f, 0.f));
     player.assign<Moving>(10.f);
-    player.assign<Drawable>("gradient", 100, 100);
+    player.assign<Drawable>("player", 80, 80);
+
+    entityx::Entity fire = m_entities.create();
+    fire.assign<Position>(glm::vec2(0.f, 0.f));
+    fire.assign<Drawable>("fire", 100, 100);
 
     return 0;
 }
