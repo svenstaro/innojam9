@@ -26,7 +26,7 @@ class PathSystem : public entityx::System<PathSystem>
             {
             /*
             (void)entity;
-            next_step = p; 
+            next_step = path->m_path_function(position->position(), moving->speed(), (float)dt);
 
             float radius_a = position->position().x;
             float radius_b = next_step.x;
@@ -45,6 +45,9 @@ class PathSystem : public entityx::System<PathSystem>
             {
                entity.destroy(); 
             }
+
+            position->set_position(new_position);
+
         }
     }
 };

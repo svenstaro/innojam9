@@ -13,6 +13,7 @@
 #include "system_movement.hpp"
 #include "system_path.hpp"
 #include "system_highscore.hpp"
+#include "system_orbspawn.hpp"
 
 #include "entityx/entityx.h"
 
@@ -31,29 +32,31 @@ int MainState::init() {
     m_systems.add<PathSystem>();
     m_systems.add<MovementSystem>(50, 300);
     m_systems.add<HighscoreSystem>();
+    m_systems.add<OrbSpawnSystem>(&m_entities);
     m_systems.configure();
 
     entityx::Entity player = m_entities.create();
     player.assign<Position>(glm::vec2(100.f, 0.f));
     player.assign<Moving>(100.f);
+    player.assign<Collidable>(40);
     player.assign<Drawable>("player", 80, 80, 10);
     player.assign<Player>();
 
     entityx::Entity background = m_entities.create();
     background.assign<Position>(glm::vec2(0.f, 0.f));
-    background.assign<Drawable>("dirt", 2000, 2000);
+    background.assign<Drawable>("dirt", 2000, 2000, 0);
 
     entityx::Entity inner_bound = m_entities.create();
     inner_bound.assign<Position>(glm::vec2(0.f, 0.f));
-    inner_bound.assign<Drawable>("inner_bound", 100, 100);
+    inner_bound.assign<Drawable>("inner_bound", 100, 100, 1);
 
     entityx::Entity outer_bound = m_entities.create();
     outer_bound.assign<Position>(glm::vec2(0.f, 0.f));
-    outer_bound.assign<Drawable>("outer_bound", 600, 600);
+    outer_bound.assign<Drawable>("outer_bound", 600, 600, 1);
 
     entityx::Entity fire = m_entities.create();
     fire.assign<Position>(glm::vec2(0.f, 0.f));
-    fire.assign<Drawable>("fire", 100, 100);
+    fire.assign<Drawable>("fire", 100, 100, 1);
 
     entityx::Entity test = m_entities.create();
     test.assign<Position>(glm::vec2(40.f, 225.f));
@@ -82,5 +85,6 @@ void MainState::update(double dt) {
     m_systems.update<CollisionSystem>(dt);
     m_systems.update<MovementSystem>(dt);
     m_systems.update<HighscoreSystem>(dt);
+    m_systems.update<OrbSpawnSystem>(dt);
     m_systems.update<PathSystem>(dt);
 }
