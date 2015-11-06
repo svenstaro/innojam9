@@ -41,13 +41,6 @@ class HighscoreSystem : public entityx::System<HighscoreSystem>,
         if(e1 && e2) {
           e1->score += e2->score();
         }
-        else {
-          auto e1 = copy.m_first.component<Orb>();
-          auto e2 = copy.m_second.component<Player>();
-          if(e1 && e2) {
-            e2->score += e1->score();
-          }
-        }
     }
 
 
