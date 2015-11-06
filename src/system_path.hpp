@@ -1,5 +1,5 @@
 #ifndef SYSTEM_PATH_HPP
-#define SYSYEM_PATH_HPP
+#define SYSTEM_PATH_HPP
 
 #include "entityx/entityx.h"
 #include "glm/vec2.hpp"

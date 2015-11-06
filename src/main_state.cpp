@@ -13,6 +13,7 @@
 #include "system_movement.hpp"
 #include "system_path.hpp"
 #include "system_highscore.hpp"
+#include "system_emitter.hpp"
 
 #include "entityx/entityx.h"
 
@@ -31,6 +32,7 @@ int MainState::init() {
     m_systems.add<PathSystem>();
     m_systems.add<MovementSystem>(50, 300);
     m_systems.add<HighscoreSystem>();
+    m_systems.add<EmitterSystem>(linear_path);
     m_systems.configure();
 
     entityx::Entity player = m_entities.create();
@@ -55,11 +57,6 @@ int MainState::init() {
     fire.assign<Position>(glm::vec2(0.f, 0.f));
     fire.assign<Drawable>("fire", 100, 100, 1);
 
-    entityx::Entity test = m_entities.create();
-    test.assign<Position>(glm::vec2(40.f, 225.f));
-    test.assign<Path>(linear_path, glm::vec2(1.f,45.f),20.f);
-    test.assign<Moving>(100.f);
-    test.assign<Drawable>("player", 20 , 20);
     return 0;
 }
 
@@ -83,4 +80,5 @@ void MainState::update(double dt) {
     m_systems.update<MovementSystem>(dt);
     m_systems.update<HighscoreSystem>(dt);
     m_systems.update<PathSystem>(dt);
+    m_systems.update<EmitterSystem>(dt);
 }

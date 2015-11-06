@@ -27,7 +27,7 @@ class HighscoreSystem : public entityx::System<HighscoreSystem>,
         entityx::ComponentHandle<Player> player;
         for(entityx::Entity entity : es.entities_with_components(player)) {
           (void)entity;
-          player->score += pts_per_sec;
+          player->addScore(pts_per_sec);
         }
         
         
@@ -40,13 +40,13 @@ class HighscoreSystem : public entityx::System<HighscoreSystem>,
         auto e1 = copy.m_first.component<Player>();
         auto e2 = copy.m_second.component<Orb>();
         if(e1 && e2) {
-          e1->score += pts_per_orb;
+          e1->addScore(pts_per_orb);
         }
         else {
           auto e1 = copy.m_first.component<Orb>();
           auto e2 = copy.m_second.component<Player>();
           if(e1 && e2) {
-            e2->score += pts_per_orb;
+            e2->addScore(pts_per_orb);
           }
         }
     }
