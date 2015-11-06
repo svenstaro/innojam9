@@ -36,7 +36,7 @@ int MainState::init() {
 
     entityx::Entity background = m_entities.create();
     background.assign<Position>(glm::vec2(0.f, 0.f));
-    background.assign<Drawable>("dirt", 1000, 1000);
+    background.assign<Drawable>("dirt", 2000, 2000);
 
     entityx::Entity fire = m_entities.create();
     fire.assign<Position>(glm::vec2(0.f, 0.f));
