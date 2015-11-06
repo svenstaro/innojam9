@@ -34,12 +34,11 @@ class OrbSpawnSystem : public entityx::System<OrbSpawnSystem>,
             m_delta -= RESPAWN_TIME;
             spawn();
         }
-        while(orbs_to_delete.size() > 0) {
-            entityx::Entity &e = orbs_to_delete.back();
+        for(auto e : orbs_to_delete) {
             //std::cout << "deleting entity with id " << e.id() << std::endl;
             e.destroy();
-            orbs_to_delete.pop_back();
         }
+        orbs_to_delete.clear();
     }
 
     void receive(const CollisionEvent &event) {
