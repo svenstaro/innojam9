@@ -29,7 +29,7 @@ int MainState::init() {
     m_systems.configure();
 
     entityx::Entity player = m_entities.create();
-    player.assign<Position>(glm::vec2(0.f, 0.f));
+    player.assign<Position>(glm::vec2(100.f, 0.f));
     player.assign<Moving>(10.f);
     player.assign<Drawable>("player", 80, 80);
     player.assign<Player>();
