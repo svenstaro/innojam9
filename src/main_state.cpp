@@ -2,10 +2,12 @@
 
 #include "component_drawable.hpp"
 #include "component_position.hpp"
+#include "component_player.hpp"
 #include "system_collision.hpp"
 #include "system_controls.hpp"
 #include "system_draw.hpp"
 #include "system_movement.hpp"
+#include "system_highscore.hpp"
 
 #include "entityx/entityx.h"
 
@@ -22,11 +24,13 @@ int MainState::init() {
     m_systems.add<ControlSystem>();
     m_systems.add<CollisionSystem>();
     m_systems.add<MovementSystem>();
+    m_systems.add<HighscoreSystem>();
     m_systems.configure();
 
     entityx::Entity player = m_entities.create();
     player.assign<Position>(glm::vec2(300.f, 400.f));
     player.assign<Drawable>("gradient", 100, 100);
+    player.assign<Player>();
 
     return 0;
 }
@@ -48,4 +52,5 @@ void MainState::update(double dt) {
     m_systems.update<ControlSystem>(dt);
     m_systems.update<CollisionSystem>(dt);
     m_systems.update<MovementSystem>(dt);
+    m_systems.update<HighscoreSystem>(dt);
 }
