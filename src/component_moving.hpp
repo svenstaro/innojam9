@@ -10,13 +10,13 @@ struct Moving :entityx::Component<Moving> { //everzthing that can be moving also
         : m_speed(speed) {
     }
 
-	float speed() {
-		return m_speed;
-	}
+    float speed() {
+        return m_speed;
+    }
 
-	void set_speed(float speed) {
-		m_speed = speed;
-	}
+    void set_speed(float speed) {
+        m_speed = speed;
+    }
 
   private:
     float m_speed;
