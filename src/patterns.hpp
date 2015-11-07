@@ -21,6 +21,10 @@ class PatternPart {
         return {{linear_path},{3},{0.f}};
     }
 
+    static PatternPart LINEAR_FOUR_SHOTS() {
+        return {{linear_path},{4},{glm::radians(45.f)}};
+    }
+
     static PatternPart SCYTHE_LINEAR_FOUR_FOUR_SHOTS() {
         return {{scythe_path,linear_path},{4,4},{0,glm::radians(45.f)}};
     }
@@ -68,11 +72,15 @@ class Pattern {
         return {0.4f,15.f,{PatternPart::SCYTHE_LINEAR_FOUR_FOUR_SHOTS()},{1},15};
     }
 
-    static Pattern test_level() {
-        return {0.5f,19.f,{PatternPart::LINEAR_THREE_SHOTS(),PatternPart::SCYTHE_LINEAR_FOUR_FOUR_SHOTS()},{10,10},200};
+    static Pattern level3() {
+        return {0.5f,19.f,{PatternPart::LINEAR_FOUR_SHOTS(),PatternPart::SCYTHE_LINEAR_FOUR_FOUR_SHOTS()},{10,10},20};
     }
-
-    float m_cooldown;
+    
+    static Pattern level4() {
+        return {0.4f,30.f,{PatternPart::SIN_FOUR_SHOT(), PatternPart::SCYTHE_LINEAR_FOUR_FOUR_SHOTS(), PatternPart::LINEAR_FOUR_SHOTS()},{1,1,1},45};
+    }   
+    
+        float m_cooldown;
     float m_rotation_speed;
     unsigned int m_pattern_length;
     std::vector<PatternPart> m_pattern_parts;

@@ -158,7 +158,7 @@ class DrawSystem : public entityx::System<DrawSystem> {
         render_bar(rendr, float(m_game->m_orbs_collected), float(m_game->get_current_level().m_orbs_needed));
 
         SDL_Color c = {200, 200, 200, 100};
-        auto current_level = "Level " + std::to_string(0);
+        auto current_level = "Level " + std::to_string(m_game->get_current_level_index());
         SDL_Rect rect{550, 20, 200, 50};
         draw_text(rendr, m_game->res_manager(), current_level, "font20", &rect, c);
 

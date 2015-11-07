@@ -78,7 +78,7 @@ int Game::init() {
 
     entityx::Entity entity = m_ex.entities.create();
     entity.assign<Position>();
-    m_level_vector = {Pattern::level1(), Pattern::level2()};
+    m_level_vector = {Pattern::level1(), Pattern::level2(),Pattern::level3(), Pattern::level4()};
     m_states.push({"main", std::make_unique<MainState>(this)});
     m_states.top().second->init();
 
@@ -90,6 +90,7 @@ void Game::next_level()
     m_current_level_index++;
     if(m_current_level_index == m_level_vector.size())
     {
+        //TODO GAMEOVER KRAM -> HERE
         m_current_level_index = 0;
     }
 }
