@@ -22,8 +22,11 @@ class DrawSystem : public entityx::System<DrawSystem> {
   public:
     DrawSystem(Game *game) : m_game(game) {
         int w, h;
+        float zoom = 4.0/5.0;
         SDL_RenderGetLogicalSize(game->renderer(), &w, &h);
-        m_camera = SDL_Rect{w/2, 3*h/4, w, h};
+        int wz = w * zoom;
+        int hz = h * zoom;
+        m_camera = SDL_Rect{w-wz/2, h-hz/5, wz, hz};
         
         int game_w = game->world_size().w;
         int game_h = game->world_size().h;
