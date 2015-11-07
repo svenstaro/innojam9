@@ -137,19 +137,25 @@ class DrawSystem : public entityx::System<DrawSystem> {
                 if (entity.component<Orb>())
                     orbs++;
             }
-            std::string bulletstr = "Bullets: " + std::to_string(bullets);
-            std::string orbstr = "Orbs: " + std::to_string(orbs);
-            std::string fps = "FPS: " + std::to_string(1.0 / dt);
+            auto bulletstr = "Bullets: " + std::to_string(bullets);
+            auto orbstr = "Orbs: " + std::to_string(orbs);
+            auto orbs_collected = "Orbs collected " + std::to_string(m_game->m_orbs_collected);
+            auto fps = "FPS: " + std::to_string(1.0 / dt);
             draw_text(rendr, m_game->res_manager(), score, "font20", 0, 0, c);
             draw_text(rendr, m_game->res_manager(), pos, "font20", 0, 20, c);
             draw_text(rendr, m_game->res_manager(), bulletstr, "font20", 0, 40, c);
             draw_text(rendr, m_game->res_manager(), orbstr, "font20", 0, 60, c);
-            draw_text(rendr, m_game->res_manager(), fps, "font20", 0, 80, c);
+            draw_text(rendr, m_game->res_manager(), orbs_collected, "font20", 0, 80, c);
+            draw_text(rendr, m_game->res_manager(), fps, "font20", 0, 100, c);
         } else {
             auto score = "Score: " + std::to_string((int)player_entity.component<Player>()->score);
             SDL_Color c = {200, 200, 200, 0};
             draw_text(rendr, m_game->res_manager(), score, "font20", 0, 0, c);
         }
+
+        // Draw "GUI"
+        // freddi TODO
+
         SDL_RenderPresent(rendr);
     }
 
