@@ -9,14 +9,20 @@
 #include "component_collidable.hpp"
 #include <iostream>
 #include <vector>
+#include "anim_template.hpp"
 
-#define RESPAWN_TIME 1.f
+
+#define RESPAWN_TIME 0.2f
 
 class OrbSpawnSystem : public entityx::System<OrbSpawnSystem>,
                        public entityx::Receiver<OrbSpawnSystem> {
   public:
     OrbSpawnSystem(entityx::EntityManager *entities) : m_entities(entities), m_delta(0.f){
-
+        m_spawn_direction = glm::vec2(
+            (float(std::rand()) / float(RAND_MAX)) * 2.f - 1.f,
+            (float(std::rand()) / float(RAND_MAX)) * 0.1f - 0.05f);
+        m_spawn_position = 100.f * m_spawn_direction;
+        m_spawn_position.x += 100.f;
     }
 
     ~OrbSpawnSystem() {
@@ -33,6 +39,16 @@ class OrbSpawnSystem : public entityx::System<OrbSpawnSystem>,
         if(m_delta >= RESPAWN_TIME) {
             m_delta -= RESPAWN_TIME;
             spawn();
+            m_spawn_position += 4.f * m_spawn_direction;
+            m_spawn_direction.x += (float(std::rand()) / float(RAND_MAX)) * 4.f - 2.f;
+            m_spawn_direction.y += ((float(std::rand()) / float(RAND_MAX)) * 0.2f - 0.1f) / m_spawn_position.x;
+            if(m_spawn_position.x < 60.f && m_spawn_direction.x < 0) {
+                m_spawn_direction.x *= -1;
+            }
+            if(m_spawn_position.x > 300.f && m_spawn_direction.x > 0) {
+                m_spawn_direction.x *= -1;
+            }
+
         }
         for(auto e : orbs_to_delete) {
             //std::cout << "deleting entity with id " << e.id() << std::endl;
@@ -51,20 +67,25 @@ class OrbSpawnSystem : public entityx::System<OrbSpawnSystem>,
     }
 
   private:
-
-    void spawn() {
-        float score = (float(std::rand()) / float(RAND_MAX)) * 40 + 10;
+    void spawn_at(glm::vec2 &pos) {
+        int v = int((float(std::rand()) / float(RAND_MAX)) * 3.f);
+        AnimTemplate anim(30, 30, 6, v);
         entityx::Entity orb = m_entities->create();
-        glm::vec2 pos = glm::vec2(50.f + 250.f * (float(std::rand()) / float(RAND_MAX)), (float(std::rand()) / float(RAND_MAX)) * glm::pi<float>() * 2.f);
         orb.assign<Position>(pos);
-        orb.assign<Drawable>("orb", glm::ceil(score * 2), glm::ceil(score * 2), 8);
+        orb.assign<Drawable>("orb", 20, 20, 8, anim);
         orb.assign<Collectable>();
-        orb.assign<Collidable>(score);
-        orb.assign<Orb>(score);
+        orb.assign<Collidable>(10);
+        orb.assign<Light>("gradient", 0.25f);
+        orb.assign<Orb>(v * 5);
+    }
+    void spawn() {
+        spawn_at(m_spawn_position);
         //std::cout << "Spawning orb @" << pos.x << "," << pos.y << std::endl;
     }
 
     std::vector<entityx::Entity> orbs_to_delete;
     entityx::EntityManager *m_entities;
     entityx::TimeDelta m_delta;
+    glm::vec2 m_spawn_position;
+    glm::vec2 m_spawn_direction;
 };
