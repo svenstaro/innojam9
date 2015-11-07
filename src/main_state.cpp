@@ -44,8 +44,6 @@ int MainState::init() {
     m_systems.add<CollisionSystem>();
     m_systems.add<PathSystem>();
     m_systems.add<MovementSystem>(radius_inner, radius_outer);
-    m_systems.add<HighscoreSystem>();
-// <<<<<<< HEAD
 //
 //     // glm::vec2 origin = glm::vec2(300, 0);
 //     // auto parable = create_parable(origin, glm::vec2(300, glm::half_pi<float>()), glm::vec2(glm::one_over_root_two<float>()*300, glm::quarter_pi<float>()));
@@ -55,9 +53,8 @@ int MainState::init() {
 //     //
 //     // m_systems.add<EmitterSystem>(m_game, parable, origin, 1, 10, 0.3);
 //     m_systems.add<EmitterSystem>(m_game, linear_path, 0.5, 0.3);
-// =======
+    m_systems.add<HighscoreSystem>(m_game);
     m_systems.add<EmitterSystem>(m_game);
-// >>>>>>> bfff99fa2d1f8cdb3fa9e109e069fe7ca9572010
     m_systems.add<OrbSpawnSystem>(m_game, m_entities, radius_inner, radius_outer);
 
     m_systems.configure();

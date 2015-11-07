@@ -12,7 +12,7 @@
 #include "component_moving.hpp"
 #include "component_path.hpp"
 
-auto create_parable(glm::vec2 p1, glm::vec2 p2, glm::vec2 p3) {
+inline auto create_parable(glm::vec2 p1, glm::vec2 p2, glm::vec2 p3) {
     float a1h2 = p1[1] * p1[1];
     float a2h2 = p2[1] * p2[1];
     float a3h2 = p3[1] * p3[1];
@@ -35,7 +35,7 @@ auto create_parable(glm::vec2 p1, glm::vec2 p2, glm::vec2 p3) {
 }
 
 //NEVER USE THIS WHEN MOVING STRAIGHT THROUGH THE MIDDLE
-glm::vec2 parable_path(entityx::Entity entity) {
+inline glm::vec2 parable_path(entityx::Entity entity) {
     //auto pos = entity.component<Position>();
     auto moving = entity.component<Moving>();
     auto path = entity.component<Path>();
@@ -49,7 +49,7 @@ glm::vec2 parable_path(entityx::Entity entity) {
     return path->get_parable()(a_t);
 }
 
-glm::vec2 linear_path(entityx::Entity entity)
+inline glm::vec2 linear_path(entityx::Entity entity)
 {
     auto moving = entity.component<Moving>();
     auto path = entity.component<Path>();
@@ -62,7 +62,7 @@ glm::vec2 linear_path(entityx::Entity entity)
     return direction;
 }
 
-glm::vec2 scythe_path(entityx::Entity entity)
+inline glm::vec2 scythe_path(entityx::Entity entity)
 {
     auto moving = entity.component<Moving>();
     auto path = entity.component<Path>();
@@ -76,7 +76,7 @@ glm::vec2 scythe_path(entityx::Entity entity)
     return direction;
 }
 
-glm::vec2 spiral_path(entityx::Entity entity)
+inline glm::vec2 spiral_path(entityx::Entity entity)
 {
     auto moving = entity.component<Moving>();
     auto path = entity.component<Path>();
@@ -90,7 +90,8 @@ glm::vec2 spiral_path(entityx::Entity entity)
     return direction;
 }
 
-glm::vec2 sin_path(entityx::Entity entity)
+
+inline glm::vec2 sin_path(entityx::Entity entity)
 {
     auto moving = entity.component<Moving>();
     auto path = entity.component<Path>();

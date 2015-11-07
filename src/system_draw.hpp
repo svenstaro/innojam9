@@ -24,20 +24,22 @@ class DrawSystem : public entityx::System<DrawSystem> {
         int w, h;
         float zoom = 4.0/5.0;
         SDL_RenderGetLogicalSize(game->renderer(), &w, &h);
+        m_w = w;
+        m_h = h;
         int wz = w * zoom;
         int hz = h * zoom;
         m_camera = SDL_Rect{w-wz/2, h-hz/5, wz, hz};
-        
+
         int game_w = game->world_size().w;
         int game_h = game->world_size().h;
-        
+
         m_drawtex = SDL_CreateTexture(game->renderer(), SDL_PIXELTYPE_UNKNOWN,
             SDL_TEXTUREACCESS_TARGET, game_w, game_h);
         m_lighttex = SDL_CreateTexture(game->renderer(), SDL_PIXELTYPE_UNKNOWN,
             SDL_TEXTUREACCESS_TARGET, game_w, game_h);
         m_render_buffer = SDL_CreateTexture(game->renderer(), SDL_PIXELTYPE_UNKNOWN,
             SDL_TEXTUREACCESS_TARGET, game_w, game_h);
-            
+
         woff = game_w / 2;
         hoff = game_h / 2;
     }
@@ -112,9 +114,9 @@ class DrawSystem : public entityx::System<DrawSystem> {
         float rotate_by = -rad_to_deg(player_pos->position().y - glm::half_pi<float>());
         SDL_RenderCopyEx(rendr, m_drawtex, nullptr, nullptr, rotate_by, nullptr, SDL_FLIP_NONE);
         SDL_RenderCopyEx(rendr, m_lighttex, nullptr, nullptr, rotate_by, nullptr, SDL_FLIP_NONE);
-        
+
         render_entity(player_entity, dt, false);
-        
+
         SDL_SetRenderTarget(rendr, nullptr);
 
         SDL_Rect dst{0, 0, 800, 600};
@@ -124,20 +126,20 @@ class DrawSystem : public entityx::System<DrawSystem> {
 
         auto player = player_entity.component<Player>();
         auto ppos = player_entity.component<Position>();
+        int orbs = 0;
+        int bullets = 0;
+        for (entityx::Entity entity : es.entities_with_components(position)) {
+            if (entity.component<Path>())
+            bullets++;
+            if (entity.component<Orb>())
+            orbs++;
+        }
 
         if (m_game->is_debug_mode()) {
             SDL_Color c = {200, 200, 200, 100};
             std::string score = "Score: " + std::to_string(player->score);
             std::string pos = "Pos - Radius: " + std::to_string(ppos->position()[0]) + " Angle: " +
                               std::to_string(ppos->position()[1]);
-            int orbs = 0;
-            int bullets = 0;
-            for (entityx::Entity entity : es.entities_with_components(position)) {
-                if (entity.component<Path>())
-                    bullets++;
-                if (entity.component<Orb>())
-                    orbs++;
-            }
             auto bulletstr = "Bullets: " + std::to_string(bullets);
             auto orbstr = "Orbs: " + std::to_string(orbs);
             auto orbs_collected = "Orbs collected " + std::to_string(m_game->m_orbs_collected);
@@ -151,16 +153,46 @@ class DrawSystem : public entityx::System<DrawSystem> {
         } else {
             auto score = "Score: " + std::to_string((int)player_entity.component<Player>()->score);
             SDL_Color c = {200, 200, 200, 0};
-            draw_text(rendr, m_game->res_manager(), score, "font20", 0, 0, c);
+            draw_text(rendr, m_game->res_manager(), score, "font20", 20, 20, c);
         }
+        render_bar(rendr, float(m_game->m_orbs_collected), float(100));
+
+        SDL_Color c = {200, 200, 200, 100};
+        auto current_level = "Level " + std::to_string(0);
+        SDL_Rect rect{550, 20, 200, 50};
+        draw_text(rendr, m_game->res_manager(), current_level, "font20", &rect, c);
 
         // Draw "GUI"
         // freddi TODO
 
         SDL_RenderPresent(rendr);
+
     }
 
   private:
+    void render_bar(SDL_Renderer *rendr, float i, float max) {
+        auto bar_tex = m_game->res_manager().texture("bar");
+        int w, h;
+        int padding = 0;
+        int scale = 2;
+        int bar_width = m_w - padding * 2;
+        SDL_GetWindowSize(m_game->window(), &w, &h);
+        SDL_Rect bar_src;
+        SDL_Rect bar_dst;
+        int fill = int(glm::ceil((i / max) * bar_width));
+        for(int i = 0; i < bar_width; i+= 64) {
+            int width = glm::min(bar_width - i, 64 * scale);
+            bar_src = SDL_Rect{32, 16, width/ scale, 16};
+            bar_dst = SDL_Rect{padding + i, m_h - padding - 16 * scale, width, 16 * scale};
+            SDL_RenderCopy(rendr, bar_tex, &bar_src, &bar_dst);
+            if(i < fill) {
+                int fill_width = glm::min(fill - i, 64 * scale);
+                bar_src = SDL_Rect{32, 0, fill_width/ scale, 16};
+                bar_dst = SDL_Rect{padding + i, m_h - padding - 16 * scale, fill_width, 16 * scale};
+                SDL_RenderCopy(rendr, bar_tex, &bar_src, &bar_dst);
+            }
+        }
+    }
     inline float rad_to_deg(float f)
     {
       return f / glm::two_pi<float>()*360.0;
@@ -202,7 +234,7 @@ class DrawSystem : public entityx::System<DrawSystem> {
       float rotate = brotate ? rad_to_deg(position->position().y - glm::half_pi<float>()) : 0.0;
       SDL_RenderCopyEx(m_game->renderer(), tex, src, &dest, rotate, nullptr, SDL_FLIP_NONE);
     }
-    
+
     void render_light(entityx::Entity entity)
     {
         auto coord_polar = entity.component<Position>();
@@ -226,10 +258,11 @@ class DrawSystem : public entityx::System<DrawSystem> {
         SDL_SetTextureColorMod(tex, light->color().r, light->color().g, light->color().b);
         SDL_RenderCopy(m_game->renderer(), tex, nullptr, &dest);
     }
-  
+
     int woff;
     int hoff;
-  
+    int m_w, m_h;
+
     Game *m_game;
     SDL_Rect m_camera;
     SDL_Texture *m_lighttex;

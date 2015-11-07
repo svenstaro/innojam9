@@ -1,6 +1,8 @@
 #ifndef GAME_HPP
 #define GAME_HPP
 
+#include "patterns.hpp"
+
 #include "component_position.hpp"
 
 #include "strapon/state/state.hpp"
@@ -12,6 +14,7 @@
 
 #include <stack>
 #include <string>
+#include <vector>
 
 class Game {
   public:
@@ -24,6 +27,9 @@ class Game {
     bool is_debug_mode(void);
     void shutdown();
     void popstate();
+    unsigned int get_current_level_index();
+    Pattern get_current_level();
+    void next_level();
 
     std::stack<std::pair<std::string, std::unique_ptr<State>>> &states();
     const std::string &statename() const;
@@ -39,6 +45,8 @@ class Game {
     bool m_running = true;
     bool m_debug_mode = false;
     int m_last_frame_time = 0;
+    unsigned int m_current_level_index;
+    std::vector<Pattern> m_level_vector;
     SDL_Rect m_world_size = {0, 0, 1600, 1200};
 
     SDL_Renderer *m_render;
