@@ -153,9 +153,18 @@ class DrawSystem : public entityx::System<DrawSystem> {
         } else {
             auto score = "Score: " + std::to_string((int)player_entity.component<Player>()->score);
             SDL_Color c = {200, 200, 200, 0};
-            draw_text(rendr, m_game->res_manager(), score, "font20", 0, 0, c);
+            draw_text(rendr, m_game->res_manager(), score, "font20", 20, 20, c);
         }
         render_bar(rendr, float(m_game->m_orbs_collected), float(100));
+
+        SDL_Color c = {200, 200, 200, 100};
+        auto current_level = "Level " + std::to_string(0);
+        SDL_Rect rect{550, 20, 200, 50};
+        draw_text(rendr, m_game->res_manager(), current_level, "font20", &rect, c);
+
+        // Draw "GUI"
+        // freddi TODO
+
         SDL_RenderPresent(rendr);
 
     }
