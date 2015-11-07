@@ -30,7 +30,7 @@ class DrawSystem : public entityx::System<DrawSystem> {
         m_lighttex =
             SDL_CreateTexture(game->renderer(), SDL_PIXELTYPE_UNKNOWN, SDL_TEXTUREACCESS_TARGET,
                 game->world_size().w, game->world_size().h);
-        m_render_buffer = 
+        m_render_buffer =
             SDL_CreateTexture(game->renderer(), SDL_PIXELTYPE_UNKNOWN, SDL_TEXTUREACCESS_TARGET,
                 game->world_size().w, game->world_size().h);
     }
@@ -47,19 +47,19 @@ class DrawSystem : public entityx::System<DrawSystem> {
         cart.y = glm::sin(i[1]) * i[0];
         return cart;
     }
-    
+
     inline double rad_to_deg(double f)
     {
       return f / glm::two_pi<double>()*360.0;
     }
-    
+
     void render_entity(entityx::Entity& e, int woff, int hoff, entityx::TimeDelta dt) {
       auto drawable = e.component<Drawable>();
       auto position = e.component<Position>(); //bad name -> change to.. polarpos?
-      
+
       glm::vec2 coord_euclid = polar_to_euclid(position->position());
 
-      // Copy the coordinates to dest 
+      // Copy the coordinates to dest
       // and offset them by half the image size
       SDL_Rect dest;
       dest.x = coord_euclid.x - drawable->width()/2 + woff;
@@ -91,19 +91,19 @@ class DrawSystem : public entityx::System<DrawSystem> {
                 entityx::TimeDelta dt) override {
         // so that we have less unreadable text
         SDL_Renderer* rendr = m_game->renderer();
-        
+
         //FIRST render everything to drawtex
         SDL_SetRenderTarget(rendr, m_drawtex);
         SDL_SetRenderDrawColor(rendr, 0, 100, 200, 255);
         SDL_RenderClear(rendr);
-        
+
         // GET the size of the texture so that we can center all drawables
         // btw the texture is 4 times as large as the viewport
         int woff, hoff;
         SDL_QueryTexture(m_drawtex, nullptr, nullptr, &woff, &hoff);
         woff /= 2;
         hoff /= 2;
-        
+
         //Therefore we need these handlers
         entityx::ComponentHandle<Drawable> drawable;
         entityx::ComponentHandle<Position> position;
@@ -115,7 +115,7 @@ class DrawSystem : public entityx::System<DrawSystem> {
             (void)entity;
             layers.insert(drawable->layer());
         }
-        
+
         entityx::Entity player_entity;
         for (auto layer : layers) {
           for (entityx::Entity entity : es.entities_with_components(drawable, position)) {
@@ -126,7 +126,7 @@ class DrawSystem : public entityx::System<DrawSystem> {
               player_entity = entity;
           }
         }
-        
+
         auto player_pos = player_entity.component<Position>();
 
         // RENDER LIGHT
@@ -164,7 +164,7 @@ class DrawSystem : public entityx::System<DrawSystem> {
         // Render to final window. Everything which must appear on the screen HAS
         // to be on one of the textures used here!
         SDL_SetRenderTarget(rendr, m_render_buffer);
-        
+
         double rotate_by = -rad_to_deg(player_pos->position().y - glm::half_pi<double>());
         SDL_RenderCopyEx(rendr, m_drawtex, nullptr, nullptr, rotate_by, nullptr, SDL_FLIP_NONE);
         SDL_RenderCopyEx(rendr, m_lighttex, nullptr, nullptr, rotate_by, nullptr, SDL_FLIP_NONE);
