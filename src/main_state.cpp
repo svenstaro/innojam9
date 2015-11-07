@@ -51,7 +51,7 @@ int MainState::init() {
     player.assign<Position>(glm::vec2(100.f, 1.5 * glm::pi<double>()));
     player.assign<Moving>(200.f);
     player.assign<Collidable>(15);
-    player.assign<Drawable>("player", 30, 30, 10);
+    player.assign<Drawable>("player", 50, 30, 10, AnimTemplate(15, 25, 4, 0, 6));
     player.assign<Player>();
     player.assign<Light>("gradient");
 
