@@ -7,6 +7,7 @@
 #include <glm/vec2.hpp>
 #include <glm/glm.hpp>
 #include <glm/gtx/polar_coordinates.hpp>
+#include <glm/gtc/constants.hpp>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <sstream>
@@ -21,14 +22,14 @@ class DrawSystem : public entityx::System<DrawSystem> {
     DrawSystem(Game *game) : m_game(game) {
         int w, h;
         SDL_RenderGetLogicalSize(game->renderer(), &w, &h);
-        m_camera = SDL_Rect{0, 0, w, h};
+        m_camera = SDL_Rect{w/2, h/2, w, h};
         m_drawtex =
             SDL_CreateTexture(game->renderer(), SDL_PIXELTYPE_UNKNOWN, SDL_TEXTUREACCESS_TARGET,
                 game->world_size().w, game->world_size().h);
-        m_maptex =
+        m_lighttex =
             SDL_CreateTexture(game->renderer(), SDL_PIXELTYPE_UNKNOWN, SDL_TEXTUREACCESS_TARGET,
                 game->world_size().w, game->world_size().h);
-        m_lighttex =
+        m_render_buffer = 
             SDL_CreateTexture(game->renderer(), SDL_PIXELTYPE_UNKNOWN, SDL_TEXTUREACCESS_TARGET,
                 game->world_size().w, game->world_size().h);
     }
@@ -36,6 +37,7 @@ class DrawSystem : public entityx::System<DrawSystem> {
     ~DrawSystem() {
         SDL_DestroyTexture(m_lighttex);
         SDL_DestroyTexture(m_drawtex);
+        SDL_DestroyTexture(m_render_buffer);
     }
 
     glm::vec2 polar_to_euclid(glm::vec2 i) {
@@ -47,7 +49,7 @@ class DrawSystem : public entityx::System<DrawSystem> {
     
     inline double rad_to_deg(double f)
     {
-      return f / (2.0*3.14159265)*360.0; //TODO 2 PI
+      return f / glm::two_pi<double>()*360.0;
     }
     
     void render_entity(entityx::Entity& e, int woff, int hoff, entityx::TimeDelta dt) {
@@ -80,7 +82,7 @@ class DrawSystem : public entityx::System<DrawSystem> {
       }
 
       SDL_Texture* tex = m_game->res_manager().texture(drawable->texture_key());
-      SDL_RenderCopyEx(m_game->renderer(), tex, src, &dest, -rad_to_deg(position->position().y), nullptr, SDL_FLIP_NONE);
+      SDL_RenderCopyEx(m_game->renderer(), tex, src, &dest, rad_to_deg(position->position().y - glm::half_pi<double>()), nullptr, SDL_FLIP_NONE);
 
     }
 
@@ -89,15 +91,15 @@ class DrawSystem : public entityx::System<DrawSystem> {
         // so that we have less unreadable text
         SDL_Renderer* rendr = m_game->renderer();
         
-        //FIRST render everything which is NOT THE PLAYER to maptex
-        SDL_SetRenderTarget(rendr, m_maptex);
+        //FIRST render everything to drawtex
+        SDL_SetRenderTarget(rendr, m_drawtex);
         SDL_SetRenderDrawColor(rendr, 0, 100, 200, 255);
         SDL_RenderClear(rendr);
         
         // GET the size of the texture so that we can center all drawables
         // btw the texture is 4 times as large as the viewport
         int woff, hoff;
-        SDL_QueryTexture(m_maptex, nullptr, nullptr, &woff, &hoff);
+        SDL_QueryTexture(m_drawtex, nullptr, nullptr, &woff, &hoff);
         woff /= 2;
         hoff /= 2;
         
@@ -116,41 +118,16 @@ class DrawSystem : public entityx::System<DrawSystem> {
         entityx::Entity player_entity;
         for (auto layer : layers) {
           for (entityx::Entity entity : es.entities_with_components(drawable, position)) {
-            if (drawable->layer() == layer && !entity.component<Player>()) {
+            if (drawable->layer() == layer) {
               render_entity(entity, woff, hoff, dt);
             }
-            else if(entity.component<Player>())
+            if(entity.component<Player>())
               player_entity = entity;
           }
         }
         
-        // change the rendertarget to the pre-backbuffer
-        SDL_SetRenderTarget(rendr, m_drawtex);
-        SDL_SetRenderDrawColor(rendr, 0, 100, 200, 255);
-        
         auto player_pos = player_entity.component<Position>();
-        drawable = player_entity.component<Drawable>();
-        
-        // copy a rotated version of the maptexture.
-        SDL_RenderCopyEx(rendr, m_maptex, nullptr, nullptr, rad_to_deg(player_pos->position().y), nullptr, SDL_FLIP_NONE);
-        
-        // Render Player (pretend he is at alpha=-PI/2)
-        glm::vec2 coord_polar = player_pos->position();
-        coord_polar.y = 3.14159265 / 2.0;
-        glm::vec2 coord_euclid = polar_to_euclid(coord_polar);
 
-        // Copy the coordinates to dest 
-        // and offset them by half the image size
-        SDL_Rect dest;
-        dest.x = coord_euclid.x - drawable->width()/2 + woff;
-        dest.y = coord_euclid.y - drawable->height()/2 + hoff;
-
-        dest.w = drawable->width();
-        dest.h = drawable->height();
-
-        SDL_Texture* tex = m_game->res_manager().texture(drawable->texture_key());
-        SDL_RenderCopy(rendr, tex, nullptr, &dest);
-        
         // RENDER LIGHT
 
         // Change to render into light rendertexture for now
@@ -162,7 +139,6 @@ class DrawSystem : public entityx::System<DrawSystem> {
         for (entityx::Entity entity : es.entities_with_components(position, light)) {
             auto coord_polar = entity.component<Position>();
             auto coord_euclid = polar_to_euclid(coord_polar->position());
-            SDL_Rect dest;
 
             auto tex = m_game->res_manager().texture(light->texture_key());
             int w, h;
@@ -171,33 +147,36 @@ class DrawSystem : public entityx::System<DrawSystem> {
             auto height = h * light->scale();
 
             // Converted position
-            dest.x = coord_euclid[0] - width/2;
-            dest.y = coord_euclid[1] - height/2;
-
+            SDL_Rect dest;
+            dest.x = coord_euclid[0] - width/2 + woff;
+            dest.y = coord_euclid[1] - height/2 + hoff;
             dest.w = width;
             dest.h = height;
 
             SDL_SetTextureBlendMode(tex, SDL_BLENDMODE_ADD);
             SDL_SetTextureColorMod(tex, light->color().r, light->color().g, light->color().b);
-            SDL_RenderCopyEx(m_game->renderer(), tex, nullptr, &dest, 0, nullptr, SDL_FLIP_NONE);
+            SDL_RenderCopy(rendr, tex, nullptr, &dest);
         }
 
         SDL_SetTextureBlendMode(m_lighttex, SDL_BLENDMODE_MOD);
 
-        // Render to final window
+        // Render to final window. Everything which must appear on the screen HAS
+        // to be on one of the textures used here!
+        SDL_SetRenderTarget(rendr, m_render_buffer);
+        
+        double rotate_by = -rad_to_deg(player_pos->position().y - glm::half_pi<double>());
+        SDL_RenderCopyEx(rendr, m_drawtex, nullptr, nullptr, rotate_by, nullptr, SDL_FLIP_NONE);
+        SDL_RenderCopyEx(rendr, m_lighttex, nullptr, nullptr, rotate_by, nullptr, SDL_FLIP_NONE);
         SDL_SetRenderTarget(rendr, nullptr);
-
+        
+        SDL_Rect dst{0, 0, 800, 600};
+        SDL_RenderGetViewport(rendr, &dst);
+        dst.x = dst.y = 0;
+        SDL_RenderCopy(rendr, m_render_buffer, &m_camera, &dst);
+        
         auto score = "Score: " + std::to_string(player_entity.component<Player>()->score);
         SDL_Color c = {200, 200, 200, 0};
         draw_text(rendr, m_game->res_manager(), score, "font20", 0, 0, c);
-        SDL_RenderCopy(rendr, m_drawtex, &m_camera, nullptr);
-        SDL_RenderCopy(rendr, m_lighttex, &m_camera, nullptr);
-        SDL_RenderPresent(rendr);
-        
-        
-        // Render to final window
-        SDL_SetRenderTarget(rendr, nullptr);
-        SDL_RenderCopy(rendr, m_drawtex, &m_camera, nullptr);
         SDL_RenderPresent(rendr);
     }
 
@@ -206,5 +185,5 @@ class DrawSystem : public entityx::System<DrawSystem> {
     SDL_Rect m_camera;
     SDL_Texture *m_lighttex;
     SDL_Texture *m_drawtex;
-    SDL_Texture *m_maptex;
+    SDL_Texture *m_render_buffer;
 };
