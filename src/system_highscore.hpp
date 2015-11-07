@@ -12,6 +12,8 @@
 #include <type_traits>
 #include <iostream>
 
+#define max_immunity 1.0f;
+
 class HighscoreSystem : public entityx::System<HighscoreSystem>,
                        public entityx::Receiver<HighscoreSystem> {
     public:
@@ -31,8 +33,21 @@ class HighscoreSystem : public entityx::System<HighscoreSystem>,
           (void)entity;
           player->addScore(pts_per_sec* dt);
         }
+        player->m_hurt = glm::max(0.0f, immunity) / max_immunity;
+        if(immunity > 0.0f) {
+            immunity -= dt;
+        }
         if(hit) {
-            events.emit<HitEvent>();
+            hit = false;
+            damage_enem.destroy();
+            if(immunity <= 0.0f) {
+                events.emit<HitEvent>();
+                player->damage(1.0f);
+                if(player->is_dead()) {
+                    events.emit<GameOverEvent>(player->score);
+                }
+                immunity = max_immunity;
+            }
         }
     }
 
@@ -47,6 +62,7 @@ class HighscoreSystem : public entityx::System<HighscoreSystem>,
         }
         if(e1 && e3) {
             hit = true;
+            damage_enem = copy.m_second;
         }
     }
 
@@ -56,9 +72,11 @@ class HighscoreSystem : public entityx::System<HighscoreSystem>,
     }
 
     private:
-    Game *m_game;
-    float pts_per_sec = -5.0f; // 10 is really high
-    bool hit;
+        Game *m_game;
+        float pts_per_sec = -5.0f; // 10 is really high
+        bool hit = false;
+        float immunity = 0.0f;
+        entityx::Entity damage_enem;
 
 };
 

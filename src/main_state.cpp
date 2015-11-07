@@ -37,7 +37,7 @@ MainState::~MainState() {
 }
 
 int MainState::init() {
-    
+
     m_systems.add<DrawSystem>(m_game);
     m_systems.add<ControlSystem>();
     m_systems.add<CollisionSystem>();
@@ -57,6 +57,23 @@ int MainState::init() {
 //     m_systems.add<EmitterSystem>(m_game, linear_path, 0.5, 0.3);
 
     m_systems.configure();
+    
+    float hp;
+    switch(m_game->difficulty()) {
+        default:
+        case EASY:
+            hp = 10;
+        break;
+        case MEDIUM:
+            hp = 5;
+        break;
+        case HARD:
+            hp = 3;
+        break;
+        case SVENSTARO:
+            hp = 0;
+        break;
+    }
 
     entityx::Entity player = m_entities.create();
     // must be at (r, 3/2pi) !!
@@ -65,7 +82,7 @@ int MainState::init() {
     player.assign<Velocity>();
     player.assign<Collidable>(15);
     player.assign<Drawable>("player", 50, 30, 10, AnimTemplate(15, 25, 4, 0, 6));
-    player.assign<Player>();
+    player.assign<Player>(hp);
     player.assign<Light>("gradient");
 
     entityx::Entity background = m_entities.create();
