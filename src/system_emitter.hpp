@@ -54,7 +54,12 @@ class EmitterSystem : public entityx::System<EmitterSystem> {
                 m_current_level++;
                 events.emit<LevelChangedEvent>(); 
             }
-
+            if(m_current_pattern == level_vector[m_current_level].m_pattern_parts.size())
+            {
+                m_current_pattern = 0;
+                m_current_level = 0;
+                m_current_shot = 0;
+            }
             //Checks if current level is beyond last level
             if(m_current_level == level_vector.size())
             {
