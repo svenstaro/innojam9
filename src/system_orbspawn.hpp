@@ -10,7 +10,11 @@
 #include "component_light.hpp"
 #include "anim_template.hpp"
 
+#ifdef __EMSCRIPTEN__
+#include <SDL/SDL_mixer.h>
+#else
 #include <SDL_mixer.h>
+#endif
 
 #include <iostream>
 #include <vector>
@@ -21,8 +25,10 @@
 class OrbSpawnSystem : public entityx::System<OrbSpawnSystem>,
                        public entityx::Receiver<OrbSpawnSystem> {
   public:
-    OrbSpawnSystem(entityx::EntityManager &entities, float min_dist, float max_dist)
-      : m_min_dist(min_dist), m_max_dist(max_dist), m_entities(entities), m_delta(0.f) {
+    OrbSpawnSystem(Game *game, entityx::EntityManager &entities, float min_dist, float max_dist)
+      : m_min_dist(min_dist), m_max_dist(max_dist), 
+        m_game(game), m_entities(entities), m_delta(0.f) {
+
         m_spawn_direction = glm::vec2((float(std::rand()) / float(RAND_MAX)) * 2.f - 1.f,
                                       (float(std::rand()) / float(RAND_MAX)) * 0.1f - 0.05f);
         m_spawn_position = 100.f * m_spawn_direction;
@@ -55,6 +61,8 @@ class OrbSpawnSystem : public entityx::System<OrbSpawnSystem>,
         }
         for (auto e : orbs_to_delete) {
             // std::cout << "deleting entity with id " << e.id() << std::endl;
+            Mix_PlayChannel(1, m_game->res_manager().sound("sound2"), 0);
+            m_game->m_orbs_collected += 1;
             e.destroy();
         }
 
@@ -81,13 +89,13 @@ class OrbSpawnSystem : public entityx::System<OrbSpawnSystem>,
   private:
     void spawn_at(glm::vec2 &pos) {
         int v = int((float(std::rand()) / float(RAND_MAX)) * 3.f);
-        AnimTemplate anim(30, 30, 6, v);
+        AnimTemplate anim(12, 12, 6, 0, 10);
         entityx::Entity orb = m_entities.create();
         orb.assign<Position>(pos);
-        orb.assign<Drawable>("orb", 20, 20, 8, anim);
+        orb.assign<Drawable>("orb", 16, 16, 8, anim);
         orb.assign<Collectable>();
         orb.assign<Collidable>(10);
-        orb.assign<Light>("gradient", 0.25f);
+        orb.assign<Light>("gradient", 0.25f, glm::vec3{100, 255, 120});
         orb.assign<Orb>(v * 5, 6.5f);
     }
 
@@ -99,6 +107,7 @@ class OrbSpawnSystem : public entityx::System<OrbSpawnSystem>,
     float m_min_dist;
     float m_max_dist;
 
+    Game *m_game;
     std::vector<entityx::Entity> orbs_to_delete;
     entityx::EntityManager &m_entities;
     entityx::TimeDelta m_delta;

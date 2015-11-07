@@ -20,7 +20,13 @@
 #include "entityx/entityx.h"
 
 #include <SDL.h>
+
+#ifdef __EMSCRIPTEN__
+#include <SDL/SDL_mixer.h>
+#else
 #include <SDL_mixer.h>
+#endif
+
 #include <glm/gtc/constants.hpp>
 
 MainState::MainState(Game *game) : m_game(game) {
@@ -40,7 +46,7 @@ int MainState::init() {
     m_systems.add<MovementSystem>(radius_inner, radius_outer);
     m_systems.add<HighscoreSystem>();
     m_systems.add<EmitterSystem>(m_game, linear_path, 0.5, 0.3);
-    m_systems.add<OrbSpawnSystem>(m_entities, radius_inner, radius_outer);
+    m_systems.add<OrbSpawnSystem>(m_game, m_entities, radius_inner, radius_outer);
     m_systems.configure();
 
     entityx::Entity player = m_entities.create();
@@ -50,7 +56,7 @@ int MainState::init() {
         1.5 * glm::pi<double>()));
     player.assign<Moving>(200.f);
     player.assign<Collidable>(15);
-    player.assign<Drawable>("player", 30, 30, 10);
+    player.assign<Drawable>("player", 50, 30, 10, AnimTemplate(15, 25, 4, 0, 6));
     player.assign<Player>();
     player.assign<Light>("gradient");
 
@@ -72,6 +78,7 @@ int MainState::init() {
     fire.assign<Drawable>("fire", 100, 100, 1, fire_anim);
     fire.assign<Light>("gradient");
 
+    Mix_VolumeMusic(50);
     Mix_PlayMusic(m_game->res_manager().music("music1"), -1);
 
     return 0;

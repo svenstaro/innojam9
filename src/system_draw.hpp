@@ -16,7 +16,7 @@
 #include "strapon/resource_manager/resource_manager.hpp"
 #include "strapon/sdl_helpers/sdl_helpers.hpp"
 
-#include<iostream>
+#include <iostream>
 
 class DrawSystem : public entityx::System<DrawSystem> {
   public:
@@ -55,9 +55,9 @@ class DrawSystem : public entityx::System<DrawSystem> {
     void update(entityx::EntityManager &es, entityx::EventManager &events,
                 entityx::TimeDelta dt) override {
         // so that we have less unreadable text
-        SDL_Renderer* rendr = m_game->renderer();
+        SDL_Renderer *rendr = m_game->renderer();
 
-        //FIRST render everything to drawtex
+        // FIRST render everything to drawtex
         SDL_SetRenderTarget(rendr, m_drawtex);
         SDL_SetRenderDrawColor(rendr, 0, 100, 200, 255);
         SDL_RenderClear(rendr);
@@ -67,7 +67,7 @@ class DrawSystem : public entityx::System<DrawSystem> {
         entityx::ComponentHandle<Position> position;
         entityx::ComponentHandle<Light> light;
 
-        //and we need to sort all the drawables by layers
+        // and we need to sort all the drawables by layers
         std::set<int> layers;
         for (entityx::Entity entity : es.entities_with_components(drawable)) {
             (void)entity;
@@ -78,10 +78,10 @@ class DrawSystem : public entityx::System<DrawSystem> {
         for (auto layer : layers) {
           for (entityx::Entity entity : es.entities_with_components(drawable, position)) {
             if (drawable->layer() == layer) {
-              render_entity(entity, dt, true);
+                if (entity.component<Player>())
+                    player_entity = entity;
+                render_entity(entity, dt, true);
             }
-            if(entity.component<Player>())
-              player_entity = entity;
           }
         }
 
@@ -96,7 +96,7 @@ class DrawSystem : public entityx::System<DrawSystem> {
 
         // Draw lights
         for (entityx::Entity entity : es.entities_with_components(position, light)) {
-          if(!entity.component<Player>())
+          //if(!entity.component<Player>())
             render_light(entity);
         }
 
@@ -109,29 +109,33 @@ class DrawSystem : public entityx::System<DrawSystem> {
         float rotate_by = -rad_to_deg(player_pos->position().y - glm::half_pi<float>());
         SDL_RenderCopyEx(rendr, m_drawtex, nullptr, nullptr, rotate_by, nullptr, SDL_FLIP_NONE);
         SDL_RenderCopyEx(rendr, m_lighttex, nullptr, nullptr, rotate_by, nullptr, SDL_FLIP_NONE);
-        SDL_SetRenderTarget(rendr, nullptr);
         
+        //render_entity(player_entity, dt, false);
+        //render_light(player_entity);
+        
+        
+        SDL_SetRenderTarget(rendr, nullptr);
+
         SDL_Rect dst{0, 0, 800, 600};
         SDL_RenderGetViewport(rendr, &dst);
         dst.x = dst.y = 0;
         SDL_RenderCopy(rendr, m_render_buffer, &m_camera, &dst);
-        
+
         auto player = player_entity.component<Player>();
         auto ppos = player_entity.component<Position>();
-        if(m_game->is_debug_mode())
-        {
+
+        if (m_game->is_debug_mode()) {
             SDL_Color c = {200, 200, 200, 100};
             std::string score = "Score: " + std::to_string(player->score);
-            std::string pos = "Pos - Radius: " + std::to_string(ppos->position()[0]) 
-                  + " Angle: " + std::to_string(ppos->position()[1]);
+            std::string pos = "Pos - Radius: " + std::to_string(ppos->position()[0]) + " Angle: " +
+                              std::to_string(ppos->position()[1]);
             int orbs = 0;
             int bullets = 0;
-            for(entityx::Entity entity : es.entities_with_components(position))
-            {
-              if(entity.component<Path>())
-                bullets++;
-              if(entity.component<Orb>())
-                orbs++;
+            for (entityx::Entity entity : es.entities_with_components(position)) {
+                if (entity.component<Path>())
+                    bullets++;
+                if (entity.component<Orb>())
+                    orbs++;
             }
             std::string bulletstr = "Bullets: " + std::to_string(bullets);
             std::string orbstr = "Orbs: " + std::to_string(orbs);
@@ -141,12 +145,10 @@ class DrawSystem : public entityx::System<DrawSystem> {
             draw_text(rendr, m_game->res_manager(), bulletstr, "font20", 0, 40, c);
             draw_text(rendr, m_game->res_manager(), orbstr, "font20", 0, 60, c);
             draw_text(rendr, m_game->res_manager(), fps, "font20", 0, 80, c);
-        }
-        else
-        {
-          auto score = "Score: " + std::to_string((int)player_entity.component<Player>()->score);
-          SDL_Color c = {200, 200, 200, 0};
-          draw_text(rendr, m_game->res_manager(), score, "font20", 0, 0, c);
+        } else {
+            auto score = "Score: " + std::to_string((int)player_entity.component<Player>()->score);
+            SDL_Color c = {200, 200, 200, 0};
+            draw_text(rendr, m_game->res_manager(), score, "font20", 0, 0, c);
         }
         SDL_RenderPresent(rendr);
     }
