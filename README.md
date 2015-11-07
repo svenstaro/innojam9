@@ -12,5 +12,6 @@ Game tbd
 
 # Attribution
 
-- dirt.png: http://opengameart.org/node/9021
 - Sounds made with http://github.grumdrig.com/jsfxr/
+- Pocket Destroyer http://opengameart.org/content/pocket-destroyer
+- Orbital Colossus http://opengameart.org/content/space-boss-battle-theme

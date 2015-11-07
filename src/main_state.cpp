@@ -19,7 +19,8 @@
 
 #include "entityx/entityx.h"
 
-#include <SDL2/SDL.h>
+#include <SDL.h>
+#include <SDL_mixer.h>
 #include <glm/gtc/constants.hpp>
 
 MainState::MainState(Game *game) : m_game(game) {
@@ -35,8 +36,8 @@ int MainState::init() {
     m_systems.add<PathSystem>();
     m_systems.add<MovementSystem>(50, 300);
     m_systems.add<HighscoreSystem>();
-    m_systems.add<EmitterSystem>(linear_path, 0.5, 0.3);
-    m_systems.add<OrbSpawnSystem>(&m_entities);
+    m_systems.add<EmitterSystem>(m_game, linear_path, 0.5, 0.3);
+    m_systems.add<OrbSpawnSystem>(m_entities);
     m_systems.configure();
 
     entityx::Entity player = m_entities.create();
@@ -61,6 +62,8 @@ int MainState::init() {
     fire.assign<Position>(glm::vec2(0.f, 0.f));
     fire.assign<Drawable>("fire", 100, 100, 1, fire_anim);
     fire.assign<Light>("gradient");
+
+    Mix_PlayMusic(m_game->res_manager().music("music1"), -1);
 
     return 0;
 }
