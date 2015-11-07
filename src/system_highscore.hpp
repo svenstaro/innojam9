@@ -13,7 +13,7 @@
 class HighscoreSystem : public entityx::System<HighscoreSystem>,
                        public entityx::Receiver<HighscoreSystem> {
   private:
-    float pts_per_sec = -10.0f;
+    float pts_per_sec = -5.0f; // 10 is really high
 
   public:
 
@@ -26,7 +26,7 @@ class HighscoreSystem : public entityx::System<HighscoreSystem>,
         entityx::ComponentHandle<Player> player;
         for(entityx::Entity entity : es.entities_with_components(player)) {
           (void)entity;
-          player->score += pts_per_sec;
+          player->addScore(pts_per_sec* dt);
         }
 
 
@@ -39,7 +39,7 @@ class HighscoreSystem : public entityx::System<HighscoreSystem>,
         auto e1 = copy.m_first.component<Player>();
         auto e2 = copy.m_second.component<Orb>();
         if(e1 && e2) {
-          e1->score += e2->score();
+          e1->addScore(e2->score());
         }
     }
 

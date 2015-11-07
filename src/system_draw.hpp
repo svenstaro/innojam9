@@ -86,14 +86,27 @@ class DrawSystem : public entityx::System<DrawSystem> {
 
                     dest.w = drawable->width();
                     dest.h = drawable->height();
-
+                    SDL_Rect* src;
+                    AnimTemplate anim = drawable->anim();
+                    if(anim.frame_width() == 0 || anim.frame_height() == 0) {
+                        src = NULL;
+                    }
+                    else {
+                        SDL_Rect s;
+                        s.x = anim.frame_width() * drawable->animation_index();
+                        s.y = anim.frame_height() * anim.y_index();
+                        s.w = anim.frame_width();
+                        s.h = anim.frame_height();
+                        drawable->tick(dt);
+                        src = &s;
+                    }
                     SDL_RenderCopyEx(m_game->renderer(),
-                                     m_game->res_manager().texture(drawable->texture_key()), NULL,
+                                     m_game->res_manager().texture(drawable->texture_key()), src,
                                      &dest, 0, NULL, SDL_FLIP_NONE);
                 }
             }
         }
-        
+
         std::ostringstream os;
         os << "Score: " << (int)player->score;
         SDL_Color c = { 200, 200, 200, 0 };
