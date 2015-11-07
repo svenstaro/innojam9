@@ -53,7 +53,7 @@ int MainState::init() {
     // must be at (r, 3/2pi) !!
     player.assign<Position>(
         glm::vec2((radius_outer - radius_inner) / 2.0 + radius_inner, 1.5 * glm::pi<double>()));
-    player.assign<Moving>(200.f);
+    player.assign<Velocity>();
     player.assign<Collidable>(15);
     player.assign<Drawable>("player", 50, 30, 10, AnimTemplate(15, 25, 4, 0, 6));
     player.assign<Player>();
