@@ -9,6 +9,8 @@
 #include "glm/gtx/optimum_pow.hpp"
 #include "game_config.hpp"
 #include "patterns.hpp"
+#include "component_enemy.hpp"
+#include "component_collidable.hpp"
 
 #include <glm/glm.hpp>
 #include <vector>
@@ -99,6 +101,8 @@ class EmitterSystem : public entityx::System<EmitterSystem> {
                 20.f);
         next.assign<Position>(glm::vec2(0.f, 0.f));
         next.assign<Moving>(100.f);
+        next.assign<Enemy>();
+        next.assign<Collidable>(5.f);
         next.assign<Light>("gradient", 0.5f, glm::vec3{255, 100, 0});
         next.assign<Drawable>("magma", 10, 10, 4, AnimTemplate(6, 6, 14, 0, 40));
     }

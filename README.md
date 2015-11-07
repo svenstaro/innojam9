@@ -2,6 +2,8 @@
 
 Game tbd
 
+![](screenshit.png)
+
 # Authors
 
 - Alexander Dmitriev
