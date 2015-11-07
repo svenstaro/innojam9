@@ -7,6 +7,7 @@
 #include "component_path.hpp"
 #include "component_player.hpp"
 #include "component_moving.hpp"
+#include "component_light.hpp"
 #include "system_collision.hpp"
 #include "system_controls.hpp"
 #include "system_draw.hpp"
@@ -43,6 +44,7 @@ int MainState::init() {
     player.assign<Collidable>(15);
     player.assign<Drawable>("player", 30, 30, 10);
     player.assign<Player>();
+    player.assign<Light>("gradient");
 
     entityx::Entity background = m_entities.create();
     background.assign<Position>(glm::vec2(0.f, 0.f));
@@ -59,6 +61,7 @@ int MainState::init() {
     entityx::Entity fire = m_entities.create();
     fire.assign<Position>(glm::vec2(0.f, 0.f));
     fire.assign<Drawable>("fire", 100, 100, 1);
+    fire.assign<Light>("gradient");
 
     return 0;
 }
