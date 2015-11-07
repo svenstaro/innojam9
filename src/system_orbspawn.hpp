@@ -59,12 +59,30 @@ class OrbSpawnSystem : public entityx::System<OrbSpawnSystem>,
                 m_spawn_direction.x *= -1;
             }
         }
+        std::vector<entityx::Entity> new_vec;
         for (auto e : orbs_to_delete) {
-            // std::cout << "deleting entity with id " << e.id() << std::endl;
-            Mix_PlayChannel(1, m_game->res_manager().sound("sound2"), 0);
-            m_game->m_orbs_collected += 1;
-            e.destroy();
+            auto o = e.component<Orb>();
+            if(o) {
+                e.remove<Collidable>();
+                e.remove<Light>();
+                e.remove<Orb>();
+                e.remove<Collectable>();
+                Mix_PlayChannel(1, m_game->res_manager().sound("sound2"), 0);
+                m_game->m_orbs_collected += 1;
+            }
+            auto pos = e.component<Position>();
+            auto np = pos->position();
+            np.x -= 80.f / glm::sqrt(np.x);
+            pos->set_position(np);
+            if(pos->position().x < 30) {
+                e.destroy();
+            }
+            else {
+                new_vec.push_back(e);
+            }
         }
+        orbs_to_delete.clear();
+        orbs_to_delete.insert(orbs_to_delete.end(), new_vec.begin(), new_vec.end());
 
         entityx::ComponentHandle<Orb> orb;
         for (entityx::Entity entity : es.entities_with_components(orb)) {
@@ -73,8 +91,6 @@ class OrbSpawnSystem : public entityx::System<OrbSpawnSystem>,
                 entity.destroy();
             }
         }
-
-        orbs_to_delete.clear();
     }
 
     void receive(const CollisionEvent &event) {
