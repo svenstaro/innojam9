@@ -30,7 +30,7 @@
         {
             return m_direction;
         }
-        
+            
         std::function<glm::vec2(glm::vec2, float, float)> m_path_function;
         glm::vec2 m_direction;
         float m_max_lifetime;

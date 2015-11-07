@@ -60,7 +60,7 @@ int MainState::init() {
 
     entityx::Entity test = m_entities.create();
     test.assign<Position>(glm::vec2(40.f, 225.f));
-    test.assign<Path>(linear_path, glm::vec2(1.f,45.f),4.f);
+    test.assign<Path>(linear_path, glm::vec2(1.f,90.f),10.f);
     test.assign<Moving>(100.f);
     test.assign<Drawable>("player", 20 , 20 , 9);
     return 0;
