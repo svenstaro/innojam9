@@ -20,7 +20,13 @@
 #include "entityx/entityx.h"
 
 #include <SDL.h>
+
+#ifdef __EMSCRIPTEN__
+#include <SDL/SDL_mixer.h>
+#else
 #include <SDL_mixer.h>
+#endif
+
 #include <glm/gtc/constants.hpp>
 
 MainState::MainState(Game *game) : m_game(game) {
