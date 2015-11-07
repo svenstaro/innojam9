@@ -2,6 +2,7 @@
 #define SYSTEM_CONTROLS_HPP
 
 #include "component_moving.hpp"
+#include "component_position.hpp"
 #include "events.hpp"
 
 #include <glm/vec2.hpp>
@@ -40,16 +41,16 @@ class ControlSystem : public entityx::System<ControlSystem> {
                 auto position = entity.component<Position>();
 
                 glm::vec2 direction(radius, angle);
-                direction = float(dt) * glm::normalize(direction);
-                direction[0] *= moving->speed();
+                glm::vec2 velocity = float(dt) * glm::normalize(direction);
+                velocity[0] *= moving->speed();
 
                 // adjust angle speed to match "radial" speed via arc length
                 float arc_speed = 0;
                 if (position->position()[0] != 0) { // only adjust if radius != 0
                     arc_speed = moving->speed() / position->position()[0];
                 }
-                direction[1] *= arc_speed;
-                events.emit<PlayerInstructionEvent>(direction, entity);
+                velocity[1] *= arc_speed;
+                events.emit<PlayerInstructionEvent>(velocity, entity);
             }
         }
     }
