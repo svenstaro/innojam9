@@ -61,7 +61,7 @@ int Game::init() {
     m_res_manager.load_texture("player", "res/player.png", m_render);
     m_res_manager.load_texture("fire", "res/fire.png", m_render);
     m_res_manager.load_texture("orb", "res/orb.png", m_render);
-    m_res_manager.load_texture("dirt", "res/dirt.png", m_render);
+    m_res_manager.load_texture("wood", "res/wood.png", m_render);
     m_res_manager.load_texture("inner_bound", "res/inner_bound.png", m_render);
     m_res_manager.load_texture("outer_bound", "res/outer_bound.png", m_render);
     m_res_manager.load_font("font20", "res/DejaVuSans.ttf", 20);
