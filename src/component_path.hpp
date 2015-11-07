@@ -8,7 +8,11 @@ glm::vec2 parable_path(entityx::Entity entity);
 #include <glm/vec2.hpp>
 
     struct Path : entityx::Component<Path> {
-        Path(std::function<glm::vec2(entityx::Entity)> path_function, glm::vec2 origin, glm::vec2 direction, float max_lifetime)
+        Path(
+            std::function<glm::vec2(entityx::Entity)> path_function,
+            glm::vec2 origin,
+            glm::vec2 direction, 
+            float max_lifetime)
         : m_path_function(path_function), m_origin(origin), m_direction(direction),
           m_max_lifetime(max_lifetime), m_current_lifetime(0.0f){
         }

@@ -1,6 +1,9 @@
 #ifndef PARTICLE_EMITTER_HPP
 #define PARTICLE_EMITTER_HPP
 
+#include <iostream>
+
+#include "game.hpp"
 #include "entityx/entityx.h"
 #include "glm/vec2.hpp"
 #include "glm/glm.hpp"
@@ -8,17 +11,17 @@
 
 #include <glm/glm.hpp>
 
-class EmitterSystem : public entityx::System<EmitterSystem>
-{
-    private:
-        glm::vec2 next_direction(void)
-        {
-            return glm::vec2(1, m_total_elapsed);
-        }
+class EmitterSystem : public entityx::System<EmitterSystem> {
+  private:
+    Game *m_game;
 
-        /**
-         * The function which determines the path of the bullets.
-         */
+    glm::vec2 next_direction(void) {
+        return glm::vec2(1, m_total_elapsed);
+    }
+
+    /**
+     * The function which determines the path of the bullets.
+     */
     std::function<glm::vec2(entityx::Entity)> m_path;
 
     /**
@@ -42,7 +45,7 @@ class EmitterSystem : public entityx::System<EmitterSystem>
     /**
      * The increase in angle per second
      */
-    //double m_angle_offset = 0.0;
+    // double m_angle_offset = 0.0;
 
     int m_shots_per_cooldown = 1;
 
@@ -56,19 +59,22 @@ class EmitterSystem : public entityx::System<EmitterSystem>
 
     public:
     EmitterSystem(
+            Game *game,
             std::function<glm::vec2(entityx::Entity)> path_function,
             double cooldown,
             double angle_offset) :
-        m_path(path_function), m_cooldown(cooldown)//, m_angle_offset(angle_offset)
+        m_game(game), m_path(path_function), m_cooldown(cooldown)//, m_angle_offset(angle_offset)
     {
     }
 
     EmitterSystem(
-        std::function<glm::vec2(float)> parable_function,
+            Game *game,
+            std::function<glm::vec2(float)> parable_function,
             glm::vec2 origin,
             float direction,
             double cooldown,
             double angle_offset) :
+        m_game(game),
         m_cooldown(cooldown),
         m_parable(parable_function),
         m_origin(origin),
@@ -100,21 +106,24 @@ class EmitterSystem : public entityx::System<EmitterSystem>
             m_shots_per_cooldown = m_current_level;
         }
 
-        if(m_last_spawned > m_cooldown)
-        {
+        if(m_last_spawned > m_cooldown) {
+            Mix_Volume(1, 20);
+            Mix_PlayChannel(1, m_game->res_manager().sound("sound1"), 0);
+
             m_last_spawned -= m_cooldown;
-            for(int i = 0; i < m_shots_per_cooldown; i++)
-            {
+            for(int i = 0; i < m_shots_per_cooldown; i++) {
                 entityx::Entity next = es.create();
                 if(!m_parable) {
+                    // std::cout << "random" << std::endl;
                     next.assign<Path>(m_path, glm::vec2(0,0), glm::vec2(1, glm::radians(m_total_elapsed * m_rotation_speed + (360.f/m_shots_per_cooldown) * i)), 20.f);
                 }
                 else{
+                    // std::cout << "parable" << std::endl;
                     next.assign<Path>(m_parable, m_origin, m_parable_direction, 20.f);
                 }
                 next.assign<Position>(glm::vec2(0.f, 0.f));
                 next.assign<Moving>(1.f);
-                next.assign<Light>("gradient", 0.2f, glm::vec3{255, 100, 0});
+                next.assign<Light>("gradient", 0.5f, glm::vec3{255, 100, 0});
                 next.assign<Drawable>("magma", 10 , 10, 4, AnimTemplate(6, 6, 14, 0, 40));
             }
         }
