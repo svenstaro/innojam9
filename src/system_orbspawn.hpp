@@ -20,7 +20,7 @@
 #include <vector>
 #include <cstdlib>
 
-#define RESPAWN_TIME 0.2f
+#define RESPAWN_TIME 1.5f
 
 class OrbSpawnSystem : public entityx::System<OrbSpawnSystem>,
                        public entityx::Receiver<OrbSpawnSystem> {

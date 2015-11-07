@@ -2,6 +2,8 @@
 
 #include "main_state.hpp"
 
+#include "game_config.hpp"
+
 #ifdef __EMSCRIPTEN__
 #include <emscripten.h>
 #endif
@@ -28,10 +30,7 @@ int Game::init() {
 
     SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "0");
 
-    int width = 800;
-    int height = 600;
-
-    m_window = SDL_CreateWindow("Hello World!", 100, 100, width, height, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
+    m_window = SDL_CreateWindow("Hello World!", 100, 100, WIDTH, HEIGHT, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
     if (m_window == nullptr) {
         std::cerr << "SDL_CreateWindow Error: " << SDL_GetError() << std::endl;
         SDL_Quit();
@@ -75,10 +74,12 @@ int Game::init() {
     m_res_manager.load_texture("magma", "res/magma.png", m_render);
     m_res_manager.load_font("font20", "res/DejaVuSans.ttf", 20);
 
-    SDL_RenderSetLogicalSize(m_render, width, height);
+    SDL_RenderSetLogicalSize(m_render, WIDTH, HEIGHT);
 
     entityx::Entity entity = m_ex.entities.create();
     entity.assign<Position>();
+
+    //Setting order of levels
     m_level_vector = {Pattern::level1(), Pattern::level2(),Pattern::level3(), Pattern::level4()};
     m_states.push({"main", std::make_unique<MainState>(this)});
     m_states.top().second->init();

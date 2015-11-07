@@ -23,7 +23,7 @@ class PathSystem : public entityx::System<PathSystem>
 
         for(entityx::Entity entity :  es.entities_with_components(path,position,moving))
         {
-            if(path->get_time_left() > 0)
+            if(path->get_time_left() > 0 && position->position().x < 320.f)
             {
                 position->set_position(path->m_path_function(entity));
 
