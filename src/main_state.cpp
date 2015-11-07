@@ -20,6 +20,7 @@
 #include "entityx/entityx.h"
 
 #include <SDL2/SDL.h>
+#include <glm/gtc/constants.hpp>
 
 MainState::MainState(Game *game) : m_game(game) {
 }
@@ -39,7 +40,8 @@ int MainState::init() {
     m_systems.configure();
 
     entityx::Entity player = m_entities.create();
-    player.assign<Position>(glm::vec2(100.f, 0.f));
+    //must be at (r, 3/2pi) !!
+    player.assign<Position>(glm::vec2(100.f, 1.5 * glm::pi<double>()));
     player.assign<Moving>(200.f);
     player.assign<Collidable>(15);
     player.assign<Drawable>("player", 30, 30, 10);
