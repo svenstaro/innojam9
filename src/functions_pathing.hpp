@@ -31,5 +31,4 @@ glm::vec2 sin_path(glm::vec2 direction, float speed, float current_lifetime)
     direction.y += sin(current_lifetime * 4) / (current_lifetime * 4); 
     return direction;
 }
-
 #endif

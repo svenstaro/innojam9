@@ -6,11 +6,11 @@
 #include "entityx/entityx.h"
 
 struct PlayerInstructionEvent {
-    PlayerInstructionEvent(glm::vec2 direction, entityx::Entity entity)
-        : m_direction(direction), m_entity(entity) {
+    PlayerInstructionEvent(glm::vec2 velocity, entityx::Entity entity)
+        : m_velocity(velocity), m_entity(entity) {
     }
 
-    glm::vec2 m_direction;
+    glm::vec2 m_velocity;
     entityx::Entity m_entity;
 };
 
@@ -22,5 +22,12 @@ struct CollisionEvent {
     entityx::Entity m_first;
     entityx::Entity m_second;
 };
+
+struct LevelChangedEvent 
+{
+    LevelChangedEvent()
+    {}
+}
+;
 
 #endif

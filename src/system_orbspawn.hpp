@@ -96,7 +96,7 @@ class OrbSpawnSystem : public entityx::System<OrbSpawnSystem>,
         orb.assign<Collectable>();
         orb.assign<Collidable>(10);
         orb.assign<Light>("gradient", 0.15f, glm::vec3{0, 0, 255});
-        orb.assign<Orb>(v * 5, 6.5f);
+        orb.assign<Orb>(v * 5, DECAY_ORBS); //  DECAY_ORBS from game_config.hpp
     }
 
     void spawn() {
