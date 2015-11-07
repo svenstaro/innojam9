@@ -7,6 +7,7 @@
 #include "component_path.hpp"
 #include "component_player.hpp"
 #include "component_moving.hpp"
+#include "component_velocity.hpp"
 #include "component_light.hpp"
 #include "system_collision.hpp"
 #include "system_controls.hpp"
@@ -61,7 +62,7 @@ int MainState::init() {
     // must be at (r, 3/2pi) !!
     player.assign<Position>(
         glm::vec2((RING_OUTER - RING_INNER) / 2.0 + RING_INNER, 1.5 * glm::pi<double>()));
-    player.assign<Moving>(200.f);
+    player.assign<Velocity>();
     player.assign<Collidable>(15);
     player.assign<Drawable>("player", 50, 30, 10, AnimTemplate(15, 25, 4, 0, 6));
     player.assign<Player>();
