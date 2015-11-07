@@ -25,7 +25,8 @@
 class OrbSpawnSystem : public entityx::System<OrbSpawnSystem>,
                        public entityx::Receiver<OrbSpawnSystem> {
   public:
-    OrbSpawnSystem(Game *game, entityx::EntityManager &entities) : m_game(game), m_entities(entities), m_delta(0.f) {
+    OrbSpawnSystem(Game *game, entityx::EntityManager &entities)
+        : m_game(game), m_entities(entities), m_delta(0.f) {
         m_spawn_direction = glm::vec2((float(std::rand()) / float(RAND_MAX)) * 2.f - 1.f,
                                       (float(std::rand()) / float(RAND_MAX)) * 0.1f - 0.05f);
         m_spawn_position = 100.f * m_spawn_direction;
