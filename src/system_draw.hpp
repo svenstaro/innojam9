@@ -23,7 +23,7 @@ class DrawSystem : public entityx::System<DrawSystem> {
     DrawSystem(Game *game) : m_game(game) {
         int w, h;
         SDL_RenderGetLogicalSize(game->renderer(), &w, &h);
-        m_camera = SDL_Rect{w/2, h/2, w, h};
+        m_camera = SDL_Rect{w/2, 3*h/4, w, h};
         
         int game_w = game->world_size().w;
         int game_h = game->world_size().h;
