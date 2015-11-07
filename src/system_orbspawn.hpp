@@ -26,8 +26,8 @@ class OrbSpawnSystem : public entityx::System<OrbSpawnSystem>,
                        public entityx::Receiver<OrbSpawnSystem> {
   public:
     OrbSpawnSystem(Game *game, entityx::EntityManager &entities, float min_dist, float max_dist)
-        : m_min_dist(min_dist), m_max_dist(max_dist), m_game(game), m_entities(entities),
-          m_delta(0.f) {
+      : m_min_dist(min_dist), m_max_dist(max_dist),
+        m_game(game), m_entities(entities), m_delta(0.f) {
 
         m_spawn_direction = glm::vec2((float(std::rand()) / float(RAND_MAX)) * 2.f - 1.f,
                                       (float(std::rand()) / float(RAND_MAX)) * 0.1f - 0.05f);
@@ -59,12 +59,30 @@ class OrbSpawnSystem : public entityx::System<OrbSpawnSystem>,
                 m_spawn_direction.x *= -1;
             }
         }
+        std::vector<entityx::Entity> new_vec;
         for (auto e : orbs_to_delete) {
-            // std::cout << "deleting entity with id " << e.id() << std::endl;
-            Mix_PlayChannel(1, m_game->res_manager().sound("sound2"), 0);
-            m_game->m_orbs_collected += 1;
-            e.destroy();
+            auto o = e.component<Orb>();
+            if(o) {
+                e.remove<Collidable>();
+                e.remove<Light>();
+                e.remove<Orb>();
+                e.remove<Collectable>();
+                Mix_PlayChannel(1, m_game->res_manager().sound("sound2"), 0);
+                m_game->m_orbs_collected += 1;
+            }
+            auto pos = e.component<Position>();
+            auto np = pos->position();
+            np.x -= 80.f / glm::sqrt(np.x);
+            pos->set_position(np);
+            if(pos->position().x < 30) {
+                e.destroy();
+            }
+            else {
+                new_vec.push_back(e);
+            }
         }
+        orbs_to_delete.clear();
+        orbs_to_delete.insert(orbs_to_delete.end(), new_vec.begin(), new_vec.end());
 
         entityx::ComponentHandle<Orb> orb;
         for (entityx::Entity entity : es.entities_with_components(orb)) {
@@ -73,8 +91,6 @@ class OrbSpawnSystem : public entityx::System<OrbSpawnSystem>,
                 entity.destroy();
             }
         }
-
-        orbs_to_delete.clear();
     }
 
     void receive(const CollisionEvent &event) {
@@ -95,7 +111,7 @@ class OrbSpawnSystem : public entityx::System<OrbSpawnSystem>,
         orb.assign<Drawable>("orb", 16, 16, 8, anim);
         orb.assign<Collectable>();
         orb.assign<Collidable>(10);
-        orb.assign<Light>("gradient", 0.25f, glm::vec3{100, 255, 120});
+        orb.assign<Light>("gradient", 0.15f, glm::vec3{0, 0, 255});
         orb.assign<Orb>(v * 5, DECAY_ORBS); //  DECAY_ORBS from game_config.hpp
     }
 
