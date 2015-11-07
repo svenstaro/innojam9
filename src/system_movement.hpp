@@ -29,40 +29,7 @@ class MovementSystem : public entityx::System<MovementSystem>,
         entityx::ComponentHandle<Position> position;
         for (entityx::Entity entity : es.entities_with_components(velocity, position)) {
             (void)entity;
-            if(velocity->m_accelerating)
-            {
-              velocity->m_accelerating = false; // because it will be set on user events
-              velocity->m_was_accelerating = true;
-              velocity->m_alpha += velocity->m_alpha_step;
-              velocity->m_full_speed = velocity->m_alpha >= 1.0f;
-              velocity->m_alpha = velocity->m_full_speed ? 1.0f : velocity->m_alpha;
-              velocity->m_velocity = glm::mix(
-                velocity->m_start_velocity,
-                velocity->m_desired_velocity,
-                velocity->m_alpha);
-            }
-            else
-            {
-                if(velocity->m_was_accelerating)
-                {
-                    velocity->m_was_accelerating = false;
-                    velocity->m_alpha = 0.f;
-                    velocity->m_alpha_step = 0.05f;
-                    velocity->m_start_velocity = velocity->m_velocity;
-                    velocity->m_desired_velocity.x = 0.f;
-                    velocity->m_desired_velocity.y = 0.f;
-                    velocity->m_full_speed = false;
-                }
-                
-                velocity->m_alpha += velocity->m_alpha_step;
-                velocity->m_no_speed = velocity->m_alpha >= 1.0f;
-                velocity->m_alpha = velocity->m_no_speed ? 1.0f : velocity->m_alpha;
-                velocity->m_velocity = glm::mix(
-                    velocity->m_start_velocity,
-                    velocity->m_desired_velocity,
-                    velocity->m_alpha);
-                
-            }
+            velocity->handle_tick();
             
             auto new_position = position->position() + velocity->m_velocity;
             if (new_position.s < m_min_dist) {

@@ -119,10 +119,11 @@ class DrawSystem : public entityx::System<DrawSystem> {
 
         SDL_SetRenderTarget(rendr, nullptr);
 
+
         SDL_Rect dst{0, 0, 800, 600};
         SDL_RenderGetViewport(rendr, &dst);
         dst.x = dst.y = 0;
-        SDL_RenderCopy(rendr, m_render_buffer, &m_camera, &dst);
+        SDL_RenderCopyEx(rendr, m_render_buffer, &m_camera, &dst, 0.0, nullptr, SDL_FLIP_NONE);
 
         auto player = player_entity.component<Player>();
         auto ppos = player_entity.component<Position>();
