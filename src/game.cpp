@@ -24,6 +24,8 @@ int Game::init() {
         return 1;
     }
 
+    SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "0");
+
     int width = 800;
     int height = 600;
 
@@ -59,9 +61,10 @@ int Game::init() {
     m_res_manager.load_texture("player", "res/player.png", m_render);
     m_res_manager.load_texture("fire", "res/fire.png", m_render);
     m_res_manager.load_texture("orb", "res/orb.png", m_render);
-    m_res_manager.load_texture("dirt", "res/dirt.png", m_render);
+    m_res_manager.load_texture("wood", "res/wood.png", m_render);
     m_res_manager.load_texture("inner_bound", "res/inner_bound.png", m_render);
     m_res_manager.load_texture("outer_bound", "res/outer_bound.png", m_render);
+    m_res_manager.load_texture("magma", "res/magma.png", m_render);
     m_res_manager.load_font("font20", "res/DejaVuSans.ttf", 20);
 
     SDL_RenderSetLogicalSize(m_render, width, height);

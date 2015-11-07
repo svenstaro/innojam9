@@ -20,6 +20,7 @@
 #include "entityx/entityx.h"
 
 #include <SDL2/SDL.h>
+#include <glm/gtc/constants.hpp>
 
 MainState::MainState(Game *game) : m_game(game) {
 }
@@ -39,7 +40,8 @@ int MainState::init() {
     m_systems.configure();
 
     entityx::Entity player = m_entities.create();
-    player.assign<Position>(glm::vec2(100.f, 0.f));
+    //must be at (r, 3/2pi) !!
+    player.assign<Position>(glm::vec2(100.f, 1.5 * glm::pi<double>()));
     player.assign<Moving>(200.f);
     player.assign<Collidable>(15);
     player.assign<Drawable>("player", 30, 30, 10);
@@ -48,19 +50,16 @@ int MainState::init() {
 
     entityx::Entity background = m_entities.create();
     background.assign<Position>(glm::vec2(0.f, 0.f));
-    background.assign<Drawable>("dirt", 2000, 2000, 0);
-
-    entityx::Entity inner_bound = m_entities.create();
-    inner_bound.assign<Position>(glm::vec2(0.f, 0.f));
-    inner_bound.assign<Drawable>("inner_bound", 100, 100, 1);
+    background.assign<Drawable>("wood", 1000, 1000, 0);
 
     entityx::Entity outer_bound = m_entities.create();
     outer_bound.assign<Position>(glm::vec2(0.f, 0.f));
     outer_bound.assign<Drawable>("outer_bound", 600, 600, 1);
 
+    AnimTemplate fire_anim(32, 32, 6, 0, 10);
     entityx::Entity fire = m_entities.create();
     fire.assign<Position>(glm::vec2(0.f, 0.f));
-    fire.assign<Drawable>("fire", 100, 100, 1);
+    fire.assign<Drawable>("fire", 100, 100, 1, fire_anim);
     fire.assign<Light>("gradient");
 
     return 0;

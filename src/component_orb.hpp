@@ -4,15 +4,27 @@
 #include "entityx/entityx.h"
 
 struct Orb : entityx::Component<Orb>{
-    Orb(float score = 1) : m_score(score) {
+    Orb(float score = 1, float max_lifetime = 0.f) : m_score(score), m_max_lifetime(max_lifetime), m_current_lifetime(0.f) {
     }
 
     float score() {
         return m_score;
     }
 
+    float time_remaining()
+    {
+        return m_max_lifetime - m_current_lifetime;
+    }
+
+    void update(float dt)
+    {
+        m_current_lifetime += dt; 
+    }
+
   private:
     float m_score;
+    float m_max_lifetime;
+    float m_current_lifetime;
 };
 
 #endif

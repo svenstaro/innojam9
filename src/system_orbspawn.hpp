@@ -54,6 +54,17 @@ class OrbSpawnSystem : public entityx::System<OrbSpawnSystem>,
             //std::cout << "deleting entity with id " << e.id() << std::endl;
             e.destroy();
         }
+        
+        entityx::ComponentHandle<Orb> orb;
+        for(entityx::Entity entity : es.entities_with_components(orb))
+        {
+            orb->update(dt);
+            if(orb->time_remaining() < 0)
+            {
+                entity.destroy();
+            }
+        }
+
         orbs_to_delete.clear();
     }
 
@@ -76,7 +87,7 @@ class OrbSpawnSystem : public entityx::System<OrbSpawnSystem>,
         orb.assign<Collectable>();
         orb.assign<Collidable>(10);
         orb.assign<Light>("gradient", 0.25f);
-        orb.assign<Orb>(v * 5);
+        orb.assign<Orb>(v * 5, 6.5f);
     }
     void spawn() {
         spawn_at(m_spawn_position);

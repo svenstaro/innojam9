@@ -42,7 +42,7 @@ class EmitterSystem : public entityx::System<EmitterSystem>
     /**
      * The increase in angle per second
      */
-    double m_angle_offset = 0.0;
+    //double m_angle_offset = 0.0;
 
     int m_shots_per_cooldown = 1;
 
@@ -55,7 +55,7 @@ class EmitterSystem : public entityx::System<EmitterSystem>
             std::function<glm::vec2(entityx::Entity)> p,
             double cd,
             double ao) :
-        m_path(p), m_cooldown(cd), m_angle_offset(ao)
+        m_path(p), m_cooldown(cd)//, m_angle_offset(ao)
     {
     }
 
@@ -91,8 +91,8 @@ class EmitterSystem : public entityx::System<EmitterSystem>
                 next.assign<Path>(m_path, glm::vec2(1, glm::radians(m_total_elapsed * m_rotation_speed + (360.f/m_shots_per_cooldown) * i)), 20.f);
                 next.assign<Position>(glm::vec2(0.f, 0.f));
                 next.assign<Moving>(100.f);
-                next.assign<Light>("gradient", 0.5f, glm::vec3{255, 100, 0});
-                next.assign<Drawable>("gradient", 10 , 10);
+                next.assign<Light>("gradient", 0.2f, glm::vec3{255, 100, 0});
+                next.assign<Drawable>("magma", 10 , 10, 4, AnimTemplate(6, 6, 14, 0, 40));
             }
         }
     }
