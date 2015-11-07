@@ -54,7 +54,7 @@ class OrbSpawnSystem : public entityx::System<OrbSpawnSystem>,
             //std::cout << "deleting entity with id " << e.id() << std::endl;
             e.destroy();
         }
-        
+
         entityx::ComponentHandle<Orb> orb;
         for(entityx::Entity entity : es.entities_with_components(orb))
         {
@@ -80,13 +80,13 @@ class OrbSpawnSystem : public entityx::System<OrbSpawnSystem>,
   private:
     void spawn_at(glm::vec2 &pos) {
         int v = int((float(std::rand()) / float(RAND_MAX)) * 3.f);
-        AnimTemplate anim(30, 30, 6, v);
+        AnimTemplate anim(12, 12, 6, 0, 10);
         entityx::Entity orb = m_entities->create();
         orb.assign<Position>(pos);
-        orb.assign<Drawable>("orb", 20, 20, 8, anim);
+        orb.assign<Drawable>("orb", 16, 16, 8, anim);
         orb.assign<Collectable>();
         orb.assign<Collidable>(10);
-        orb.assign<Light>("gradient", 0.25f);
+        orb.assign<Light>("gradient", 0.25f, glm::vec3{100, 255, 120});
         orb.assign<Orb>(v * 5, 6.5f);
     }
     void spawn() {
