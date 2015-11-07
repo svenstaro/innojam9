@@ -11,6 +11,9 @@
 #include "patterns.hpp"
 #include "component_enemy.hpp"
 #include "component_collidable.hpp"
+#include "component_orb.hpp"
+#include "component_moving.hpp"
+#include "component_path.hpp"
 
 #include <glm/glm.hpp>
 #include <vector>
@@ -102,9 +105,9 @@ class EmitterSystem : public entityx::System<EmitterSystem> {
         next.assign<Position>(glm::vec2(0.f, 0.f));
         next.assign<Moving>(100.f);
         next.assign<Enemy>();
-        next.assign<Collidable>(5.f);
+        next.assign<Collidable>(10.f);
         next.assign<Light>("gradient", 0.5f, glm::vec3{255, 100, 0});
-        next.assign<Drawable>("magma", 10, 10, 4, AnimTemplate(6, 6, 14, 0, 40));
+        next.assign<Drawable>("magma", 20, 20, 4, AnimTemplate(6, 6, 14, 0, 40));
     }
 };
 

@@ -1,6 +1,8 @@
 #ifndef GAME_HPP
 #define GAME_HPP
 
+#include "game_config.hpp"
+
 #include "patterns.hpp"
 
 #include "component_position.hpp"
@@ -47,7 +49,7 @@ class Game {
     int m_last_frame_time = 0;
     unsigned int m_current_level_index;
     std::vector<Pattern> m_level_vector;
-    SDL_Rect m_world_size = {0, 0, 1600, 1200};
+    SDL_Rect m_world_size = {0, 0, WORLD_WIDTH, WORLD_HEIGHT};
 
     SDL_Renderer *m_render;
     SDL_Window *m_window;
