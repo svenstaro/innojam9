@@ -32,7 +32,7 @@ class HighscoreSystem : public entityx::System<HighscoreSystem>,
           player->addScore(pts_per_sec* dt);
         }
         if(hit) {
-            
+            events.emit<HitEvent>();
         }
     }
 
