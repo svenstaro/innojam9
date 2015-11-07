@@ -67,10 +67,9 @@ class OrbSpawnSystem : public entityx::System<OrbSpawnSystem>,
                 e.remove<Light>();
                 e.remove<Orb>();
                 e.remove<Collectable>();
+                Mix_PlayChannel(1, m_game->res_manager().sound("sound2"), 0);
+                m_game->m_orbs_collected += 1;
             }
-            // std::cout << "deleting entity with id " << e.id() << std::endl;
-            Mix_PlayChannel(1, m_game->res_manager().sound("sound2"), 0);
-            m_game->m_orbs_collected += 1;
             auto pos = e.component<Position>();
             auto np = pos->position();
             np.x -= 80.f / glm::sqrt(np.x);
