@@ -14,7 +14,7 @@
 class MovementSystem : public entityx::System<MovementSystem>,
                        public entityx::Receiver<MovementSystem> {
   public:
-    MovementSystem(float min_dist = 50, float max_dist = 400)
+    MovementSystem(float min_dist = 100, float max_dist = 400)
         : m_min_dist(min_dist), m_max_dist(max_dist){
     }
 

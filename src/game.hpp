@@ -33,6 +33,8 @@ class Game {
     SDL_Window *window();
     const SDL_Rect &world_size() const;
 
+    int m_orbs_collected = 0;
+
   private:
     bool m_running = true;
     bool m_debug_mode = false;
