@@ -105,6 +105,16 @@ bool Game::is_running() {
     return m_running;
 }
 
+void Game::toggle_debug_mode(void)
+{
+  m_debug_mode = !m_debug_mode;
+}
+
+bool Game::is_debug_mode(void)
+{
+  return m_debug_mode;
+}
+
 void Game::shutdown() {
     m_running = false;
 #ifdef __EMSCRIPTEN__

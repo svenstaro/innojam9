@@ -2,6 +2,7 @@
 #include "component_drawable.hpp"
 #include "component_position.hpp"
 #include "component_player.hpp"
+#include "component_orb.hpp"
 
 #include "entityx/entityx.h"
 #include <glm/vec2.hpp>
@@ -174,9 +175,38 @@ class DrawSystem : public entityx::System<DrawSystem> {
         dst.x = dst.y = 0;
         SDL_RenderCopy(rendr, m_render_buffer, &m_camera, &dst);
         
-        auto score = "Score: " + std::to_string(player_entity.component<Player>()->score);
-        SDL_Color c = {200, 200, 200, 0};
-        draw_text(rendr, m_game->res_manager(), score, "font20", 0, 0, c);
+        auto player = player_entity.component<Player>();
+        auto ppos = player_entity.component<Position>();
+        if(m_game->is_debug_mode())
+        {
+          SDL_Color c = {200, 200, 200, 100};
+          std::string score = "Score: " + std::to_string(player->score);
+          std::string pos = "Pos - Radius: " + std::to_string(ppos->position()[0]) 
+                + " Angle: " + std::to_string(ppos->position()[1]);
+          int orbs = 0;
+          int bullets = 0;
+          for(entityx::Entity entity : es.entities_with_components(position))
+          {
+            if(entity.component<Path>())
+              bullets++;
+            if(entity.component<Orb>())
+              orbs++;
+          }
+          std::string bulletstr = "Bullets: " + std::to_string(bullets);
+          std::string orbstr = "Orbs: " + std::to_string(orbs);
+          std::string fps = "FPS: " + std::to_string(1.0 / dt);
+          draw_text(rendr, m_game->res_manager(), score, "font20", 0, 0, c);
+          draw_text(rendr, m_game->res_manager(), pos, "font20", 0, 20, c);
+          draw_text(rendr, m_game->res_manager(), bulletstr, "font20", 0, 40, c);
+          draw_text(rendr, m_game->res_manager(), orbstr, "font20", 0, 60, c);
+          draw_text(rendr, m_game->res_manager(), fps, "font20", 0, 80, c);
+        }
+        else
+        {
+          auto score = "Score: " + std::to_string((int)player_entity.component<Player>()->score);
+          SDL_Color c = {200, 200, 200, 0};
+          draw_text(rendr, m_game->res_manager(), score, "font20", 0, 0, c);
+        }
         SDL_RenderPresent(rendr);
     }
 

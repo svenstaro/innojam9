@@ -65,7 +65,6 @@ int MainState::init() {
     return 0;
 }
 
-
 void MainState::update(double dt) {
     SDL_Event e;
     while (SDL_PollEvent(&e)) {
@@ -75,6 +74,9 @@ void MainState::update(double dt) {
         if (e.type == SDL_KEYDOWN) {
             if (e.key.keysym.sym == SDLK_ESCAPE) {
                 m_game->shutdown();
+            }
+            else if(e.key.keysym.sym == SDLK_F3) {
+                m_game->toggle_debug_mode();
             }
         }
     }
