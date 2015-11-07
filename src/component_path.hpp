@@ -11,13 +11,17 @@ glm::vec2 parable_path(entityx::Entity entity);
         Path(
             std::function<glm::vec2(entityx::Entity)> path_function,
             glm::vec2 origin,
-            glm::vec2 direction, 
+            glm::vec2 direction,
             float max_lifetime)
         : m_path_function(path_function), m_origin(origin), m_direction(direction),
           m_max_lifetime(max_lifetime), m_current_lifetime(0.0f){
         }
 
-        Path(std::function<glm::vec2(float)> parable_function, glm::vec2 origin, float direction, float max_lifetime)
+        Path(
+            std::function<glm::vec2(float)> parable_function,
+            glm::vec2 origin,
+            float direction,
+            float max_lifetime)
         : m_parable(parable_function), m_origin(origin),
           m_max_lifetime(max_lifetime), m_current_lifetime(0.0f){
               m_path_function = std::function<glm::vec2(entityx::Entity)>(parable_path);

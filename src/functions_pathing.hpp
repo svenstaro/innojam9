@@ -103,5 +103,4 @@ glm::vec2 sin_path(entityx::Entity entity)
     direction.y += sin(current_lifetime * 4) / (current_lifetime * 4);
     return direction;
 }
-
 #endif

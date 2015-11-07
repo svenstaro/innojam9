@@ -26,8 +26,8 @@ class OrbSpawnSystem : public entityx::System<OrbSpawnSystem>,
                        public entityx::Receiver<OrbSpawnSystem> {
   public:
     OrbSpawnSystem(Game *game, entityx::EntityManager &entities, float min_dist, float max_dist)
-      : m_min_dist(min_dist), m_max_dist(max_dist), 
-        m_game(game), m_entities(entities), m_delta(0.f) {
+        : m_min_dist(min_dist), m_max_dist(max_dist), m_game(game), m_entities(entities),
+          m_delta(0.f) {
 
         m_spawn_direction = glm::vec2((float(std::rand()) / float(RAND_MAX)) * 2.f - 1.f,
                                       (float(std::rand()) / float(RAND_MAX)) * 0.1f - 0.05f);
@@ -96,14 +96,14 @@ class OrbSpawnSystem : public entityx::System<OrbSpawnSystem>,
         orb.assign<Collectable>();
         orb.assign<Collidable>(10);
         orb.assign<Light>("gradient", 0.25f, glm::vec3{100, 255, 120});
-        orb.assign<Orb>(v * 5, 6.5f);
+        orb.assign<Orb>(v * 5, DECAY_ORBS); //  DECAY_ORBS from game_config.hpp
     }
 
     void spawn() {
         spawn_at(m_spawn_position);
         // std::cout << "Spawning orb @" << pos.x << "," << pos.y << std::endl;
     }
-    
+
     float m_min_dist;
     float m_max_dist;
 
