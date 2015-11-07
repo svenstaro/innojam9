@@ -88,9 +88,10 @@ class EmitterSystem : public entityx::System<EmitterSystem>
             for(int i = 0; i < m_shots_per_cooldown; i++)
             {
                 entityx::Entity next = es.create();
-                next.assign<Position>(glm::vec2(0.f, 0.f));
                 next.assign<Path>(m_path, glm::vec2(1, glm::radians(m_total_elapsed * m_rotation_speed + (360.f/m_shots_per_cooldown) * i)), 20.f);
+                next.assign<Position>(glm::vec2(0.f, 0.f));
                 next.assign<Moving>(100.f);
+                next.assign<Light>("gradient", 0.5f, glm::vec3{255, 100, 0});
                 next.assign<Drawable>("gradient", 10 , 10);
             }
         }

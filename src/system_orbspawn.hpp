@@ -63,6 +63,7 @@ class OrbSpawnSystem : public entityx::System<OrbSpawnSystem>,
         orb.assign<Drawable>("orb", 20, 20, 8, anim);
         orb.assign<Collectable>();
         orb.assign<Collidable>(10);
+        orb.assign<Light>("gradient", 0.25f);
         orb.assign<Orb>(v * 5);
         //std::cout << "Spawning orb @" << pos.x << "," << pos.y << std::endl;
     }
