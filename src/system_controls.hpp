@@ -26,6 +26,14 @@ class ControlSystem : public entityx::System<ControlSystem> {
                 radius += 1.0f;
             if (state[SDL_SCANCODE_D])
                 angle -= 1.0f;
+            if (state[SDL_SCANCODE_UP])
+                radius -= 1.0f;
+            if (state[SDL_SCANCODE_LEFT])
+                angle += 1.0f;
+            if (state[SDL_SCANCODE_DOWN])
+                radius += 1.0f;
+            if (state[SDL_SCANCODE_RIGHT])
+                angle -= 1.0f;
 
             if (angle != 0.0f || radius != 0.0f) {
                 auto moving = entity.component<Moving>();
