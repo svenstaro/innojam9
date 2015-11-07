@@ -43,10 +43,10 @@ class ControlSystem : public entityx::System<ControlSystem> {
                 direction = float(dt) * glm::normalize(direction);
                 direction[0] *= moving->speed();
 
-                //adjust angle speed to match "radial" speed via arc length
+                // adjust angle speed to match "radial" speed via arc length
                 float arc_speed = 0;
-                if(position->position()[0] != 0){ //only adjust if radius != 0
-                    arc_speed = moving->speed()/position->position()[0];
+                if (position->position()[0] != 0) { // only adjust if radius != 0
+                    arc_speed = moving->speed() / position->position()[0];
                 }
                 direction[1] *= arc_speed;
                 events.emit<PlayerInstructionEvent>(direction, entity);

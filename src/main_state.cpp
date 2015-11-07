@@ -50,10 +50,9 @@ int MainState::init() {
     m_systems.configure();
 
     entityx::Entity player = m_entities.create();
-    //must be at (r, 3/2pi) !!
+    // must be at (r, 3/2pi) !!
     player.assign<Position>(
-        glm::vec2((radius_outer-radius_inner) / 2.0 + radius_inner,
-        1.5 * glm::pi<double>()));
+        glm::vec2((radius_outer - radius_inner) / 2.0 + radius_inner, 1.5 * glm::pi<double>()));
     player.assign<Moving>(200.f);
     player.assign<Collidable>(15);
     player.assign<Drawable>("player", 50, 30, 10, AnimTemplate(15, 25, 4, 0, 6));
@@ -63,17 +62,17 @@ int MainState::init() {
     entityx::Entity background = m_entities.create();
     background.assign<Position>(glm::vec2(0.f, 0.f));
     background.assign<Drawable>("wood", 1000, 1000, 0);
-    
+
     entityx::Entity inner_bound = m_entities.create();
     inner_bound.assign<Position>(glm::vec2(0.f, 0.f));
-    inner_bound.assign<Drawable>("bound", 2*(int)radius_inner, 2*(int)radius_inner, 1);
+    inner_bound.assign<Drawable>("bound", 2 * (int)radius_inner, 2 * (int)radius_inner, 1);
 
     entityx::Entity outer_bound = m_entities.create();
     outer_bound.assign<Position>(glm::vec2(0.f, 0.f));
-    // for the outer bound we need additional 50 radius, 
+    // for the outer bound we need additional 50 radius,
     // so that the player is inside the circle.
-    outer_bound.assign<Drawable>("outer_bound",
-      2*(int)radius_outer+100, 2*(int)radius_outer+100, 1);
+    outer_bound.assign<Drawable>("outer_bound", 2 * (int)radius_outer + 100,
+                                 2 * (int)radius_outer + 100, 1);
 
     AnimTemplate fire_anim(32, 32, 6, 0, 10);
     entityx::Entity fire = m_entities.create();
@@ -96,8 +95,7 @@ void MainState::update(double dt) {
         if (e.type == SDL_KEYDOWN) {
             if (e.key.keysym.sym == SDLK_ESCAPE) {
                 m_game->shutdown();
-            }
-            else if(e.key.keysym.sym == SDLK_F3) {
+            } else if (e.key.keysym.sym == SDLK_F3) {
                 m_game->toggle_debug_mode();
             }
         }
