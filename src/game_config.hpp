@@ -4,4 +4,6 @@
 // static
 const float DECAY_ORBS = 6.5f;
 
+const float MAX_SPEED = 200.f;
+
 #endif

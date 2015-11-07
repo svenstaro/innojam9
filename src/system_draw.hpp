@@ -91,14 +91,16 @@ class DrawSystem : public entityx::System<DrawSystem> {
           }
         }
 
-        auto player_pos = player_entity.component<Position>();
+        entityx::ComponentHandle<Position> player_pos = player_entity.component<Position>();
+        entityx::ComponentHandle<Player> player = player_entity.component<Player>();
+        entityx::ComponentHandle<Velocity> velocity = player_entity.component<Velocity>();
 
         // RENDER LIGHT
 
         // Change to render into light rendertexture for now
-        SDL_SetRenderTarget(m_game->renderer(), m_lighttex);
-        SDL_SetRenderDrawColor(m_game->renderer(), 50, 50, 50, 255);
-        SDL_RenderClear(m_game->renderer());
+        SDL_SetRenderTarget(rendr, m_lighttex);
+        SDL_SetRenderDrawColor(rendr, 50, 50, 50, 255);
+        SDL_RenderClear(rendr);
 
         // Draw lights
         for (entityx::Entity entity : es.entities_with_components(position, light)) {
@@ -111,22 +113,25 @@ class DrawSystem : public entityx::System<DrawSystem> {
         // to be on one of the textures used here!
         SDL_SetRenderTarget(rendr, m_render_buffer);
 
+
+        float add_rotate = glm::mix(0.0f, 4*glm::quarter_pi<float>(), velocity->m_alpha);
+        add_rotate *= glm::sign<float>(velocity->m_velocity.t);
         float rotate_by = -rad_to_deg(player_pos->position().y - glm::half_pi<float>());
-        SDL_RenderCopyEx(rendr, m_drawtex, nullptr, nullptr, rotate_by, nullptr, SDL_FLIP_NONE);
-        SDL_RenderCopyEx(rendr, m_lighttex, nullptr, nullptr, rotate_by, nullptr, SDL_FLIP_NONE);
+        SDL_RenderCopyEx(rendr, m_drawtex, nullptr, nullptr, 
+            rotate_by+add_rotate, nullptr, SDL_FLIP_NONE);
+        SDL_RenderCopyEx(rendr, m_lighttex, nullptr, nullptr, 
+            rotate_by+add_rotate, nullptr, SDL_FLIP_NONE);
 
         render_entity(player_entity, dt, false);
 
         SDL_SetRenderTarget(rendr, nullptr);
-
 
         SDL_Rect dst{0, 0, 800, 600};
         SDL_RenderGetViewport(rendr, &dst);
         dst.x = dst.y = 0;
         SDL_RenderCopyEx(rendr, m_render_buffer, &m_camera, &dst, 0.0, nullptr, SDL_FLIP_NONE);
 
-        auto player = player_entity.component<Player>();
-        auto ppos = player_entity.component<Position>();
+        
         int orbs = 0;
         int bullets = 0;
         for (entityx::Entity entity : es.entities_with_components(position)) {
@@ -139,8 +144,8 @@ class DrawSystem : public entityx::System<DrawSystem> {
         if (m_game->is_debug_mode()) {
             SDL_Color c = {200, 200, 200, 100};
             std::string score = "Score: " + std::to_string(player->score);
-            std::string pos = "Pos - Radius: " + std::to_string(ppos->position()[0]) + " Angle: " +
-                              std::to_string(ppos->position()[1]);
+            std::string pos = "Pos - Radius: " + std::to_string(player_pos->position()[0]) + " Angle: " +
+                              std::to_string(player_pos->position()[1]);
             auto bulletstr = "Bullets: " + std::to_string(bullets);
             auto orbstr = "Orbs: " + std::to_string(orbs);
             auto orbs_collected = "Orbs collected " + std::to_string(m_game->m_orbs_collected);

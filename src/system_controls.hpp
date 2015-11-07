@@ -6,6 +6,8 @@
 #include "component_player.hpp"
 #include "events.hpp"
 
+#include "game_config.hpp"
+
 #include <glm/vec2.hpp>
 #include <glm/glm.hpp>
 
@@ -45,7 +47,7 @@ class ControlSystem : public entityx::System<ControlSystem> {
 
                 glm::vec2 direction(radius, angle);
                 glm::vec2 velocity = float(dt) * glm::normalize(direction);
-                velocity *= 200.0;
+                velocity *= MAX_SPEED;
                 
                 // adjust angle speed to match "radial" speed via arc length
                 float arc_speed = 1.0;
