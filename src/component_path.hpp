@@ -5,12 +5,12 @@
 #include <glm/glm.hpp>
 #include <glm/vec2.hpp>
 
-    struct Path : entityx::Component<Path> { 
-        Path(std::function<glm::vec2(glm::vec2, float, float)> path_function, glm::vec2 direction, float max_lifetime)
+    struct Path : entityx::Component<Path> {
+        Path(std::function<glm::vec2(entityx::Entity)> path_function, glm::vec2 direction, float max_lifetime)
         : m_path_function(path_function), m_direction(direction),
           m_max_lifetime(max_lifetime), m_current_lifetime(0.0f){
           }
-    
+
         float get_time_left()
         {
             return m_max_lifetime - m_current_lifetime;
@@ -30,8 +30,8 @@
         {
             return m_direction;
         }
-            
-        std::function<glm::vec2(glm::vec2, float, float)> m_path_function;
+
+        std::function<glm::vec2(entityx::Entity)> m_path_function;
         glm::vec2 m_direction;
         float m_max_lifetime;
         float m_current_lifetime;
