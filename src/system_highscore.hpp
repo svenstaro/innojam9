@@ -12,13 +12,14 @@
 
 class HighscoreSystem : public entityx::System<HighscoreSystem>,
                        public entityx::Receiver<HighscoreSystem> {
-  private:
-    float pts_per_sec = -5.0f; // 10 is really high
+    public:
 
-  public:
+    HighscoreSystem(Game *game) : m_game(game){
+    };
 
     void configure(entityx::EventManager &event_manager) override {
         event_manager.subscribe<CollisionEvent>(*this);
+        event_manager.subscribe<LevelChangedEvent>(*this);
     }
 
     void update(entityx::EntityManager &es, entityx::EventManager &events,
@@ -28,9 +29,6 @@ class HighscoreSystem : public entityx::System<HighscoreSystem>,
           (void)entity;
           player->addScore(pts_per_sec* dt);
         }
-
-
-
     }
 
     void receive(const CollisionEvent &collision_event) {
@@ -43,6 +41,14 @@ class HighscoreSystem : public entityx::System<HighscoreSystem>,
         }
     }
 
+    void receive(const LevelChangedEvent &level_changed_event)
+    {
+       m_game->m_orbs_collected = 0; 
+    }
+    
+    private:
+    Game *m_game;
+    float pts_per_sec = -5.0f; // 10 is really high
 
 };
 

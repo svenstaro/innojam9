@@ -23,4 +23,11 @@ struct CollisionEvent {
     entityx::Entity m_second;
 };
 
+struct LevelChangedEvent 
+{
+    LevelChangedEvent()
+    {}
+}
+;
+
 #endif

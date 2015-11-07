@@ -3,6 +3,7 @@
 
 #include "game.hpp"
 #include "entityx/entityx.h"
+#include "events.hpp"
 #include "glm/vec2.hpp"
 #include "glm/glm.hpp"
 #include "glm/gtx/optimum_pow.hpp"
@@ -45,10 +46,23 @@ class EmitterSystem : public entityx::System<EmitterSystem> {
                 if(m_current_pattern == level_vector[m_current_level].m_pattern_parts.size())
                 {
                     m_current_pattern = 0;
-                    m_current_level = 0;
                     m_current_shot = 0;
                 }
 
+                //See if we have to change the level
+                if(m_game->m_orbs_collected >= level_vector[m_current_level].m_orbs_needed)
+                {
+                    m_current_level++;
+                    events.emit<LevelChangedEvent>(); 
+                }
+
+                //Checks if current level is beyond last level
+                if(m_current_level == level_vector.size())
+                {
+                    //GAME FINISHED !!!
+                    //DUMMY:
+                    m_current_level = 0;
+                }
             }
         }
 
@@ -60,6 +74,14 @@ class EmitterSystem : public entityx::System<EmitterSystem> {
             return glm::vec2(1, m_total_elapsed);
         }
 
+        std::vector<Pattern> level_vector = {level1,level2};
+        unsigned int m_current_level = 0;
+        unsigned int m_current_pattern = 0;
+        unsigned int m_current_shot = 0;
+
+        float current_rotation_speed = level_vector[m_current_level].m_rotation_speed;
+        unsigned int current_shots_per_cooldown = level_vector[m_current_level].m_pattern_parts[m_current_pattern].m_shots_per_cooldown[0];
+
         /**
          * The time elapsed since the last spawned particle
          */
@@ -69,16 +91,6 @@ class EmitterSystem : public entityx::System<EmitterSystem> {
      * Total elapsed time. Used in the generator.
      */
     float m_total_elapsed = 0.f;
-
-
-
-    std::vector<Pattern> level_vector = {level1};
-    unsigned int m_current_level = 0;
-    unsigned int m_current_pattern = 0;
-    unsigned int m_current_shot = 0;
-
-    float current_rotation_speed = level_vector[m_current_level].m_rotation_speed;
-    unsigned int current_shots_per_cooldown = level_vector[m_current_level].m_pattern_parts[m_current_pattern].m_shots_per_cooldown[0];
 
     void create_bullet(entityx::EntityManager &es, std::function<glm::vec2(glm::vec2, float, float)> path_function, int i)
     {
