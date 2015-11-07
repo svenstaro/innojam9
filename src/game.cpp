@@ -6,6 +6,7 @@
 #include <emscripten.h>
 #endif
 #include <iostream>
+#include <vector>
 
 Game::~Game() {
     m_res_manager.shutdown();
@@ -77,11 +78,20 @@ int Game::init() {
 
     entityx::Entity entity = m_ex.entities.create();
     entity.assign<Position>();
-
+    m_level_vector = {Pattern::level1(), Pattern::level2()};
     m_states.push({"main", std::make_unique<MainState>(this)});
     m_states.top().second->init();
 
     return 0;
+}
+
+void Game::next_level()
+{
+    m_current_level_index++;
+    if(m_current_level_index == m_level_vector.size())
+    {
+        m_current_level_index = 0;
+    }
 }
 
 void Game::mainloop() {
@@ -131,6 +141,16 @@ void Game::shutdown() {
 
 void Game::popstate() {
     m_states.pop();
+}
+
+unsigned int Game::get_current_level_index()
+{
+    return m_current_level_index;
+}
+
+Pattern Game::get_current_level()
+{
+    return m_level_vector[m_current_level_index];
 }
 
 const std::string &Game::statename() const {
