@@ -44,7 +44,6 @@ class EmitterSystem : public entityx::System<EmitterSystem> {
 
                 if(m_current_pattern == level_vector[m_current_level].m_pattern_parts.size())
                 {
-                    std::cout << "test.txt" << std::endl;
                     m_current_pattern = 0;
                     m_current_level = 0;
                     m_current_shot = 0;
