@@ -21,7 +21,7 @@
 class OrbSpawnSystem : public entityx::System<OrbSpawnSystem>,
                        public entityx::Receiver<OrbSpawnSystem> {
   public:
-    OrbSpawnSystem(entityx::EntityManager &entities) : m_entities(entities), m_delta(0.f) {
+    OrbSpawnSystem(Game *game, entityx::EntityManager &entities) : m_game(game), m_entities(entities), m_delta(0.f) {
         m_spawn_direction = glm::vec2((float(std::rand()) / float(RAND_MAX)) * 2.f - 1.f,
                                       (float(std::rand()) / float(RAND_MAX)) * 0.1f - 0.05f);
         m_spawn_position = 100.f * m_spawn_direction;
@@ -54,6 +54,7 @@ class OrbSpawnSystem : public entityx::System<OrbSpawnSystem>,
         }
         for (auto e : orbs_to_delete) {
             // std::cout << "deleting entity with id " << e.id() << std::endl;
+            Mix_PlayChannel(1, m_game->res_manager().sound("sound2"), 0);
             e.destroy();
         }
 
@@ -95,6 +96,7 @@ class OrbSpawnSystem : public entityx::System<OrbSpawnSystem>,
         // std::cout << "Spawning orb @" << pos.x << "," << pos.y << std::endl;
     }
 
+    Game *m_game;
     std::vector<entityx::Entity> orbs_to_delete;
     entityx::EntityManager &m_entities;
     entityx::TimeDelta m_delta;
