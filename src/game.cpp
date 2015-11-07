@@ -64,6 +64,10 @@ int Game::init() {
     m_res_manager.load_texture("wood", "res/wood.png", m_render);
     m_res_manager.load_texture("inner_bound", "res/inner_bound.png", m_render);
     m_res_manager.load_texture("outer_bound", "res/outer_bound.png", m_render);
+    m_res_manager.load_music("music1", "res/pocket_destroyer.ogg");
+    m_res_manager.load_music("music2", "res/orbital_colossus.ogg");
+    m_res_manager.load_sound("sound1", "res/whomp.wav");
+    m_res_manager.load_sound("sound2", "res/whoomp.wav");
     m_res_manager.load_texture("magma", "res/magma.png", m_render);
     m_res_manager.load_font("font20", "res/DejaVuSans.ttf", 20);
 
@@ -104,6 +108,16 @@ std::stack<std::pair<std::string, std::unique_ptr<State>>> &Game::states() {
 
 bool Game::is_running() {
     return m_running;
+}
+
+void Game::toggle_debug_mode(void)
+{
+  m_debug_mode = !m_debug_mode;
+}
+
+bool Game::is_debug_mode(void)
+{
+  return m_debug_mode;
 }
 
 void Game::shutdown() {

@@ -20,6 +20,8 @@ class Game {
     int init();
     void mainloop();
     bool is_running();
+    void toggle_debug_mode(void);
+    bool is_debug_mode(void);
     void shutdown();
     void popstate();
 
@@ -33,6 +35,7 @@ class Game {
 
   private:
     bool m_running = true;
+    bool m_debug_mode = false;
     int m_last_frame_time = 0;
     SDL_Rect m_world_size = {0, 0, 1600, 1200};
 
