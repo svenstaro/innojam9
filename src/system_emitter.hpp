@@ -27,7 +27,7 @@ class EmitterSystem : public entityx::System<EmitterSystem>
     double m_last_spawned = 0.0;
 
     /**
-     * The cooldown between bullet shots. When values close to the 
+     * The cooldown between bullet shots. When values close to the
      * actual delay between frames are used, irregularities can appear.
      */
     double m_cooldown = 0.2f;
@@ -42,7 +42,7 @@ class EmitterSystem : public entityx::System<EmitterSystem>
     /**
      * The increase in angle per second
      */
-    double m_angle_offset = 0.0;
+    //double m_angle_offset = 0.0;
 
     int m_shots_per_cooldown = 1;
 
@@ -55,7 +55,7 @@ class EmitterSystem : public entityx::System<EmitterSystem>
             std::function<glm::vec2(glm::vec2, float, float)> p,
             double cd,
             double ao) :
-        m_path(p), m_cooldown(cd), m_angle_offset(ao)
+        m_path(p), m_cooldown(cd)//, m_angle_offset(ao)
     {
     }
 
