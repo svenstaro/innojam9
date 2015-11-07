@@ -3,6 +3,7 @@
 
 #include "anim_template.hpp"
 #include "entityx/entityx.h"
+#include <iostream>
 
 #include <SDL2/SDL.h>
 
@@ -11,6 +12,7 @@ struct Drawable : entityx::Component<Drawable> {
         m_texture_map_key(key),
         m_height(new_height),
         m_width(new_width),
+        m_time(0.0),
         m_layer(layer),
         m_animation_index(0),
         m_anim(anim) {
@@ -53,6 +55,7 @@ struct Drawable : entityx::Component<Drawable> {
     }
 
     void tick(double time) {
+        std::cout << "time " << m_time << ">"<< (1.f/m_anim.fps()) << "->" << m_animation_index << std::endl;
         m_time += time;
         if(m_time >= 1.f/m_anim.fps()) {
             m_time = 0;
