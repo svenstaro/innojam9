@@ -25,13 +25,13 @@ class PathSystem : public entityx::System<PathSystem>
         {
             if(path->get_time_left() > 0 && position->position().x < 320.f)
             {
-                position->set_position(path->m_path_function(path->get_direction(), moving->speed(), path->get_current_lifetime()));
+                position->set_position(path->m_path_function(entity));
 
-                path->update_current_lifetime(dt); 
+                path->update_current_lifetime(dt);
             }
             else
             {
-                entity.destroy(); 
+                entity.destroy();
             }
 
 

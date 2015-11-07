@@ -45,6 +45,16 @@ int MainState::init() {
     m_systems.add<HighscoreSystem>(m_game);
     m_systems.add<EmitterSystem>(m_game);
     m_systems.add<OrbSpawnSystem>(m_game, m_entities, RING_INNER, RING_OUTER);
+//
+//     // glm::vec2 origin = glm::vec2(300, 0);
+//     // auto parable = create_parable(origin, glm::vec2(300, glm::half_pi<float>()), glm::vec2(glm::one_over_root_two<float>()*300, glm::quarter_pi<float>()));
+//
+//     // glm::vec2 origin = glm::vec2(150, 0);
+//     // auto parable = create_parable(origin, glm::vec2(300, glm::half_pi<float>()), glm::vec2(150, glm::pi<float>()));
+//     //
+//     // m_systems.add<EmitterSystem>(m_game, parable, origin, 1, 10, 0.3);
+//     m_systems.add<EmitterSystem>(m_game, linear_path, 0.5, 0.3);
+
     m_systems.configure();
 
     entityx::Entity player = m_entities.create();

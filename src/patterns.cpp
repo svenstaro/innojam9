@@ -1,8 +1,8 @@
 #include "patterns.hpp"
 
 PatternPart::PatternPart(
-    std::vector<std::function<glm::vec2(glm::vec2, float, float)>> shot_types,
-    std::vector<int> shots_per_cooldown, std::vector<float> offset)
+        std::vector<Path_Def> shot_types,
+        std::vector<int> shots_per_cooldown, std::vector<float> offset)
     : m_shot_type(shot_types), m_shots_per_cooldown(shots_per_cooldown),
       m_offset(offset) {}
 

@@ -1,7 +1,11 @@
 #ifndef PARTICLE_EMITTER_HPP
 #define PARTICLE_EMITTER_HPP
 
+#include <iostream>
+
 #include "game.hpp"
+#include "path_definition.hpp"
+
 #include "entityx/entityx.h"
 #include "events.hpp"
 #include "glm/vec2.hpp"
@@ -19,7 +23,6 @@
 #include <vector>
 
 class EmitterSystem : public entityx::System<EmitterSystem> {
-
   public:
     EmitterSystem(Game *game) : m_game(game) {
     }
@@ -68,7 +71,6 @@ class EmitterSystem : public entityx::System<EmitterSystem> {
         }
     }
 
-
   private:
     Game *m_game;
 
@@ -87,7 +89,7 @@ class EmitterSystem : public entityx::System<EmitterSystem> {
     float m_total_elapsed = 0.f;
 
 
-    Pattern m_current_level = m_game->get_current_level(); 
+    Pattern m_current_level = m_game->get_current_level();
     unsigned int m_current_pattern = 0;
     unsigned int m_current_shot = 0;
 
@@ -95,13 +97,24 @@ class EmitterSystem : public entityx::System<EmitterSystem> {
     unsigned int current_shots_per_cooldown =
         m_current_level.m_pattern_parts[m_current_pattern].m_shots_per_cooldown[0];
 
-    void create_bullet(entityx::EntityManager &es,
-            std::function<glm::vec2(glm::vec2, float, float)> path_function, int i) {
+    void create_bullet(entityx::EntityManager &es, Path_Def path_definition, int i) {
         entityx::Entity next = es.create();
-        next.assign<Path>(path_function,
-                glm::vec2(1, glm::radians(m_total_elapsed * current_rotation_speed +
-                        (360.f / current_shots_per_cooldown) * i)),
-                20.f);
+
+        switch(path_definition.get_path_type()){
+            case PARABLE:
+                next.assign<Path>(path_definition.get_parable_function(),
+                            path_definition.get_origin(),
+                            path_definition.get_direction(),
+                            20.f);
+                break;
+            case NORMAL:
+                next.assign<Path>(path_definition.get_path_function(),
+                            glm::vec2(0,0),
+                            glm::vec2(1, glm::radians(m_total_elapsed * current_rotation_speed +
+                                            (360.f / current_shots_per_cooldown) * i)),
+                            20.f);
+                break;
+        }
         next.assign<Position>(glm::vec2(0.f, 0.f));
         next.assign<Moving>(100.f);
         next.assign<Enemy>();
