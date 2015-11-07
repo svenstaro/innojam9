@@ -55,7 +55,6 @@ struct Drawable : entityx::Component<Drawable> {
     }
 
     void tick(double time) {
-        std::cout << "time " << m_time << ">"<< (1.f/m_anim.fps()) << "->" << m_animation_index << std::endl;
         m_time += time;
         if(m_time >= 1.f/m_anim.fps()) {
             m_time = 0;
