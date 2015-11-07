@@ -27,7 +27,7 @@ struct Drawable : entityx::Component<Drawable> {
         return m_layer;
     }
 
-    void set_hight(float new_height) {
+    void set_height(float new_height) {
         m_height = new_height;
     }
 
