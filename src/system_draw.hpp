@@ -80,7 +80,8 @@ class DrawSystem : public entityx::System<DrawSystem> {
             if (drawable->layer() == layer) {
                 if (entity.component<Player>())
                     player_entity = entity;
-                render_entity(entity, dt, true);
+                else
+                    render_entity(entity, dt, true);
             }
           }
         }
@@ -96,7 +97,6 @@ class DrawSystem : public entityx::System<DrawSystem> {
 
         // Draw lights
         for (entityx::Entity entity : es.entities_with_components(position, light)) {
-          //if(!entity.component<Player>())
             render_light(entity);
         }
 
@@ -110,9 +110,7 @@ class DrawSystem : public entityx::System<DrawSystem> {
         SDL_RenderCopyEx(rendr, m_drawtex, nullptr, nullptr, rotate_by, nullptr, SDL_FLIP_NONE);
         SDL_RenderCopyEx(rendr, m_lighttex, nullptr, nullptr, rotate_by, nullptr, SDL_FLIP_NONE);
         
-        //render_entity(player_entity, dt, false);
-        //render_light(player_entity);
-        
+        render_entity(player_entity, dt, false);
         
         SDL_SetRenderTarget(rendr, nullptr);
 
@@ -169,7 +167,10 @@ class DrawSystem : public entityx::System<DrawSystem> {
       auto drawable = e.component<Drawable>();
       auto position = e.component<Position>(); //bad name -> change to.. polarpos?
 
-      glm::vec2 coord_euclid = polar_to_euclid(position->position());
+      auto cpy = position->position();
+      if(!brotate)
+        cpy.y = glm::half_pi<float>();
+      glm::vec2 coord_euclid = polar_to_euclid(cpy);
 
       // Copy the coordinates to dest
       // and offset them by half the image size
