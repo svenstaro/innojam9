@@ -69,6 +69,7 @@ int Game::init() {
     m_res_manager.load_music("music2", "res/orbital_colossus.ogg");
     m_res_manager.load_sound("sound1", "res/whomp.wav");
     m_res_manager.load_sound("sound2", "res/whoomp.wav");
+    m_res_manager.load_texture("bar", "res/bar.png", m_render);
     m_res_manager.load_texture("magma", "res/magma.png", m_render);
     m_res_manager.load_font("font20", "res/DejaVuSans.ttf", 20);
 
