@@ -10,7 +10,11 @@
 #include "component_light.hpp"
 #include "anim_template.hpp"
 
+#ifdef __EMSCRIPTEN__
+#include <SDL/SDL_mixer.h>
+#else
 #include <SDL_mixer.h>
+#endif
 
 #include <iostream>
 #include <vector>
