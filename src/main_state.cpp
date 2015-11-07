@@ -45,7 +45,7 @@ int MainState::init() {
     m_systems.add<PathSystem>();
     m_systems.add<MovementSystem>(radius_inner, radius_outer);
     m_systems.add<HighscoreSystem>();
-    m_systems.add<EmitterSystem>(m_game, linear_path, 0.5, 0.3);
+    m_systems.add<EmitterSystem>(m_game);
     m_systems.add<OrbSpawnSystem>(m_game, m_entities, radius_inner, radius_outer);
     m_systems.configure();
 
