@@ -2,9 +2,13 @@
 
 Game tbd
 
+Frederick hat nix zu tun.
+
+![](screenshit.png)
+
 # Authors
 
-- Alexander Dmitriev
+- Alexander Dmitriev riecht nach Kaese
 - Andra Ruebsteck
 - Frederick Gnodtke
 - Oliver Heidmann
