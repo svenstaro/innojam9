@@ -23,7 +23,7 @@ class PatternPart {
     }
 
     static PatternPart LINEAR_FOUR_SHOTS() {
-        return {{linear_path},{4},{glm::radians(45.f)}};
+        return {{Path_Def(linear_path)},{4},{glm::radians(45.f)}};
     }
 
     static PatternPart SCYTHE_LINEAR_FOUR_FOUR_SHOTS() {
@@ -76,11 +76,11 @@ class Pattern {
     static Pattern level3() {
         return {0.5f,19.f,{PatternPart::LINEAR_FOUR_SHOTS(),PatternPart::SCYTHE_LINEAR_FOUR_FOUR_SHOTS()},{10,10},20};
     }
-    
+
     static Pattern level4() {
         return {0.4f,30.f,{PatternPart::SIN_FOUR_SHOT(), PatternPart::SCYTHE_LINEAR_FOUR_FOUR_SHOTS(), PatternPart::LINEAR_FOUR_SHOTS()},{1,1,1},45};
-    }   
-    
+    }
+
         float m_cooldown;
     float m_rotation_speed;
     unsigned int m_pattern_length;
