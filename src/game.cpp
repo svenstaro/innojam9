@@ -20,6 +20,7 @@ Game::~Game() {
 }
 
 int Game::init() {
+    m_difficulty = EASY;
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) != 0) {
         std::cerr << "SDL_Init Error: " << SDL_GetError() << std::endl;
         return 1;
@@ -138,6 +139,14 @@ void Game::shutdown() {
 #ifdef __EMSCRIPTEN__
     emscripten_cancel_main_loop();
 #endif
+}
+
+void Game::set_difficulty(Difficulty difficulty) {
+    m_difficulty = difficulty;
+}
+
+Difficulty Game::difficulty() {
+    return m_difficulty;
 }
 
 void Game::popstate() {

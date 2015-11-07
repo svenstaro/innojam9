@@ -135,6 +135,8 @@ class DrawSystem : public entityx::System<DrawSystem> {
             orbs++;
         }
 
+        SDL_SetTextureColorMod(m_drawtex, 255 - 64 * player->m_hurt, 255 - 229 * player->m_hurt, 255 - 220 * player->m_hurt);
+
         if (m_game->is_debug_mode()) {
             SDL_Color c = {200, 200, 200, 100};
             std::string score = "Score: " + std::to_string(player->score);
@@ -151,20 +153,16 @@ class DrawSystem : public entityx::System<DrawSystem> {
             draw_text(rendr, m_game->res_manager(), orbs_collected, "font20", 0, 80, c);
             draw_text(rendr, m_game->res_manager(), fps, "font20", 0, 100, c);
         } else {
-            auto score = "Score: " + std::to_string((int)player_entity.component<Player>()->score);
+            auto score = "Score: " + std::to_string((int)player->score);
             SDL_Color c = {200, 200, 200, 0};
             draw_text(rendr, m_game->res_manager(), score, "font20", 20, 20, c);
         }
-        render_bar(rendr, float(m_game->m_orbs_collected), float(m_game->get_current_level().m_orbs_needed));
+        render_bar(rendr, player->m_hp, player->m_max_hp);
 
         SDL_Color c = {200, 200, 200, 100};
         auto current_level = "Level " + std::to_string(m_game->get_current_level_index());
         SDL_Rect rect{550, 20, 200, 50};
         draw_text(rendr, m_game->res_manager(), current_level, "font20", &rect, c);
-
-        // Draw "GUI"
-        // freddi TODO
-
         SDL_RenderPresent(rendr);
 
     }
