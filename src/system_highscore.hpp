@@ -5,10 +5,12 @@
 #include "game.hpp"
 #include "component_player.hpp"
 #include "component_orb.hpp"
+#include "component_enemy.hpp"
 
 #include "entityx/entityx.h"
 
 #include <type_traits>
+#include <iostream>
 
 class HighscoreSystem : public entityx::System<HighscoreSystem>,
                        public entityx::Receiver<HighscoreSystem> {
@@ -29,6 +31,9 @@ class HighscoreSystem : public entityx::System<HighscoreSystem>,
           (void)entity;
           player->addScore(pts_per_sec* dt);
         }
+        if(hit) {
+            
+        }
     }
 
     void receive(const CollisionEvent &collision_event) {
@@ -36,19 +41,24 @@ class HighscoreSystem : public entityx::System<HighscoreSystem>,
 
         auto e1 = copy.m_first.component<Player>();
         auto e2 = copy.m_second.component<Orb>();
+        auto e3 = copy.m_second.component<Enemy>();
         if(e1 && e2) {
           e1->addScore(e2->score());
+        }
+        if(e1 && e3) {
+            hit = true;
         }
     }
 
     void receive(const LevelChangedEvent &level_changed_event)
     {
-       m_game->m_orbs_collected = 0; 
+       m_game->m_orbs_collected = 0;
     }
-    
+
     private:
     Game *m_game;
     float pts_per_sec = -5.0f; // 10 is really high
+    bool hit;
 
 };
 
