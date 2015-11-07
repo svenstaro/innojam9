@@ -64,7 +64,6 @@ class OrbSpawnSystem : public entityx::System<OrbSpawnSystem>,
         orb.assign<Collectable>();
         orb.assign<Collidable>(10);
         orb.assign<Orb>(v * 5);
-        std::cout << v << std::endl;
         //std::cout << "Spawning orb @" << pos.x << "," << pos.y << std::endl;
     }
 
