@@ -155,8 +155,13 @@ class DrawSystem : public entityx::System<DrawSystem> {
             SDL_Color c = {200, 200, 200, 0};
             draw_text(rendr, m_game->res_manager(), score, "font20", 0, 0, c);
         }
-        // Draw "GUI"
-        // freddi TODO
+        render_bar(rendr, float(m_game->m_orbs_collected), float(100));
+        SDL_RenderPresent(rendr);
+
+    }
+
+  private:
+    void render_bar(SDL_Renderer *rendr, float i, float max) {
         auto bar_tex = m_game->res_manager().texture("bar");
         int w, h;
         int padding = 0;
@@ -165,7 +170,7 @@ class DrawSystem : public entityx::System<DrawSystem> {
         SDL_GetWindowSize(m_game->window(), &w, &h);
         SDL_Rect bar_src;
         SDL_Rect bar_dst;
-        int fill = int(glm::ceil((float(orbs) / 32.f) * bar_width));
+        int fill = int(glm::ceil((i / max) * bar_width));
         for(int i = 0; i < bar_width; i+= 64) {
             int width = glm::min(bar_width - i, 64 * scale);
             bar_src = SDL_Rect{32, 16, width/ scale, 16};
@@ -178,11 +183,7 @@ class DrawSystem : public entityx::System<DrawSystem> {
                 SDL_RenderCopy(rendr, bar_tex, &bar_src, &bar_dst);
             }
         }
-        SDL_RenderPresent(rendr);
-
     }
-
-  private:
     inline float rad_to_deg(float f)
     {
       return f / glm::two_pi<float>()*360.0;
