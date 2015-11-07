@@ -30,19 +30,24 @@ MainState::~MainState() {
 }
 
 int MainState::init() {
+    float radius_inner = 100;
+    float radius_outer = 300;
+
     m_systems.add<DrawSystem>(m_game);
     m_systems.add<ControlSystem>();
     m_systems.add<CollisionSystem>();
     m_systems.add<PathSystem>();
-    m_systems.add<MovementSystem>(50, 300);
+    m_systems.add<MovementSystem>(radius_inner, radius_outer);
     m_systems.add<HighscoreSystem>();
     m_systems.add<EmitterSystem>(m_game, linear_path, 0.5, 0.3);
-    m_systems.add<OrbSpawnSystem>(m_entities);
+    m_systems.add<OrbSpawnSystem>(m_entities, radius_inner, radius_outer);
     m_systems.configure();
 
     entityx::Entity player = m_entities.create();
     //must be at (r, 3/2pi) !!
-    player.assign<Position>(glm::vec2(100.f, 1.5 * glm::pi<double>()));
+    player.assign<Position>(
+        glm::vec2((radius_outer-radius_inner) / 2.0 + radius_inner,
+        1.5 * glm::pi<double>()));
     player.assign<Moving>(200.f);
     player.assign<Collidable>(15);
     player.assign<Drawable>("player", 30, 30, 10);
@@ -52,10 +57,14 @@ int MainState::init() {
     entityx::Entity background = m_entities.create();
     background.assign<Position>(glm::vec2(0.f, 0.f));
     background.assign<Drawable>("wood", 1000, 1000, 0);
+    
+    entityx::Entity inner_bound = m_entities.create();
+    inner_bound.assign<Position>(glm::vec2(0.f, 0.f));
+    inner_bound.assign<Drawable>("bound", 2*(int)radius_inner, 2*(int)radius_inner, 1);
 
     entityx::Entity outer_bound = m_entities.create();
     outer_bound.assign<Position>(glm::vec2(0.f, 0.f));
-    outer_bound.assign<Drawable>("outer_bound", 600, 600, 1);
+    outer_bound.assign<Drawable>("outer_bound", 2*(int)radius_outer, 2*(int)radius_outer, 1);
 
     AnimTemplate fire_anim(32, 32, 6, 0, 10);
     entityx::Entity fire = m_entities.create();

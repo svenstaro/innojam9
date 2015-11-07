@@ -64,6 +64,7 @@ int Game::init() {
     m_res_manager.load_texture("wood", "res/wood.png", m_render);
     m_res_manager.load_texture("inner_bound", "res/inner_bound.png", m_render);
     m_res_manager.load_texture("outer_bound", "res/outer_bound.png", m_render);
+    m_res_manager.load_texture("bound", "res/bound.png", m_render);
     m_res_manager.load_music("music1", "res/pocket_destroyer.ogg");
     m_res_manager.load_music("music2", "res/orbital_colossus.ogg");
     m_res_manager.load_sound("sound1", "res/whomp.wav");

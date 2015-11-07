@@ -21,7 +21,8 @@
 class OrbSpawnSystem : public entityx::System<OrbSpawnSystem>,
                        public entityx::Receiver<OrbSpawnSystem> {
   public:
-    OrbSpawnSystem(entityx::EntityManager &entities) : m_entities(entities), m_delta(0.f) {
+    OrbSpawnSystem(entityx::EntityManager &entities, float min_dist, float max_dist)
+      : m_min_dist(min_dist), m_max_dist(max_dist), m_entities(entities), m_delta(0.f) {
         m_spawn_direction = glm::vec2((float(std::rand()) / float(RAND_MAX)) * 2.f - 1.f,
                                       (float(std::rand()) / float(RAND_MAX)) * 0.1f - 0.05f);
         m_spawn_position = 100.f * m_spawn_direction;
@@ -45,10 +46,10 @@ class OrbSpawnSystem : public entityx::System<OrbSpawnSystem>,
             m_spawn_direction.x += (float(std::rand()) / float(RAND_MAX)) * 4.f - 2.f;
             m_spawn_direction.y +=
                 ((float(std::rand()) / float(RAND_MAX)) * 0.2f - 0.1f) / m_spawn_position.x;
-            if (m_spawn_position.x < 60.f && m_spawn_direction.x < 0) {
+            if (m_spawn_position.x < m_min_dist && m_spawn_direction.x < 0) {
                 m_spawn_direction.x *= -1;
             }
-            if (m_spawn_position.x > 300.f && m_spawn_direction.x > 0) {
+            if (m_spawn_position.x > m_max_dist && m_spawn_direction.x > 0) {
                 m_spawn_direction.x *= -1;
             }
         }
@@ -94,6 +95,9 @@ class OrbSpawnSystem : public entityx::System<OrbSpawnSystem>,
         spawn_at(m_spawn_position);
         // std::cout << "Spawning orb @" << pos.x << "," << pos.y << std::endl;
     }
+    
+    float m_min_dist;
+    float m_max_dist;
 
     std::vector<entityx::Entity> orbs_to_delete;
     entityx::EntityManager &m_entities;
