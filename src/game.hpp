@@ -1,6 +1,8 @@
 #ifndef GAME_HPP
 #define GAME_HPP
 
+#include "game_config.hpp"
+
 #include "patterns.hpp"
 
 #include "component_position.hpp"
@@ -9,6 +11,7 @@
 #include "strapon/resource_manager/resource_manager.hpp"
 
 #include "entityx/entityx.h"
+#include "difficulty.hpp"
 
 #include <SDL2/SDL.h>
 
@@ -30,6 +33,8 @@ class Game {
     unsigned int get_current_level_index();
     Pattern get_current_level();
     void next_level();
+    void set_difficulty(Difficulty difficulty);
+    Difficulty difficulty();
 
     std::stack<std::pair<std::string, std::unique_ptr<State>>> &states();
     const std::string &statename() const;
@@ -45,14 +50,15 @@ class Game {
     bool m_running = true;
     bool m_debug_mode = false;
     int m_last_frame_time = 0;
-    unsigned int m_current_level_index;
+    unsigned int m_current_level_index = 0;
     std::vector<Pattern> m_level_vector;
-    SDL_Rect m_world_size = {0, 0, 1600, 1200};
+    SDL_Rect m_world_size = {0, 0, WORLD_WIDTH, WORLD_HEIGHT};
 
     SDL_Renderer *m_render;
     SDL_Window *m_window;
     std::stack<std::pair<std::string, std::unique_ptr<State>>> m_states;
     entityx::EntityX m_ex;
+    Difficulty m_difficulty;
     ResourceManager m_res_manager;
 };
 

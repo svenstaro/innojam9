@@ -9,6 +9,11 @@
 #include <vector>
 #include <functional>
 
+/*
+ *
+ */
+
+
 class PatternPart {
     public:
     PatternPart(std::vector<Path_Def> shot_types,
@@ -57,6 +62,10 @@ class PatternPart {
     static PatternPart SIN_SIX_SHOT() {
         return {{Path_Def(sin_path)},{6},{0.f}};
     }
+
+    static PatternPart SPIRAL_ONE_SHOT() {
+        return {{Path_Def(spiral_path)},{1},{0.f}};
+    }
 };
 
 class Pattern {
@@ -65,22 +74,30 @@ class Pattern {
             std::vector<PatternPart> pattern_parts,
             std::vector<unsigned int> pattern_parts_lengths, int orbs_needed);
 
+    static Pattern spiral_test() {
+        return {1.f,25.f,{PatternPart::SPIRAL_ONE_SHOT()},{1},2000000};
+    }
+    
+    static Pattern start() {
+        return {0.f,0.f,{PatternPart::PAUSE()},{1},5};
+    }
+
     static Pattern level1() {
-        return {0.4f,25.f,{PatternPart::SIN_FOUR_SHOT()},{1},5};
+        return {1.f,25.f,{PatternPart::SIN_FOUR_SHOT()},{1},5};
     }
 
     static Pattern level2() {
-        return {0.4f,15.f,{PatternPart::SCYTHE_LINEAR_FOUR_FOUR_SHOTS()},{1},15};
+        return {1.f,15.f,{PatternPart::SCYTHE_LINEAR_FOUR_FOUR_SHOTS()},{1},15};
     }
 
     static Pattern level3() {
-        return {0.5f,19.f,{PatternPart::LINEAR_FOUR_SHOTS(),PatternPart::SCYTHE_LINEAR_FOUR_FOUR_SHOTS()},{10,10},20};
+        return {1.f,19.f,{PatternPart::LINEAR_FOUR_SHOTS(),PatternPart::SCYTHE_LINEAR_FOUR_FOUR_SHOTS()},{10,10},20};
     }
 
     static Pattern level4() {
-        return {0.4f,30.f,{PatternPart::SIN_FOUR_SHOT(), PatternPart::SCYTHE_LINEAR_FOUR_FOUR_SHOTS(), PatternPart::LINEAR_FOUR_SHOTS()},{1,1,1},45};
-    }
-
+        return {1.f,30.f,{PatternPart::SIN_FOUR_SHOT(), PatternPart::SCYTHE_LINEAR_FOUR_FOUR_SHOTS(), PatternPart::LINEAR_FOUR_SHOTS()},{1,1,1},45};
+    }   
+    
         float m_cooldown;
     float m_rotation_speed;
     unsigned int m_pattern_length;
