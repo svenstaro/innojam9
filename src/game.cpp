@@ -79,8 +79,7 @@ int Game::init() {
     entity.assign<Position>();
 
     //Setting order of levels
-    //m_level_vector = {Pattern::level1(), Pattern::level2(),Pattern::level3(), Pattern::level4()};
-    m_level_vector = {Pattern::spiral_test()};
+    m_level_vector = {Pattern::level1(), Pattern::level2(),Pattern::level3(), Pattern::level4()};
     m_states.push({"main", std::make_unique<MainState>(this)});
     m_states.top().second->init();
 
