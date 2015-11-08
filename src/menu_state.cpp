@@ -4,6 +4,7 @@
 
 #include "component_position.hpp"
 #include "component_drawable.hpp"
+#include "component_textitem.hpp"
 #include "component_menuitem.hpp"
 
 #include "anim_template.hpp"
@@ -11,6 +12,7 @@
 #include <glm/vec2.hpp>
 
 #include <SDL.h>
+#include "strapon/sdl_helpers/sdl_helpers.hpp"
 #include <iostream>
 
 
@@ -106,38 +108,46 @@ void MenuState::draw(double dt){
 	//return;
 
 	entityx::ComponentHandle<Position> position;
-	entityx::ComponentHandle<Drawable> drawable;
+	// entityx::ComponentHandle<Drawable> drawable;
 
 
-	for(entityx::Entity entity: m_entities.entities_with_components(position, drawable)){
+	for(entityx::Entity entity: m_entities.entities_with_components(position)){
 		(void) entity;
 
 		glm::vec2 pos = position->position();
 
-		SDL_Rect dest;
-		dest.x = pos.x;
-		dest.y = pos.y;
+		auto drawable = entity.component<Drawable>();
+		auto textitem = entity.component<TextItem>();
+		if(drawable){
+			SDL_Rect dest;
+			dest.x = pos.x;
+			dest.y = pos.y;
 
-		dest.w = drawable->width();
-		dest.h = drawable->height();
+			dest.w = drawable->width();
+			dest.h = drawable->height();
 
-		SDL_Rect* src;
-		AnimTemplate anim = drawable->anim();
-		if (anim.frame_width() == 0 || anim.frame_height() == 0) {
-			src = nullptr;
-		} else {
-			SDL_Rect s;
-			s.x = anim.frame_width() * drawable->animation_index();
-			s.y = anim.frame_height() * anim.y_index();
-			s.w = anim.frame_width();
-			s.h = anim.frame_height();
-			drawable->tick(dt);
-			src = &s;
+			SDL_Rect* src;
+			AnimTemplate anim = drawable->anim();
+			if (anim.frame_width() == 0 || anim.frame_height() == 0) {
+				src = nullptr;
+			} else {
+				SDL_Rect s;
+				s.x = anim.frame_width() * drawable->animation_index();
+				s.y = anim.frame_height() * anim.y_index();
+				s.w = anim.frame_width();
+				s.h = anim.frame_height();
+				drawable->tick(dt);
+				src = &s;
+			}
+
+			SDL_Texture* tex = m_game->res_manager().texture(drawable->texture_key());
+			(void)tex;(void)dest;(void)src;
+			SDL_RenderCopyEx(m_game->renderer(), tex, src, &dest, 0, nullptr, SDL_FLIP_NONE);
 		}
 
-		SDL_Texture* tex = m_game->res_manager().texture(drawable->texture_key());
-		(void)tex;(void)dest;(void)src;
-		SDL_RenderCopyEx(m_game->renderer(), tex, src, &dest, 0, nullptr, SDL_FLIP_NONE);
+		if(textitem){
+			draw_text(m_game->renderer(), m_game->res_manager(), textitem->text(), textitem->font_key(), pos.x, pos.y, textitem->color());
+		}
 	}
 
 	SDL_SetRenderTarget(renderer, nullptr);
