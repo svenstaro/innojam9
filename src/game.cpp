@@ -118,6 +118,9 @@ void Game::game_over(float score) {
 void Game::next_level()
 {
     rumble_for(0.75f);
+    m_remaining_lvl_change = 1.5f;
+    m_clear_bullets = true;
+    //  HIER LEVEL UP SOUND
     m_current_level_index++;
     if(m_current_level_index == m_level_vector.size())
     {

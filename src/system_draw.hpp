@@ -3,6 +3,7 @@
 #include "component_drawable.hpp"
 #include "component_position.hpp"
 #include "component_player.hpp"
+#include "component_enemy.hpp"
 #include "component_orb.hpp"
 
 #include "entityx/entityx.h"
@@ -121,27 +122,45 @@ class DrawSystem : public entityx::System<DrawSystem> {
         float add_rotate = 100.0 * beta * glm::pi<float>()/8;*/
 
         float rotate_by = -rad_to_deg(player_pos->position().y - glm::half_pi<float>());
-        SDL_RenderCopyEx(rendr, m_drawtex, nullptr, nullptr,
-            rotate_by, nullptr, SDL_FLIP_NONE);
-        SDL_RenderCopyEx(rendr, m_lighttex, nullptr, nullptr,
-            rotate_by, nullptr, SDL_FLIP_NONE);
+        SDL_SetTextureColorMod(m_drawtex, 255 - 64 * player->m_hurt, 255 - 229 * player->m_hurt, 255 - 220 * player->m_hurt);
+        SDL_RenderCopyEx(rendr, m_drawtex, nullptr, nullptr, rotate_by, nullptr, SDL_FLIP_NONE);
+        SDL_RenderCopyEx(rendr, m_lighttex, nullptr, nullptr, rotate_by, nullptr, SDL_FLIP_NONE);
 
         render_entity(player_entity, dt, false, 0.0f);
 
+        // BLACKOUT ON LEVEL CHANGE
+        float alpha = m_game->m_remaining_lvl_change > 0.75f ?
+          1.f - (m_game->m_remaining_lvl_change - 1.f) / 0.5f :
+          m_game->m_remaining_lvl_change / 0.5f;
+        alpha = glm::clamp(alpha, 0.0f, 1.0f);
+        m_game->m_remaining_lvl_change -= dt;
+
+        if(m_game->m_clear_bullets && alpha >= 0.98)
+        {
+          entityx::ComponentHandle<Enemy> enemy;
+          for(entityx::Entity entity : es.entities_with_components(enemy))
+            entity.destroy();
+          m_game->m_clear_bullets = false;
+        }
+        
+        SDL_SetTextureColorMod(m_render_buffer, 255 - 255 * alpha, 255 - 255 * alpha, 255 - 255 * alpha);
+        
         SDL_SetRenderTarget(rendr, nullptr);
 
+        // GENERATE RUMBLE NOISE
         SDL_Rect dst{0, 0, 800, 600};
+        SDL_RenderGetViewport(rendr, &dst);
+        dst.x = dst.y = 0;
         dst.x += distribution(generator) * m_game->m_remaining_rumble;
         dst.y += distribution(generator) * m_game->m_remaining_rumble;
-        float angle = dst.x += distribution(generator) * m_game->m_remaining_rumble;
+        float angle = distribution(generator) * m_game->m_remaining_rumble;
         SDL_Point rot_ctr;
         rot_ctr.x = distribution(generator) * m_game->m_remaining_rumble;
         rot_ctr.y = distribution(generator) * m_game->m_remaining_rumble;
         m_game->m_remaining_rumble = glm::max(0.0f, m_game->m_remaining_rumble - float(dt));
-        SDL_RenderGetViewport(rendr, &dst);
-        dst.x = dst.y = 0;
-        SDL_RenderCopyEx(rendr, m_render_buffer, &m_camera, &dst, angle, nullptr, SDL_FLIP_NONE);
 
+        // FINAL RENDER CALL!
+        SDL_RenderCopyEx(rendr, m_render_buffer, &m_camera, &dst, angle, nullptr, SDL_FLIP_NONE);
 
         int orbs = 0;
         int bullets = 0;
@@ -152,7 +171,6 @@ class DrawSystem : public entityx::System<DrawSystem> {
             orbs++;
         }
 
-        SDL_SetTextureColorMod(m_drawtex, 255 - 64 * player->m_hurt, 255 - 229 * player->m_hurt, 255 - 220 * player->m_hurt);
 
         if (m_game->is_debug_mode()) {
             SDL_Color c = {200, 200, 200, 100};
