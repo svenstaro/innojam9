@@ -119,12 +119,12 @@ struct Stage
 
     static Stage LINEAR_TWO_PULSED_TWIN()
     {
-        return {{LayerCompound::DUAL_TWIN(),LayerCompound::PAUSE()},{3,2},0.7f}; 
+        return {{LayerCompound::DUAL_TWIN(),LayerCompound::PAUSE()},{3,2},0.3f}; 
     }
 
     static Stage LINEAR_FOUR_PULSED_TWIN()
     {
-        return {{LayerCompound::FOUR_TWIN(),LayerCompound::PAUSE()},{3,2},0.7f}; 
+        return {{LayerCompound::FOUR_TWIN(),LayerCompound::PAUSE()},{3,2},0.5f}; 
     }
 
     static Stage STS_ONE()
