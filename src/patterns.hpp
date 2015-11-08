@@ -139,7 +139,7 @@ struct Stage
 
     static Stage SIN_TWO()
     {
-        return {{LayerCompound::SIN_TWO_SHOTS()}, {1}, 1.f};
+        return {{LayerCompound::SIN_TWO_SHOTS()}, {4}, 0.2f};
     }
 
     static Stage SPIRAL_ONE()
