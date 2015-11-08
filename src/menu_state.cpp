@@ -13,17 +13,7 @@
 #include <SDL.h>
 #include <iostream>
 
-void new_game(Game* game){
-	std::cout << "new game" << std::endl;
-}
 
-void show_highscore(Game* game){
-	std::cout << "highscore" << std::endl;
-}
-
-void shutdown(Game* game){
-	game->shutdown();
-}
 
 MenuState::MenuState(Game *game): m_game(game){
 
@@ -35,7 +25,7 @@ MenuState::~MenuState(){
 
 int MenuState::init(){
 	int w, h;
-	float yoff = 200;
+
 	SDL_RenderGetLogicalSize(m_game->renderer(), &w, &h);
 
 	m_drawtex = SDL_CreateTexture(m_game->renderer(), SDL_PIXELTYPE_UNKNOWN,
@@ -43,28 +33,7 @@ int MenuState::init(){
 
 	m_camera = SDL_Rect{0,0,w,h};
 
-	entityx::Entity background = m_entities.create();
-	background.assign<Drawable>("menu_red_background", 800, 800, 0);
-	background.assign<Position>(glm::vec2(0.f, 0.f));
-
-	// entityx::Entity title = m_entities.create();
-	// title.assign<Drawable>("title", w, h);
-	// title.assign<Position>(glm:vec(0.f, 0.f));
-
-	entityx::Entity btn_game = m_entities.create();
-	btn_game.assign<Drawable>("menu_newgame", 64, 256, 0, AnimTemplate(256, 64, 1, 0));
-	btn_game.assign<Position>(glm::vec2(w/2-128, yoff + 100.f));
-	btn_game.assign<MenuItem>("new_game", new_game);
-
-	entityx::Entity btn_highscore = m_entities.create();
-	btn_highscore.assign<Drawable>("menu_highscore", 64, 256, 0, AnimTemplate(256, 64, 1, 0));
-	btn_highscore.assign<Position>(glm::vec2(w/2-128, yoff + 200.f));
-	btn_highscore.assign<MenuItem>("highscore", show_highscore);
-
-	entityx::Entity btn_exit = m_entities.create();
-	btn_exit.assign<Drawable>("menu_exit", 64, 256, 0, AnimTemplate(256, 64, 1, 0));
-	btn_exit.assign<Position>(glm::vec2(w/2-128, yoff + 300.f));
-	btn_exit.assign<MenuItem>("exit", shutdown);
+	init_menuitems(w, h);
 
 	return 0;
 }
@@ -75,7 +44,7 @@ void MenuState::update(double dt){
 		(void)entity;
 		drawable->m_anim.set_y_index(0);
 	}
-	
+
 	int x, y;
 	SDL_GetMouseState(&x, &y);
 	entityx::Entity ent;
@@ -87,11 +56,11 @@ void MenuState::update(double dt){
 	SDL_Event e;
 	while (SDL_PollEvent(&e)) {
 		if (e.type == SDL_QUIT) {
-			shutdown(m_game);
+			m_game->shutdown();
 		}
 		else if (e.type == SDL_KEYDOWN) {
 			if (e.key.keysym.sym == SDLK_ESCAPE) {
-				shutdown(m_game);
+				m_game->shutdown();
 			} else if (e.key.keysym.sym == SDLK_F3) {
 				m_game->toggle_debug_mode();
 			}

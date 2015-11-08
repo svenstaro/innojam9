@@ -14,7 +14,9 @@ public:
 	int init() override;
 	void update(double dt) override;
 
-private:
+protected:
+	virtual void init_menuitems(int w, int h) = 0;
+
 	bool find_target(int x, int y, entityx::Entity& ret_entity);
 	void draw(double dt);
 
