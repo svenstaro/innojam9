@@ -177,17 +177,17 @@ struct Level
          *      anzahl von orbs die eingesammelt werden muessen um den
          *      level abzuschlieszen.
          * */
-        return{{Stage::LINEAR_TWO()}, 5, 20.f};
+        return{{Stage::LINEAR_TWO()}, 5, glm::radians(20.f)};
     }
 
     static Level LEVEL_TWO()
     {
-        return{{Stage::LINEAR_TWO_PULSED()}, 5, 20.f};
+        return{{Stage::LINEAR_TWO_PULSED()}, 5, glm::radians(20.f)};
     }
 
     static Level LEVEL_THREE()
     {
-        return{{Stage::LINEAR_TWO_PULSED_TWIN()}, 5, 20.f};
+        return{{Stage::LINEAR_TWO_PULSED_TWIN()}, 5, glm::radians(20.f)};
     }
 
     static Level LEVEL_FOUR()
