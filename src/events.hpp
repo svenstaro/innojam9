@@ -23,6 +23,15 @@ struct CollisionEvent {
     entityx::Entity m_second;
 };
 
+struct OrbCollectedEvent {
+    OrbCollectedEvent(unsigned int collected, unsigned int needed)
+        : m_collected(collected), m_needed(needed) {
+    }
+
+    unsigned int m_collected;
+    unsigned int m_needed;
+};
+
 struct HitEvent {
     HitEvent() {
     }

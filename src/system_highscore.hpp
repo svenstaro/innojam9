@@ -26,6 +26,7 @@ class HighscoreSystem : public entityx::System<HighscoreSystem>,
 
     void update(entityx::EntityManager &es, entityx::EventManager &events,
                 entityx::TimeDelta dt) override {
+        m_events = &events;
         entityx::ComponentHandle<Player> player;
         for (entityx::Entity entity : es.entities_with_components(player)) {
             (void)entity;
@@ -58,6 +59,7 @@ class HighscoreSystem : public entityx::System<HighscoreSystem>,
         auto e3 = copy.m_second.component<Enemy>();
         if (e1 && e2) {
             e1->addScore(e2->score());
+            m_events->emit<OrbCollectedEvent>(m_game->m_orbs_collected, m_game->get_current_level().m_orbs_to_next_level);
         }
         if (e1 && e3) {
             hit = true;
@@ -78,6 +80,7 @@ class HighscoreSystem : public entityx::System<HighscoreSystem>,
     bool hit = false;
     float immunity = 0.0f;
     entityx::Entity damage_enem;
+    entityx::EventManager *m_events;
 };
 
 #endif
