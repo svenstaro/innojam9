@@ -8,7 +8,7 @@ clang:
 	mkdir -p build
 	cd build; CXX=clang++ cmake ..; make -j
 
-run:
+run: default
 	build/innojam9
 
 web:
