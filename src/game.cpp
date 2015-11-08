@@ -96,6 +96,7 @@ int Game::init() {
     m_res_manager.load_texture("menu_title", "res/menu/title.png", m_render);
 
     m_res_manager.load_texture("menu_game_over", "res/menu/game_over.png", m_render);
+    m_res_manager.load_texture("menu_win", "res/menu/win.png", m_render);
     m_res_manager.load_texture("menu_game_over_back", "res/menu/game_over_back.png", m_render);
 
     m_res_manager.load_font("font20", "res/DejaVuSans.ttf", 20);

@@ -89,7 +89,6 @@ class HighscoreSystem : public entityx::System<HighscoreSystem>,
     }
 
     void receive(const GameOverEvent& event) {
-        std::cout << "GAME OVVVVVER! " << event.is_win() << std::endl;
         m_game->game_over(event.is_win(), event.get_score());
     }
 
