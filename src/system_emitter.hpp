@@ -22,7 +22,7 @@
 #include <glm/glm.hpp>
 #include <vector>
 
-class EmitterSystem : public entityx::System<EmitterSystem> 
+class EmitterSystem : public entityx::System<EmitterSystem>
 {
     public:
         EmitterSystem(Game *game) : m_game(game) {
@@ -32,7 +32,6 @@ class EmitterSystem : public entityx::System<EmitterSystem>
         {
             m_total_elapsed += dt;
             m_last_spawned += dt;
-
             if (m_last_spawned > current_stage.m_cooldown) {
                 Mix_Volume(1, 20);
                 Mix_PlayChannel(1, m_game->res_manager().sound("sound1"), 0);
@@ -40,11 +39,13 @@ class EmitterSystem : public entityx::System<EmitterSystem>
                 m_last_spawned = 0.f;
 
 
-                for(unsigned int i = 0; i < current_compound.m_number_of_shots.size(); i++)
+                for(unsigned int i = 0; i < current_compound.m_number_of_paths; i++)
                 {
+                    std::cout<< "nop: " <<current_compound.m_number_of_paths << std::endl;
                     for(unsigned int j = 0; j < current_compound.m_number_of_shots[i]; j++)
                     {
-                        create_bullet(es, current_compound.m_paths[i],i);
+                        std::cout << "  nos: " << i <<" - "<< current_compound.m_number_of_shots[i] << std::endl;
+                        create_bullet(es, current_compound.m_paths[i],j,i);
                     }
                 }
                 current_stage.next();
@@ -60,7 +61,10 @@ class EmitterSystem : public entityx::System<EmitterSystem>
             if(m_game->m_orbs_collected == current_level.m_orbs_to_next_level)
             {
                 m_game->next_level();
-                events.emit<LevelChangedEvent>();  
+                events.emit<LevelChangedEvent>();
+                current_level = m_game->get_current_level();
+                current_stage = current_level.get_current_stage();
+                current_compound = current_stage.get_current_repitition();
             }
         }
     private:
@@ -78,9 +82,9 @@ class EmitterSystem : public entityx::System<EmitterSystem>
 
     Level current_level = m_game->get_current_level();
     Stage current_stage = current_level.get_current_stage();
-    LayerCompound current_compound = current_stage.get_current_repitition(); 
+    LayerCompound current_compound = current_stage.get_current_repitition();
 
-    void create_bullet(entityx::EntityManager &es, Path_Def path_definition, int i) {
+    void create_bullet(entityx::EntityManager &es, Path_Def path_definition, unsigned int i, unsigned int j) {
         entityx::Entity next = es.create();
 
         switch(path_definition.get_path_type()){
@@ -93,8 +97,8 @@ class EmitterSystem : public entityx::System<EmitterSystem>
             case NORMAL:
                 next.assign<Path>(path_definition.get_path_function(),
                         glm::vec2(0,0),
-                        glm::vec2(1, glm::radians(m_total_elapsed * 30 +
-                                (current_compound.m_offset[i] + (360.f / current_compound.m_number_of_shots[i]) * i))),
+                        glm::vec2(1, glm::radians(m_total_elapsed * 1 +
+                                (current_compound.m_offset[j] + (360.f / current_compound.m_number_of_shots[j]) * i))),
                         20.f);
                 break;
         }
@@ -102,7 +106,7 @@ class EmitterSystem : public entityx::System<EmitterSystem>
         next.assign<Moving>(100.f);
         next.assign<Enemy>();
         next.assign<Collidable>(10.f);
-        next.assign<Light>("gradient", 0.5f, glm::vec3{255, 100, 0});
+        next.assign<Light>("gradient", 0.3f, glm::vec3{255, 100, 0});
         next.assign<Drawable>("magma", 20, 20, 4, AnimTemplate(6, 6, 14, 0, 40));
     }
 };

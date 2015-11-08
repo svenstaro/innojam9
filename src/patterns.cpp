@@ -23,7 +23,7 @@ LayerCompound::LayerCompound(std::vector<Path_Def> paths,
                          )
     : m_paths(paths), m_number_of_shots(number_of_shots), m_offset(offset)
 {
-
+    m_number_of_paths  = paths.size();
 }
 
     Stage::Stage(std::vector<LayerCompound> stages,
@@ -79,6 +79,5 @@ void Level::next()
 
 Stage Level::get_current_stage()
 {
-    std::cout << m_current_stage << "HEER IS DEBUG CODE FINDE MICHT" << std::endl;
     return m_stages[m_current_stage];
 }

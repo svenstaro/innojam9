@@ -2,7 +2,7 @@
 
 Game tbd
 
-![](screenshit.png)
+![](screenshot.png)
 
 # Authors
 

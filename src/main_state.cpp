@@ -17,6 +17,7 @@
 #include "system_highscore.hpp"
 #include "system_emitter.hpp"
 #include "system_orbspawn.hpp"
+#include "system_runes.hpp"
 
 #include "entityx/entityx.h"
 #include <glm/vec2.hpp>
@@ -46,6 +47,7 @@ int MainState::init() {
     m_systems.add<MovementSystem>(RING_INNER, RING_OUTER);
     m_systems.add<HighscoreSystem>(m_game);
     m_systems.add<EmitterSystem>(m_game);
+    m_systems.add<RunesSystem>();
     m_systems.add<OrbSpawnSystem>(m_game, m_entities, RING_INNER, RING_OUTER);
     //
     //     // glm::vec2 origin = glm::vec2(300, 0);
@@ -136,4 +138,5 @@ void MainState::update(double dt) {
     m_systems.update<OrbSpawnSystem>(dt);
     m_systems.update<PathSystem>(dt);
     m_systems.update<EmitterSystem>(dt);
+    m_systems.update<RunesSystem>(dt);
 }
