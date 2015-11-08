@@ -129,7 +129,7 @@ class DrawSystem : public entityx::System<DrawSystem> {
 
         render_entity(player_entity, dt, false, 0.0f);
 
-        // BLACKOUT ON LEVEL CHANGE
+        // BLACKOUT ON LEVEL CHANGE (and game over)
         float alpha = m_game->m_remaining_lvl_change > 0.75f ?
           1.f - (m_game->m_remaining_lvl_change - 1.f) / 0.5f :
           m_game->m_remaining_lvl_change / 0.5f;

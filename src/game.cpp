@@ -110,7 +110,6 @@ int Game::init() {
     //Setting order of levels
     m_level_vector = {Level::LEVEL_ONE(), Level::LEVEL_TWO(), Level::LEVEL_THREE(), Level::LEVEL_FOUR(),
                       Level::LEVEL_FIVE(), Level::LEVEL_SIX(), Level::LEVEL_SEVEN(), Level::LEVEL_EIGHT()};
-    // m_level_vector = {Level::LEVEL_ONE(), Level::LEVEL_TWO(), Level::LEVEL_THREE()};
 
     if(DEBUG) {
         m_difficulty = DEBUGDIF;
@@ -125,6 +124,7 @@ int Game::init() {
 }
 
 void Game::game_over(bool win, float score) {
+    
     if(win){
         m_states.push({"win", std::make_unique<WinState>(this, score)});
     }
@@ -141,7 +141,7 @@ void Game::game_over(bool win, float score) {
 
 void Game::next_level()
 {
-    rumble_for(0.75f);
+    rumble_for(1.5f);
     m_remaining_lvl_change = 1.5f;
     m_clear_bullets = true;
     //  HIER LEVEL UP SOUND

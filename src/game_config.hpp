@@ -20,7 +20,9 @@ static const int WORLD_HEIGHT = 1200;
 static const int WIDTH = 800;
 static const int HEIGHT = 600;
 
-static const float MAX_SPEED = 200.f;
+static const float MAX_SPEED = 280.f;
+static const float ACCELERATION_STEP = 0.2f;
+static const float DECELERATION_STEP = 0.15f;
 
 static const bool DEBUG = false;
 static const int DEBUG_START_LEVEL = 1; // index of first level
