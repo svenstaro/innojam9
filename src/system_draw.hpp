@@ -144,6 +144,9 @@ class DrawSystem : public entityx::System<DrawSystem> {
             entity.destroy();
           m_game->m_clear_bullets = false;
           events.emit<OrbCollectedEvent>(0, m_game->get_current_level().m_orbs_to_next_level);
+          if(m_game->get_current_level_index() == m_game->get_max_level_index()) {
+              events.emit<BossLevelEvent>();
+          }
         }
 
         SDL_SetTextureColorMod(m_render_buffer, 255 - 255 * alpha, 255 - 255 * alpha, 255 - 255 * alpha);
