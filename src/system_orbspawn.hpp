@@ -108,10 +108,10 @@ class OrbSpawnSystem : public entityx::System<OrbSpawnSystem>,
         AnimTemplate anim(12, 12, 6, 0, 10);
         entityx::Entity orb = m_entities.create();
         orb.assign<Position>(new_pos);
-        orb.assign<Drawable>("orb", 16, 16, 8, anim);
+        orb.assign<Drawable>("orb", 16, 16, 8, anim, glm::i8vec3{255, 100, 255}, true);
         orb.assign<Collectable>();
         orb.assign<Collidable>(10);
-        orb.assign<Light>("gradient", 0.30f, glm::vec3{100, 100, 255});
+        orb.assign<Light>("gradient", 0.30f, glm::vec3{255, 100, 255});
         orb.assign<Orb>();
         //std::cout << "spawning at " << dt << " " << glm::to_string(new_pos) << std::endl;
     }
