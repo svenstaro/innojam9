@@ -2,6 +2,7 @@
 
 #include "main_state.hpp"
 #include "menu_state.hpp"
+#include "game_over_state.hpp"
 
 #include "game_config.hpp"
 
@@ -23,7 +24,7 @@ Game::~Game() {
 }
 
 int Game::init() {
-    m_difficulty = EASY;
+    m_difficulty = SVENSTARO;
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) != 0) {
         std::cerr << "SDL_Init Error: " << SDL_GetError() << std::endl;
         return 1;
@@ -94,6 +95,10 @@ int Game::init() {
     return 0;
 }
 
+void Game::game_over() {
+    m_states.push({"gameover", std::make_unique<GameOverState>(this)});
+}
+
 void Game::next_level()
 {
     m_current_level_index++;
@@ -110,6 +115,11 @@ void Game::mainloop() {
     m_last_frame_time = current_time;
 
     m_states.top().second->update(dt);
+}
+
+void Game::exit() {
+    //m_states.pop();
+    //m_states.pop();
 }
 
 SDL_Renderer *Game::renderer() {

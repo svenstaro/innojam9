@@ -5,8 +5,8 @@
  *  Global config values for easy tweaking and changing
  */
 
-// time after an ord gets destroyed
-static const float DECAY_ORBS = 6.5f;
+// Maximum orbs spawned on screen
+static const int MAX_ORBS = 2;
 
 // variables for borders that restricts movement
 static const float RING_INNER = 100.f;

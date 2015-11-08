@@ -38,22 +38,6 @@ MainState::~MainState() {
 }
 
 int MainState::init() {
-    float hp;
-    switch(m_game->difficulty()) {
-        default:
-        case EASY:
-            hp = 10;
-        break;
-        case MEDIUM:
-            hp = 5;
-        break;
-        case HARD:
-            hp = 3;
-        break;
-        case SVENSTARO:
-            hp = 0;
-        break;
-    }
 
     m_systems.add<DrawSystem>(m_game);
     m_systems.add<ControlSystem>();
@@ -74,6 +58,23 @@ int MainState::init() {
 //     m_systems.add<EmitterSystem>(m_game, linear_path, 0.5, 0.3);
 
     m_systems.configure();
+    
+    float hp;
+    switch(m_game->difficulty()) {
+        default:
+        case EASY:
+            hp = 10;
+        break;
+        case MEDIUM:
+            hp = 5;
+        break;
+        case HARD:
+            hp = 3;
+        break;
+        case SVENSTARO:
+            hp = 0;
+        break;
+    }
 
     entityx::Entity player = m_entities.create();
     // must be at (r, 3/2pi) !!
