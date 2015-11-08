@@ -135,6 +135,8 @@ class DrawSystem : public entityx::System<DrawSystem> {
         alpha = glm::clamp(alpha, 0.0f, 1.0f);
         m_game->m_remaining_lvl_change -= dt;
 
+        player->m_invincible = alpha >= 0.1;
+
         if(m_game->m_clear_bullets && alpha >= 0.98)
         {
           entityx::ComponentHandle<Enemy> enemy;
@@ -155,9 +157,6 @@ class DrawSystem : public entityx::System<DrawSystem> {
         dst.x += distribution(generator) * m_game->m_remaining_rumble;
         dst.y += distribution(generator) * m_game->m_remaining_rumble;
         float angle = distribution(generator) * m_game->m_remaining_rumble;
-        //SDL_Point rot_ctr;
-        //rot_ctr.x = distribution(generator) * m_game->m_remaining_rumble;
-        //rot_ctr.y = distribution(generator) * m_game->m_remaining_rumble;
         m_game->m_remaining_rumble = glm::max(0.0f, m_game->m_remaining_rumble - float(dt));
 
         // FINAL RENDER CALL!
