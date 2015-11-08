@@ -24,7 +24,6 @@ Game::~Game() {
 }
 
 int Game::init() {
-    m_difficulty = SVENSTARO;
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) != 0) {
         std::cerr << "SDL_Init Error: " << SDL_GetError() << std::endl;
         return 1;
@@ -100,7 +99,11 @@ int Game::init() {
     //Setting order of levels
     m_level_vector = {Level::LEVEL_ONE(), Level::LEVEL_ONE()};
 
-    m_states.push({"main_menu", std::make_unique<MainMenuState>(this)});
+    if(DEBUG)
+        m_states.push({"main", std::make_unique<MainState>(this)});
+    else
+        m_states.push({"main_menu", std::make_unique<MainMenuState>(this)});
+
     m_states.top().second->init();
 
     return 0;
