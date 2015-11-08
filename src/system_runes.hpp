@@ -68,12 +68,12 @@ class RunesSystem : public entityx::System<RunesSystem>,
     }
 
     void init(entityx::EntityManager &es) {
-        float radius = RING_INNER + 32;
+        float radius = RING_INNER;
         float step = (glm::pi<float>() * 2.f) / float(rune_count);
         for(int i = 0; i < rune_count; i++) {
             entityx::Entity rune = es.create();
             rune.assign<Rune>(i);
-            rune.assign<Drawable>("runes", 40, 40, 1, AnimTemplate(32, 32, 1, i), rune_color_off);
+            rune.assign<Drawable>("runes", 32, 32, 1, AnimTemplate(32, 32, 1, i), rune_color_off);
             rune.assign<Position>(glm::vec2(radius, i*step));
         }
     }
