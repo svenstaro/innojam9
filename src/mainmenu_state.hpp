@@ -42,9 +42,9 @@ protected:
 		background.assign<Drawable>("menu_red_background", 800, 800, 0);
 		background.assign<Position>(glm::vec2(0.f, 0.f));
 
-		// entityx::Entity title = m_entities.create();
-		// title.assign<Drawable>("title", w, h);
-		// title.assign<Position>(glm:vec(0.f, 0.f));
+		entityx::Entity title = m_entities.create();
+		title.assign<Drawable>("menu_title", 256, 512);
+		title.assign<Position>(glm::vec2((800 - 512) / 2, 0.f));
 
 		entityx::Entity btn_game = m_entities.create();
 		btn_game.assign<Drawable>("menu_newgame", 64, 256, 0, AnimTemplate(256, 64, 1, 0));

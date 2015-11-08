@@ -91,6 +91,7 @@ int Game::init() {
     m_res_manager.load_texture("menu_highscore", "res/menu/highscore.png", m_render);
     m_res_manager.load_texture("menu_exit", "res/menu/exit.png", m_render);
     m_res_manager.load_texture("menu_back", "res/menu/back.png", m_render);
+    m_res_manager.load_texture("menu_title", "res/menu/title.png", m_render);
 
     m_res_manager.load_texture("menu_game_over", "res/menu/game_over.png", m_render);
     m_res_manager.load_texture("menu_game_over_back", "res/menu/game_over_back.png", m_render);
