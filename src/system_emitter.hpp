@@ -112,7 +112,7 @@ class EmitterSystem : public entityx::System<EmitterSystem> {
         next.assign<Collidable>(10.f);
         if(m_game->get_current_level_index() == m_game->get_max_level_index()) {
             next.assign<Light>("gradient", 0.3f, glm::vec3{0, 0, 255});
-            next.assign<Drawable>("magma", 20, 20, 4, AnimTemplate(6, 6, 14, 0, 40), glm::i8vec3(50, 50, 255));
+            next.assign<Drawable>("magma", 20, 20, 4, AnimTemplate(6, 6, 14, 0, 40), glm::i8vec3(100, 100, 100));
         }
         else {
             next.assign<Light>("gradient", 0.3f, glm::vec3{255, 100, 0});
