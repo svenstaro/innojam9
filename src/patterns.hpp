@@ -28,7 +28,17 @@ struct LayerCompound
     {
         return {{Path_Def(sin_path)}, {2}, {0.f}}; 
     }
+   
+    static LayerCompound PAUSE()
+    {
+        return {{Path_Def(sin_path)}, {0},{0.f}};
+    }
     
+    static LayerCompound SIN_TWO_SHOTS_FIVE_DEF_OFFSET()
+    {
+        return {{Path_Def(sin_path)}, {2}, {5.f}}; 
+    }
+
     static LayerCompound SIN_FOUR_SHOTS()
     {
         return {{Path_Def(sin_path)}, {4}, {0.f}}; 
@@ -52,6 +62,11 @@ struct LayerCompound
     static LayerCompound SPIRAL_ONE()
     {
         return {{Path_Def(spiral_path)},{1},{0.f}};
+    }
+
+    static LayerCompound DUAL_TWIN()
+    {
+        return {{Path_Def(linear_path),Path_Def(linear_path)},{1,1},{0.f,5.f}};
     }
 
     static LayerCompound LINEAR_TWO()
@@ -86,6 +101,15 @@ struct Stage
          *      abgegeben
          * */
         return {{LayerCompound::SIN_SCYTHE_FOUR_TWO(),LayerCompound::SIN_TWO_SHOTS()},{2,2},1.f};   
+    }
+    static Stage LINEAR_TWO_PULSED()
+    {
+        return {{LayerCompound::SIN_TWO_SHOTS(),LayerCompound::PAUSE()},{3,3},1.f};
+    }
+
+    static Stage LINEAR_TWO_PULSED_TWIN()
+    {
+        return {{LayerCompound::DUAL_TWIN(),LayerCompound::PAUSE()},{3,3},1.4f}; 
     }
 
     static Stage STS_ONE()
