@@ -19,6 +19,7 @@ struct LayerCompound
                 std::vector<unsigned int> number_of_shots,
                 std::vector<float> offset);
     unsigned int m_number_of_paths;
+    unsigned int m_number_of_shots_done = 0;
     std::vector<Path_Def> m_paths;
     std::vector<unsigned int> m_number_of_shots;
     std::vector<float> m_offset;

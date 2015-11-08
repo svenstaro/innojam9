@@ -18,18 +18,17 @@
 #include "component_orb.hpp"
 #include "component_moving.hpp"
 #include "component_path.hpp"
+#include "component_light.hpp"
+#include "component_drawable.hpp"
 
 #include <glm/glm.hpp>
 #include <vector>
 
-class EmitterSystem : public entityx::System<EmitterSystem> 
-{
+class EmitterSystem : public entityx::System<EmitterSystem> {
     public:
         EmitterSystem(Game *game) : m_game(game) {
         }
-
-        void update(entityx::EntityManager &es, entityx::EventManager &events, double dt)
-        {
+        void update(entityx::EntityManager &es, entityx::EventManager &events, double dt) {
             m_total_elapsed += dt;
             m_last_spawned += dt;
             if (m_last_spawned > current_stage.m_cooldown) {
@@ -38,28 +37,31 @@ class EmitterSystem : public entityx::System<EmitterSystem>
 
                 m_last_spawned = 0.f;
 
-
-                for(unsigned int i = 0; i < current_compound.m_number_of_paths; i++)
-                {
-                    std::cout<< "nop: " <<current_compound.m_number_of_paths << std::endl;
-                    for(unsigned int j = 0; j < current_compound.m_number_of_shots[i]; j++)
-                    {
-                        std::cout << "  nos: " << i <<" - "<< current_compound.m_number_of_shots[i] << std::endl;
+                for(unsigned int i = 0; i < current_compound.m_number_of_paths; i++) {
+                    for(unsigned int j = 0; j < current_compound.m_number_of_shots[i]; j++) {
                         create_bullet(es, current_compound.m_paths[i],j,i);
                     }
                 }
-                current_stage.next();
-                if(current_stage.is_at_end())
+                current_compound.m_number_of_shots_done++;
+
+                if(current_compound.m_number_of_shots_done == 
+                        current_stage.m_repititions[current_stage.m_current_repition])
                 {
-                    current_level.next();
-                    current_stage = current_level.get_current_stage();
-                    if(current_level.is_at_end())
-                    {
+                    current_stage.next();
+                    current_compound = current_stage.get_current_repitition();
+                    
+                    if(current_stage.is_at_end()) {
+                        current_level.next();
+                        current_stage = current_level.get_current_stage();
+                        
+                        if(current_level.is_at_end())
+                        {
+                        }
                     }
                 }
             }
-            if(m_game->m_orbs_collected == current_level.m_orbs_to_next_level)
-            {
+
+            if(m_game->m_orbs_collected == current_level.m_orbs_to_next_level) {
                 m_game->next_level();
                 events.emit<LevelChangedEvent>();
                 current_level = m_game->get_current_level();
@@ -68,11 +70,11 @@ class EmitterSystem : public entityx::System<EmitterSystem>
             }
         }
     private:
-            Game *m_game;
+        Game *m_game;
 
-            /**
-             * The time elapsed since the last spawned particle
-             */
+        /**
+         * The time elapsed since the last spawned particle
+         */
     float m_last_spawned = 0.f;
 
     /**
@@ -86,6 +88,7 @@ class EmitterSystem : public entityx::System<EmitterSystem>
 
     void create_bullet(entityx::EntityManager &es, Path_Def path_definition, unsigned int i, unsigned int j) {
         entityx::Entity next = es.create();
+        std::cout << path_definition.get_path_type() << std::endl;
 
         switch(path_definition.get_path_type()){
             case PARABLE:
