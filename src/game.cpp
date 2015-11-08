@@ -124,7 +124,6 @@ int Game::init() {
 }
 
 void Game::game_over(bool win, float score) {
-    
     if(win){
         m_states.push({"win", std::make_unique<WinState>(this, score)});
     }
@@ -141,7 +140,7 @@ void Game::game_over(bool win, float score) {
 
 void Game::next_level()
 {
-    rumble_for(1.5f);
+    rumble_for(0.75f);
     m_remaining_lvl_change = 1.5f;
     m_clear_bullets = true;
     //  HIER LEVEL UP SOUND

@@ -25,6 +25,6 @@ static const float ACCELERATION_STEP = 0.2f;
 static const float DECELERATION_STEP = 0.15f;
 
 static const bool DEBUG = false;
-static const int DEBUG_START_LEVEL = 1; // index of first level
+static const int DEBUG_START_LEVEL = 0; // index of first level
 
 #endif

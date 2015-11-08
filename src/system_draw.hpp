@@ -119,7 +119,7 @@ class DrawSystem : public entityx::System<DrawSystem> {
 
         /*float maximum_rotate = MAX_SPEED / RING_INNER;
         float beta = velocity->m_velocity.t / maximum_rotate;
-        std::cout << beta << std::endl;
+        // std::cout << beta << std::endl;
         float add_rotate = 100.0 * beta * glm::pi<float>()/8;*/
 
         float rotate_by = -rad_to_deg(player_pos->position().y - glm::half_pi<float>());

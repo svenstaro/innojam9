@@ -73,6 +73,11 @@ struct LayerCompound
     {
         return {{Path_Def(linear_path), Path_Def(linear_path), Path_Def(linear_path), Path_Def(linear_path)}, {4, 4, 4, 4},{0.f,5.f,10.f,15.f}};
     }
+    
+    static LayerCompound FOUR_TWIN_PLUSLINEAR()
+    {
+        return {{Path_Def(linear_path), Path_Def(linear_path), Path_Def(linear_path), Path_Def(linear_path),Path_Def(linear_path)}, {4, 4, 4, 4,8},{0.f,5.f,10.f,15.f,45.f+7.5f}};
+    }
 
     static LayerCompound LINEAR_TWO_SIN_TWO()
     {
@@ -84,7 +89,7 @@ struct LayerCompound
         return {{Path_Def(linear_path)}, {2}, {0.f}};
     }
 
-    };
+};
 struct Stage
 {
     Stage(std::vector<LayerCompound> stages, std::vector<unsigned int> repititions,float cooldown);
@@ -135,6 +140,11 @@ struct Stage
     static Stage LINEAR_TWO_SIN_TWO()
     {
         return {{LayerCompound::LINEAR_TWO_SIN_TWO()}, {1}, 1.f};
+    }
+
+    static Stage BOSS()
+    {
+        return {{LayerCompound::FOUR_TWIN(),LayerCompound::PAUSE(),LayerCompound::FOUR_TWIN_PLUSLINEAR(), LayerCompound::PAUSE(), LayerCompound::SIN_SCYTHE_FOUR_TWO()},{3,3,3,3,6},0.2f}; 
     }
 
     static Stage SIN_TWO()
@@ -212,7 +222,7 @@ struct Level
 
     static Level LEVEL_EIGHT()
     {
-        return{{Stage::SPIRAL_ONE()}, 24, 20.f};
+        return{{Stage::BOSS()}, 20, 20.f};
     }
 };
 #endif

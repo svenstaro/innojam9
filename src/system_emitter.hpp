@@ -36,10 +36,11 @@ class EmitterSystem : public entityx::System<EmitterSystem> {
                 Mix_PlayChannel(1, m_game->res_manager().sound("sound1"), 0);
 
                 m_last_spawned = 0.f;
+            m_total_shots++;
 
                 for(unsigned int i = 0; i < current_compound.m_number_of_paths; i++) {
                     for(unsigned int j = 0; j < current_compound.m_number_of_shots[i]; j++) {
-                        create_bullet(es, current_compound.m_paths[i],dt,j,i);
+                        create_bullet(es, current_compound.m_paths[i],j,i);
                     }
                 }
                 current_compound.m_number_of_shots_done++;
@@ -82,13 +83,15 @@ class EmitterSystem : public entityx::System<EmitterSystem> {
      */
     float m_total_elapsed = 0.f;
 
+    float m_total_shots = 0;
+
     Level current_level = m_game->get_current_level();
     Stage current_stage = current_level.get_current_stage();
     LayerCompound current_compound = current_stage.get_current_repitition();
 
-    void create_bullet(entityx::EntityManager &es, Path_Def path_definition, float dt,unsigned int i, unsigned int j) {
+    void create_bullet(entityx::EntityManager &es, Path_Def path_definition, unsigned int i, unsigned int j) {
         entityx::Entity next = es.create();
-        std::cout << path_definition.get_path_type() << std::endl;
+        // std::cout << path_definition.get_path_type() << std::endl;
 
         switch(path_definition.get_path_type()){
             case PARABLE:
@@ -98,10 +101,10 @@ class EmitterSystem : public entityx::System<EmitterSystem> {
                         20.f);
                 break;
             case NORMAL:
-                std::cout << current_level.m_rotation_speed * m_total_elapsed/dt <<  std::endl;
+                // std::cout << current_level.m_rotation_speed * m_total_elapsed  <<  std::endl;
                 next.assign<Path>(path_definition.get_path_function(),
                         glm::vec2(0,0),
-                        glm::vec2(1, (current_level.m_rotation_speed * m_total_elapsed/dt) + glm::radians(m_total_elapsed * 1 +
+                        glm::vec2(1, (current_level.m_rotation_speed * m_total_shots) + glm::radians(m_total_elapsed * 1 +
                                 (current_compound.m_offset[j] + (360.f / current_compound.m_number_of_shots[j]) *  i))),
                         20.f);
                 break;
@@ -112,7 +115,7 @@ class EmitterSystem : public entityx::System<EmitterSystem> {
         next.assign<Collidable>(10.f);
         if(m_game->get_current_level_index() == m_game->get_max_level_index()) {
             next.assign<Light>("gradient", 0.3f, glm::vec3{0, 0, 255});
-            next.assign<Drawable>("magma", 20, 20, 4, AnimTemplate(6, 6, 14, 0, 40), glm::i8vec3(50, 50, 255));
+            next.assign<Drawable>("magma", 20, 20, 4, AnimTemplate(6, 6, 14, 0, 40), glm::i8vec3(100, 100, 100));
         }
         else {
             next.assign<Light>("gradient", 0.3f, glm::vec3{255, 100, 0});
