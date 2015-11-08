@@ -45,7 +45,7 @@ class HighscoreSystem : public entityx::System<HighscoreSystem>,
                 player->damage(1.0f);
                 if(player->is_dead()) {
                     events.emit<GameOverEvent>(player->score);
-                    m_game->game_over();
+                    m_game->game_over(player->score);
                 }
                 immunity = max_immunity;
             }
