@@ -36,7 +36,7 @@ class HighscoreSystem : public entityx::System<HighscoreSystem>,
         if (immunity > 0.0f) {
             immunity -= dt;
         }
-        if (hit) {
+        if (hit && ! player->m_invincible) {
             hit = false;
             m_game->rumble_for(0.5f);
             damage_enem.destroy();
