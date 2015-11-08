@@ -28,6 +28,8 @@ class OrbSpawnSystem : public entityx::System<OrbSpawnSystem>,
   public:
     OrbSpawnSystem(Game *game, entityx::EntityManager &entities, float min_dist, float max_dist)
         : m_min_dist(min_dist), m_max_dist(max_dist), m_game(game), m_entities(entities) {
+        (void)m_min_dist;
+        (void)m_max_dist;
     }
 
     ~OrbSpawnSystem() {
