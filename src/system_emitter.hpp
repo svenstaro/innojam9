@@ -39,7 +39,7 @@ class EmitterSystem : public entityx::System<EmitterSystem> {
 
                 for(unsigned int i = 0; i < current_compound.m_number_of_paths; i++) {
                     for(unsigned int j = 0; j < current_compound.m_number_of_shots[i]; j++) {
-                        create_bullet(es, current_compound.m_paths[i],j,i);
+                        create_bullet(es, current_compound.m_paths[i],dt,j,i);
                     }
                 }
                 current_compound.m_number_of_shots_done++;
@@ -87,7 +87,7 @@ class EmitterSystem : public entityx::System<EmitterSystem> {
     Stage current_stage = current_level.get_current_stage();
     LayerCompound current_compound = current_stage.get_current_repitition();
 
-    void create_bullet(entityx::EntityManager &es, Path_Def path_definition, unsigned int i, unsigned int j) {
+    void create_bullet(entityx::EntityManager &es, Path_Def path_definition, float dt,unsigned int i, unsigned int j) {
         entityx::Entity next = es.create();
         std::cout << path_definition.get_path_type() << std::endl;
 
@@ -99,10 +99,11 @@ class EmitterSystem : public entityx::System<EmitterSystem> {
                         20.f);
                 break;
             case NORMAL:
+                std::cout << current_level.m_rotation_speed * m_total_elapsed/dt <<  std::endl;
                 next.assign<Path>(path_definition.get_path_function(),
                         glm::vec2(0,0),
-                        glm::vec2(1, glm::radians(m_total_elapsed * 1 +
-                                (current_compound.m_offset[j] + (360.f / current_compound.m_number_of_shots[j]) * i))),
+                        glm::vec2(1, (current_level.m_rotation_speed * m_total_elapsed/dt) + glm::radians(m_total_elapsed * 1 +
+                                (current_compound.m_offset[j] + (360.f / current_compound.m_number_of_shots[j]) *  i))),
                         20.f);
                 break;
         }
