@@ -1,21 +1,4 @@
 #include "patterns.hpp"
-/*
-PatternPart::PatternPart(
-        std::vector<Path_Def> shot_types,
-        std::vector<int> shots_per_cooldown, std::vector<float> offset,
-        std::vector<unsigned int> pattern_parts_lengths)
-    : m_shot_type(shot_types), m_shots_per_cooldown(shots_per_cooldown),
-    m_offset(offset),m_pattern_parts_lengths(pattern_parts_lengths){
-    }
-
-Pattern::Pattern(float cooldown, float rotation_speed,
-        std::vector<PatternPart> pattern_parts,
-        int orbs_needed)
-    : m_cooldown(cooldown), m_rotation_speed(rotation_speed),
-    m_pattern_parts(pattern_parts),
-    m_orbs_needed(orbs_needed) {
-    }
-*/
 
 LayerCompound::LayerCompound(std::vector<Path_Def> paths,
                          std::vector<unsigned int> number_of_shots,
@@ -46,8 +29,8 @@ LayerCompound Stage::get_current_repitition()
         return m_path_layers[m_current_repition];
     }
 
-    Level::Level(std::vector<Stage> stages, unsigned int orbs_to_next_level)
-:m_stages(stages) , m_orbs_to_next_level(orbs_to_next_level)
+    Level::Level(std::vector<Stage> stages, unsigned int orbs_to_next_level, float rotations_speed)
+:m_stages(stages) , m_orbs_to_next_level(orbs_to_next_level), m_rotation_speed(rotations_speed)
 {
     m_number_of_stages = stages.size();
 }
