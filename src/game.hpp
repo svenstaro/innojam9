@@ -35,7 +35,6 @@ class Game {
     void next_level();
     void set_difficulty(Difficulty difficulty);
     Difficulty difficulty();
-    void exit();
     void game_over(float score);
 
     std::stack<std::pair<std::string, std::unique_ptr<State>>> &states();

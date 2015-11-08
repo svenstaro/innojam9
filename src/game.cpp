@@ -109,6 +109,10 @@ int Game::init() {
 void Game::game_over(float score) {
     m_states.push({"gameover", std::make_unique<GameOverState>(this, score)});
     m_states.top().second->init();
+    m_current_level_index = 0;
+    m_last_frame_time = 0;
+    m_debug_mode = false;
+    m_orbs_collected = 0;
 }
 
 void Game::next_level()
@@ -127,11 +131,6 @@ void Game::mainloop() {
     m_last_frame_time = current_time;
 
     m_states.top().second->update(dt);
-}
-
-void Game::exit() {
-    //m_states.pop();
-    //m_states.pop();
 }
 
 SDL_Renderer *Game::renderer() {
