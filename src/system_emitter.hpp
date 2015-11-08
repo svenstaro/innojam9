@@ -25,58 +25,54 @@
 class EmitterSystem : public entityx::System<EmitterSystem> {
   public:
     EmitterSystem(Game *game) : m_game(game) {
+        update_current_pattern();
+        update_current_pattern_part();
     }
     void update(entityx::EntityManager &es, entityx::EventManager &events, double dt) {
         m_total_elapsed += dt;
         m_last_spawned += dt;
 
-        if (m_last_spawned > m_current_level.m_cooldown) {
+        if (m_last_spawned > m_current_pattern.m_cooldown) {
             Mix_Volume(1, 20);
             Mix_PlayChannel(1, m_game->res_manager().sound("sound1"), 0);
 
             m_last_spawned = 0.f;
-            for (unsigned int j = 0; j < m_current_level
-                                             .m_pattern_parts[m_current_pattern]
-                                             .m_shots_per_cooldown.size();
-                 j++) {
-                for (int i = 0; i < m_current_level
-                                        .m_pattern_parts[m_current_pattern]
-                                        .m_shots_per_cooldown[j];
-                     i++) {
-                    create_bullet(es, m_current_level
-                                          .m_pattern_parts[m_current_pattern]
-                                          .m_shot_type[j],
-                                  i);
+            for(unsigned int j = 0; j < m_current_number_of_parts; j++)
+            {
+                for(int i = 0; i < m_current_shots_per_cooldown; i++)
+                {
+                    create_bullet(es, m_current_pattern_part.m_shot_type[j],i);
                 }
             }
             m_current_shot++;
-            if (m_current_shot ==
-                    m_current_level.m_pattern_parts_lengths[m_current_pattern]) {
-                m_current_pattern++;
+            if(m_current_shot == m_current_number_of_max_shots)
+            {
+                std::cout << m_current_shot << std::endl;
+                m_current_pattern_part_index++;
+                if(m_current_pattern_part_index == m_current_pattern_length)
+                {
+                    m_current_pattern_part_index = 0;
+                }
+                std::cout << "start_updating " << m_current_pattern_part_index << "  " << m_current_shot << std::endl;
+                update_current_pattern_part();
                 m_current_shot = 0;
             }
-
             //See if we have to change the level
-            if(m_game->m_orbs_collected >= m_current_level.m_orbs_needed)
+            if(m_game->m_orbs_collected >= m_current_pattern.m_orbs_needed)
             {
                 m_game->next_level();
                 events.emit<LevelChangedEvent>();
-                m_current_level = m_game->get_current_level();
-            }
-            if(m_current_pattern == m_current_level.m_pattern_parts.size())
-            {
-                m_current_pattern = 0;
+                m_current_pattern_part_index = 0;
                 m_current_shot = 0;
+                m_current_pattern = m_game->get_current_level();
+                update_current_pattern();
+                update_current_pattern_part();
             }
         }
     }
 
   private:
     Game *m_game;
-
-    glm::vec2 next_direction(void) {
-        return glm::vec2(1, m_total_elapsed);
-    }
 
     /**
      * The time elapsed since the last spawned particle
@@ -87,15 +83,47 @@ class EmitterSystem : public entityx::System<EmitterSystem> {
      * Total elapsed time. Used in the generator.
      */
     float m_total_elapsed = 0.f;
+    unsigned int m_current_pattern_part_index = 0;
+    unsigned long m_current_shot = 0;
+    unsigned long m_current_pattern_length;
 
+    Pattern m_current_pattern = {1.f,1.f,{PatternPart::SIN_TWO_SHOTS()},10};
+    float m_current_rotation_speed;
+    float m_current_cooldown; 
 
-    Pattern m_current_level = m_game->get_current_level();
-    unsigned int m_current_pattern = 0;
-    unsigned int m_current_shot = 0;
+    void update_current_pattern()
+    {
+        m_current_pattern = m_game->get_current_level();
+        m_current_cooldown = m_current_pattern.m_cooldown;
+        m_current_rotation_speed = m_current_pattern.m_rotation_speed;
+        m_current_pattern_length = m_current_pattern.m_pattern_parts.size();
+    }
 
-    float current_rotation_speed = m_current_level.m_rotation_speed;
-    unsigned int current_shots_per_cooldown =
-        m_current_level.m_pattern_parts[m_current_pattern].m_shots_per_cooldown[0];
+    PatternPart m_current_pattern_part = {{},{},{},{}}; 
+    Path_Def m_current_path_function = Path_Def(sin_path); 
+    int m_current_shots_per_cooldown;
+    unsigned int m_current_pattern_parts_length;
+    unsigned int m_current_number_of_max_shots;
+    unsigned int m_current_number_of_parts;
+    float m_current_offset;
+
+    void update_current_pattern_part()
+    {
+        std::cout << "I REALZ DIE HIER"<< " " << m_current_pattern.m_pattern_parts.size() << std::endl;
+        m_current_pattern_part = 
+            m_current_pattern.m_pattern_parts[m_current_pattern_part_index];
+        m_current_path_function = 
+            m_current_pattern_part.m_shot_type[m_current_pattern_part_index];
+        m_current_shots_per_cooldown = 
+            m_current_pattern_part.m_shots_per_cooldown[m_current_pattern_part_index];
+        m_current_number_of_max_shots = 
+            m_current_pattern_part.m_pattern_parts_lengths[m_current_pattern_part_index];
+        m_current_number_of_parts = 
+            m_current_pattern_part.m_shots_per_cooldown.size();
+        m_current_offset = 
+            m_current_pattern_part.m_offset[m_current_pattern_part_index];
+
+    }
 
     void create_bullet(entityx::EntityManager &es, Path_Def path_definition, int i) {
         entityx::Entity next = es.create();
@@ -103,16 +131,16 @@ class EmitterSystem : public entityx::System<EmitterSystem> {
         switch(path_definition.get_path_type()){
             case PARABLE:
                 next.assign<Path>(path_definition.get_parable_function(),
-                            path_definition.get_origin(),
-                            path_definition.get_direction(),
-                            20.f);
+                        path_definition.get_origin(),
+                        path_definition.get_direction(),
+                        20.f);
                 break;
             case NORMAL:
                 next.assign<Path>(path_definition.get_path_function(),
-                            glm::vec2(0,0),
-                            glm::vec2(1, glm::radians(m_total_elapsed * current_rotation_speed +
-                                            (360.f / current_shots_per_cooldown) * i)),
-                            20.f);
+                        glm::vec2(0,0),
+                        glm::vec2(1, glm::radians(m_total_elapsed * m_current_rotation_speed +
+                                (m_current_offset + (360.f / m_current_shots_per_cooldown) * i))),
+                        20.f);
                 break;
         }
         next.assign<Position>(glm::vec2(0.f, 0.f));
