@@ -3,9 +3,10 @@
 
 #include "game.hpp"
 
-#include "strapon/state/state.hpp"
+#include "menu_state.hpp"
 
 #include "entityx/entityx.h"
+#include "strapon/sdl_helpers/sdl_helpers.hpp"
 
 #include <SDL.h>
 
@@ -16,29 +17,20 @@
 #endif
 
 
-class GameOverState : public State {
+class GameOverState : public MenuState {
   public:
-    GameOverState(Game *game) : m_game(game) {
+    GameOverState(Game *game) : MenuState(game) {
     };
-    ~GameOverState() {
-    };
-    int init() override {
-        return 0;
-    };
-    void update(double dt) override {
-        SDL_Event e;
-        while(SDL_PollEvent(&e)) {
-            if(e.type == SDL_QUIT) {
-                m_game->shutdown();
-            }
-            if(e.type == SDL_KEYDOWN) {
-                m_game->exit();
-            }
-        }
-    };
+  protected:
+    void init_menuitems(int w, int h){
+        entityx::Entity background = m_entities.create();
+        background.assign<Drawable>("menu_background", 800, 800);
+        background.assign<Position>(glm::vec2(0.f, 0.f));
 
-  private:
-    Game *m_game;
+        entityx::Entity title = m_entities.create();
+        title.assign<Drawable>("menu_game_over", 64, 256);
+        title.assign<Position>(glm::vec2(0.f, 0.f));
+    }
 };
 
 #endif
