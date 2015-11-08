@@ -1,6 +1,7 @@
 #include "game.hpp"
 
 #include "main_state.hpp"
+#include "menu_state.hpp"
 
 #include "game_config.hpp"
 
@@ -72,6 +73,11 @@ int Game::init() {
     m_res_manager.load_sound("sound2", "res/whoomp.wav");
     m_res_manager.load_texture("bar", "res/bar.png", m_render);
     m_res_manager.load_texture("magma", "res/magma.png", m_render);
+
+    m_res_manager.load_texture("menu_newgame", "res/menu/new_game.png", m_render);
+    m_res_manager.load_texture("menu_highscore", "res/menu/highscore.png", m_render);
+    m_res_manager.load_texture("menu_exit", "res/menu/exit.png", m_render);
+
     m_res_manager.load_font("font20", "res/DejaVuSans.ttf", 20);
 
     SDL_RenderSetLogicalSize(m_render, WIDTH, HEIGHT);
@@ -81,7 +87,8 @@ int Game::init() {
 
     //Setting order of levels
     m_level_vector = {Pattern::level1(), Pattern::level2(),Pattern::level3(), Pattern::level4()};
-    m_states.push({"main", std::make_unique<MainState>(this)});
+    //m_states.push({"main", std::make_unique<MainState>(this)});
+    m_states.push({"menu", std::make_unique<MenuState>(this)});
     m_states.top().second->init();
 
     return 0;
