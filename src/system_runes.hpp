@@ -36,16 +36,16 @@ class RunesSystem : public entityx::System<RunesSystem>,
         }
         if(changed) {
             int runes_enabled = int(glm::round(rune_count * progress));
-            std::cout << "CHANGED!!!" << progress << "->" << runes_enabled << std::endl;
             auto ru = entityx::ComponentHandle<Rune>();
             auto drw = entityx::ComponentHandle<Drawable>();
-            auto lt = entityx::ComponentHandle<Light>();
-            for(entityx::Entity entity : es.entities_with_components(ru, drw, lt)) {
-                if(runes_enabled-- > 0) {
+            for(entityx::Entity entity : es.entities_with_components(ru, drw)) {
+                auto lt = entity.component<Light>();
+                if(runes_enabled > 0) {
                     drw->m_colorize = rune_color_on;
                     if(!lt) {
-                        entity.assign<Light>("gradient", 0.30f, glm::vec3{200, 0, 0});
+                        entity.assign<Light>("gradient", 0.7f, glm::vec3{200, 0, 0});
                     }
+                    runes_enabled--;
                 }
                 else {
                     drw->m_colorize = rune_color_off;

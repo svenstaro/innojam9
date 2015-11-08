@@ -22,7 +22,7 @@
 #include <glm/glm.hpp>
 #include <vector>
 
-class EmitterSystem : public entityx::System<EmitterSystem> 
+class EmitterSystem : public entityx::System<EmitterSystem>
 {
     public:
         EmitterSystem(Game *game) : m_game(game) {
@@ -82,7 +82,7 @@ class EmitterSystem : public entityx::System<EmitterSystem>
 
     Level current_level = m_game->get_current_level();
     Stage current_stage = current_level.get_current_stage();
-    LayerCompound current_compound = current_stage.get_current_repitition(); 
+    LayerCompound current_compound = current_stage.get_current_repitition();
 
     void create_bullet(entityx::EntityManager &es, Path_Def path_definition, unsigned int i, unsigned int j) {
         entityx::Entity next = es.create();
@@ -106,7 +106,7 @@ class EmitterSystem : public entityx::System<EmitterSystem>
         next.assign<Moving>(100.f);
         next.assign<Enemy>();
         next.assign<Collidable>(10.f);
-        next.assign<Light>("gradient", 0.5f, glm::vec3{255, 100, 0});
+        next.assign<Light>("gradient", 0.3f, glm::vec3{255, 100, 0});
         next.assign<Drawable>("magma", 20, 20, 4, AnimTemplate(6, 6, 14, 0, 40));
     }
 };
