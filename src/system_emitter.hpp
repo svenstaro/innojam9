@@ -22,7 +22,7 @@
 #include <glm/glm.hpp>
 #include <vector>
 
-class EmitterSystem : public entityx::System<EmitterSystem> 
+class EmitterSystem : public entityx::System<EmitterSystem>
 {
     public:
         EmitterSystem(Game *game) : m_game(game) {
@@ -61,7 +61,8 @@ class EmitterSystem : public entityx::System<EmitterSystem>
             if(m_game->m_orbs_collected == current_level.m_orbs_to_next_level)
             {
                 m_game->next_level();
-                events.emit<LevelChangedEvent>();
+
+                events.emit<LevelChangedEvent>(m_game->get_current_level_index());
                 current_level = m_game->get_current_level();
                 current_stage = current_level.get_current_stage();
                 current_compound = current_stage.get_current_repitition();
@@ -82,7 +83,7 @@ class EmitterSystem : public entityx::System<EmitterSystem>
 
     Level current_level = m_game->get_current_level();
     Stage current_stage = current_level.get_current_stage();
-    LayerCompound current_compound = current_stage.get_current_repitition(); 
+    LayerCompound current_compound = current_stage.get_current_repitition();
 
     void create_bullet(entityx::EntityManager &es, Path_Def path_definition, unsigned int i, unsigned int j) {
         entityx::Entity next = es.create();

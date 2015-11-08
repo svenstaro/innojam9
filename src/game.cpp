@@ -3,6 +3,7 @@
 #include "main_state.hpp"
 #include "mainmenu_state.hpp"
 #include "game_over_state.hpp"
+#include "win_state.hpp"
 
 #include "game_config.hpp"
 
@@ -86,6 +87,7 @@ int Game::init() {
     m_res_manager.load_texture("difficulty_svenstaro", "res/menu/svenstaro.png", m_render);
 
     m_res_manager.load_texture("menu_red_background", "res/menu/background_red.png", m_render);
+    m_res_manager.load_texture("menu_green_background", "res/menu/background_green.png", m_render);
     m_res_manager.load_texture("menu_background", "res/menu/background.png", m_render);
     m_res_manager.load_texture("menu_newgame", "res/menu/new_game.png", m_render);
     m_res_manager.load_texture("menu_highscore", "res/menu/highscore.png", m_render);
@@ -117,9 +119,15 @@ int Game::init() {
     return 0;
 }
 
-void Game::game_over(float score) {
-    m_states.push({"gameover", std::make_unique<GameOverState>(this, score)});
+void Game::game_over(bool win, float score) {
+    if(win){
+        m_states.push({"win", std::make_unique<WinState>(this, score)});
+    }
+    else{
+        m_states.push({"gameover", std::make_unique<GameOverState>(this, score)});
+    }
     m_states.top().second->init();
+
     m_current_level_index = 0;
     m_last_frame_time = 0;
     m_debug_mode = false;
@@ -196,6 +204,10 @@ void Game::popstate() {
 unsigned int Game::get_current_level_index()
 {
     return m_current_level_index;
+}
+
+int Game::get_max_level_index(){
+    return m_level_vector.size()-1;
 }
 
 Level Game::get_current_level()
