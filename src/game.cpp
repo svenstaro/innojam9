@@ -67,6 +67,7 @@ int Game::init() {
     m_res_manager.load_texture("wood", "res/wood.png", m_render);
     m_res_manager.load_texture("inner_bound", "res/inner_bound.png", m_render);
     m_res_manager.load_texture("outer_bound", "res/outer_bound.png", m_render);
+    m_res_manager.load_texture("outer_bound_boss", "res/outer_bound_boss.png", m_render);
     m_res_manager.load_texture("bound", "res/bound.png", m_render);
 
     m_res_manager.load_music("music1", "res/pocket_destroyer.ogg");
@@ -219,7 +220,7 @@ unsigned int Game::get_current_level_index()
     return m_current_level_index;
 }
 
-int Game::get_max_level_index(){
+unsigned int Game::get_max_level_index(){
     return m_level_vector.size()-1;
 }
 

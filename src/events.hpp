@@ -36,6 +36,10 @@ struct HitEvent {
     HitEvent() {
     }
 };
+struct BossLevelEvent {
+    BossLevelEvent() {
+    }
+};
 
 struct GameOverEvent {
     GameOverEvent(bool win, float score) : m_win(win), m_score(score) {
