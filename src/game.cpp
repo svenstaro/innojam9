@@ -80,7 +80,7 @@ int Game::init() {
     entity.assign<Position>();
 
     //Setting order of levels
-    m_level_vector = {Pattern::level1(),Pattern::level2(),Pattern::level3()};
+    m_level_vector = {Level::LEVEL_ONE()};
     m_states.push({"main", std::make_unique<MainState>(this)});
     m_states.top().second->init();
 
@@ -159,7 +159,7 @@ unsigned int Game::get_current_level_index()
     return m_current_level_index;
 }
 
-Pattern Game::get_current_level()
+Level Game::get_current_level()
 {
     return m_level_vector[m_current_level_index];
 }

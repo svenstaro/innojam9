@@ -46,39 +46,39 @@ int MainState::init() {
     m_systems.add<HighscoreSystem>(m_game);
     m_systems.add<EmitterSystem>(m_game);
     m_systems.add<OrbSpawnSystem>(m_game, m_entities, RING_INNER, RING_OUTER);
-//
-//     // glm::vec2 origin = glm::vec2(300, 0);
-//     // auto parable = create_parable(origin, glm::vec2(300, glm::half_pi<float>()), glm::vec2(glm::one_over_root_two<float>()*300, glm::quarter_pi<float>()));
-//
-//     // glm::vec2 origin = glm::vec2(150, 0);
-//     // auto parable = create_parable(origin, glm::vec2(300, glm::half_pi<float>()), glm::vec2(150, glm::pi<float>()));
-//     //
-//     // m_systems.add<EmitterSystem>(m_game, parable, origin, 1, 10, 0.3);
-//     m_systems.add<EmitterSystem>(m_game, linear_path, 0.5, 0.3);
+    //
+    //     // glm::vec2 origin = glm::vec2(300, 0);
+    //     // auto parable = create_parable(origin, glm::vec2(300, glm::half_pi<float>()), glm::vec2(glm::one_over_root_two<float>()*300, glm::quarter_pi<float>()));
+    //
+    //     // glm::vec2 origin = glm::vec2(150, 0);
+    //     // auto parable = create_parable(origin, glm::vec2(300, glm::half_pi<float>()), glm::vec2(150, glm::pi<float>()));
+    //     //
+    //     // m_systems.add<EmitterSystem>(m_game, parable, origin, 1, 10, 0.3);
+    //     m_systems.add<EmitterSystem>(m_game, linear_path, 0.5, 0.3);
 
     m_systems.configure();
-    
+
     float hp;
     switch(m_game->difficulty()) {
         default:
         case EASY:
             hp = 10;
-        break;
+            break;
         case MEDIUM:
             hp = 5;
-        break;
+            break;
         case HARD:
             hp = 3;
-        break;
+            break;
         case SVENSTARO:
             hp = 0;
-        break;
+            break;
     }
 
     entityx::Entity player = m_entities.create();
     // must be at (r, 3/2pi) !!
     player.assign<Position>(
-        glm::vec2((RING_OUTER - RING_INNER) / 2.0 + RING_INNER, 1.5 * glm::pi<double>()));
+            glm::vec2((RING_OUTER - RING_INNER) / 2.0 + RING_INNER, 1.5 * glm::pi<double>()));
     player.assign<Velocity>();
     player.assign<Collidable>(15);
     player.assign<Drawable>("player", 50, 30, 10, AnimTemplate(15, 25, 4, 0, 6));
@@ -98,7 +98,7 @@ int MainState::init() {
     // for the outer bound we need additional 50 radius,
     // so that the player is inside the circle.
     outer_bound.assign<Drawable>("outer_bound", 2 * (int)RING_OUTER + 100,
-                                 2 * (int)RING_OUTER + 100, 1);
+            2 * (int)RING_OUTER + 100, 1);
 
     AnimTemplate fire_anim(32, 32, 6, 0, 10);
     entityx::Entity fire = m_entities.create();

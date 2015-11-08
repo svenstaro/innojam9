@@ -31,7 +31,7 @@ class Game {
     void shutdown();
     void popstate();
     unsigned int get_current_level_index();
-    Pattern get_current_level();
+    Level get_current_level();
     void next_level();
     void set_difficulty(Difficulty difficulty);
     Difficulty difficulty();
@@ -44,14 +44,14 @@ class Game {
     SDL_Window *window();
     const SDL_Rect &world_size() const;
 
-    int m_orbs_collected = 0;
+    unsigned int m_orbs_collected = 0;
 
   private:
     bool m_running = true;
     bool m_debug_mode = false;
     int m_last_frame_time = 0;
     unsigned int m_current_level_index = 0;
-    std::vector<Pattern> m_level_vector;
+    std::vector<Level> m_level_vector;
     SDL_Rect m_world_size = {0, 0, WORLD_WIDTH, WORLD_HEIGHT};
 
     SDL_Renderer *m_render;

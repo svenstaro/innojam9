@@ -21,7 +21,7 @@
 #include <vector>
 #include <cstdlib>
 
-#include <glm/gtc/random.hpp>
+//#include <glm/gtc/random.hpp>
 
 class OrbSpawnSystem : public entityx::System<OrbSpawnSystem>,
                        public entityx::Receiver<OrbSpawnSystem> {
@@ -101,8 +101,8 @@ class OrbSpawnSystem : public entityx::System<OrbSpawnSystem>,
 
   private:
     void spawn_next(float dt) {
-        // auto radius = (RING_OUTER + RING_INNER) / 2.f;
-        auto radius = glm::linearRand(RING_OUTER, RING_INNER + 50.f);
+        auto radius = (RING_OUTER + RING_INNER) / 2.f;
+        //auto radius = glm::linearRand(RING_OUTER, RING_INNER + 50.f);
         glm::vec2 new_pos{radius, m_last_pos[1] - 50.f * dt};
         m_last_pos = new_pos;
         AnimTemplate anim(12, 12, 6, 0, 10);
