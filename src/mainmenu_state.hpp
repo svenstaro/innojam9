@@ -36,7 +36,7 @@ protected:
 		float yoff = 200;
 
 		entityx::Entity background = m_entities.create();
-		background.assign<Drawable>("menu_red_background", 800, 800, 0);
+		background.assign<Drawable>("menu_background", 800, 800, 0);
 		background.assign<Position>(glm::vec2(0.f, 0.f));
 
 		// entityx::Entity title = m_entities.create();
