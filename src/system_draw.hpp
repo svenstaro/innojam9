@@ -141,10 +141,11 @@ class DrawSystem : public entityx::System<DrawSystem> {
           for(entityx::Entity entity : es.entities_with_components(enemy))
             entity.destroy();
           m_game->m_clear_bullets = false;
+          events.emit<OrbCollectedEvent>(0, m_game->get_current_level().m_orbs_to_next_level);
         }
-        
+
         SDL_SetTextureColorMod(m_render_buffer, 255 - 255 * alpha, 255 - 255 * alpha, 255 - 255 * alpha);
-        
+
         SDL_SetRenderTarget(rendr, nullptr);
 
         // GENERATE RUMBLE NOISE
@@ -154,9 +155,9 @@ class DrawSystem : public entityx::System<DrawSystem> {
         dst.x += distribution(generator) * m_game->m_remaining_rumble;
         dst.y += distribution(generator) * m_game->m_remaining_rumble;
         float angle = distribution(generator) * m_game->m_remaining_rumble;
-        SDL_Point rot_ctr;
-        rot_ctr.x = distribution(generator) * m_game->m_remaining_rumble;
-        rot_ctr.y = distribution(generator) * m_game->m_remaining_rumble;
+        //SDL_Point rot_ctr;
+        //rot_ctr.x = distribution(generator) * m_game->m_remaining_rumble;
+        //rot_ctr.y = distribution(generator) * m_game->m_remaining_rumble;
         m_game->m_remaining_rumble = glm::max(0.0f, m_game->m_remaining_rumble - float(dt));
 
         // FINAL RENDER CALL!
@@ -321,7 +322,7 @@ class DrawSystem : public entityx::System<DrawSystem> {
     SDL_Texture *m_lighttex;
     SDL_Texture *m_drawtex;
     SDL_Texture *m_render_buffer;
-    
+
     std::default_random_engine generator;
     std::normal_distribution<float> distribution;
 };

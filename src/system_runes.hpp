@@ -35,7 +35,7 @@ class RunesSystem : public entityx::System<RunesSystem>,
             init_done = true;
         }
         if(changed) {
-            int runes_enabled = int(glm::round(rune_count * progress));
+            int runes_enabled = int(glm::ceil(rune_count * progress));
             auto ru = entityx::ComponentHandle<Rune>();
             auto drw = entityx::ComponentHandle<Drawable>();
             for(entityx::Entity entity : es.entities_with_components(ru, drw)) {
