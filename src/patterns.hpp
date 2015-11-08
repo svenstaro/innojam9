@@ -117,6 +117,11 @@ struct Stage
         return {{LayerCompound::SIN_TWO_SHOTS()}, {1}, 1.f};
     }
 
+    static Stage SIN_TWO()
+    {
+        return {{LayerCompound::SIN_TWO_SHOTS()}, {1}, 1.f};
+    }
+
     static Stage SPIRAL_ONE()
     {
         return{{LayerCompound::SPIRAL_ONE()}, {4}, 1.f};   
@@ -156,37 +161,37 @@ struct Level
 
     static Level LEVEL_TWO()
     {
-        return{{Stage::LINEAR_TWO()}, 5};
+        return{{Stage::LINEAR_TWO_PULSED()}, 5};
     }
 
     static Level LEVEL_THREE()
     {
-        return{{Stage::LINEAR_TWO()}, 5};
+        return{{Stage::LINEAR_TWO_PULSED_TWIN()}, 5};
     }
 
     static Level LEVEL_FOUR()
     {
-        return{{Stage::SPIRAL_ONE()},5};
+        return{{Stage::LINEAR_FOUR_PULSED_TWIN()}, 5};
     }
 
     static Level LEVEL_FIVE()
     {
-        return{{Stage::SPIRAL_ONE()},5};
+        return{{Stage::SIN_TWO()}, 5};
     }
 
     static Level LEVEL_SIX()
     {
-        return{{Stage::SPIRAL_ONE()},5};
+        return{{Stage::LINEAR_TWO_SIN_TWO()}, 5};
     }
 
     static Level LEVEL_SEVEN()
     {
-        return{{Stage::SPIRAL_ONE()},5};
+        return{{Stage::SPIRAL_ONE()}, 5};
     }
 
     static Level LEVEL_EIGHT()
     {
-        return{{Stage::SPIRAL_ONE()},5};
+        return{{Stage::SPIRAL_ONE()}, 20};
     }
 
 };
