@@ -8,6 +8,7 @@
 
 #include "component_position.hpp"
 #include "component_drawable.hpp"
+#include "component_textitem.hpp"
 #include "component_menuitem.hpp"
 
 #include "anim_template.hpp"
@@ -51,15 +52,42 @@ protected:
 		btn_game.assign<Position>(glm::vec2(w/2-128, yoff + 100.f));
 		btn_game.assign<MenuItem>("new_game", new_game);
 
-		entityx::Entity btn_highscore = m_entities.create();
-		btn_highscore.assign<Drawable>("menu_highscore", 64, 256, 0, AnimTemplate(256, 64, 1, 0));
-		btn_highscore.assign<Position>(glm::vec2(w/2-128, yoff + 200.f));
-		btn_highscore.assign<MenuItem>("highscore", show_highscore);
+		// entityx::Entity btn_highscore = m_entities.create();
+		// btn_highscore.assign<Drawable>("menu_highscore", 64, 256, 0, AnimTemplate(256, 64, 1, 0));
+		// btn_highscore.assign<Position>(glm::vec2(w/2-128, yoff + 200.f));
+		// btn_highscore.assign<MenuItem>("highscore", show_highscore);
 
 		entityx::Entity btn_exit = m_entities.create();
 		btn_exit.assign<Drawable>("menu_exit", 64, 256, 0, AnimTemplate(256, 64, 1, 0));
 		btn_exit.assign<Position>(glm::vec2(w/2-128, yoff + 300.f));
 		btn_exit.assign<MenuItem>("exit", shutdown);
+
+		SDL_Color color = SDL_Color{107,86,86,255};
+		int credit_x = 590;
+		int credit_y = 445;
+		entityx::Entity credits = m_entities.create();
+		credits.assign<Position>(glm::vec2(credit_x, credit_y));
+		credits.assign<TextItem>("made by:", "font20", color);
+
+		entityx::Entity credits1 = m_entities.create();
+		credits1.assign<Position>(glm::vec2(credit_x, credit_y+25));
+		credits1.assign<TextItem>("Alexander Dmitriev", "font20", color);
+
+		entityx::Entity credits2 = m_entities.create();
+		credits2.assign<Position>(glm::vec2(credit_x, credit_y+50));
+		credits2.assign<TextItem>("Andra Ruebsteck", "font20", color);
+
+		entityx::Entity credits3 = m_entities.create();
+		credits3.assign<Position>(glm::vec2(credit_x, credit_y+75));
+		credits3.assign<TextItem>("Frederick Gnodtke", "font20", color);
+
+		entityx::Entity credits4 = m_entities.create();
+		credits4.assign<Position>(glm::vec2(credit_x, credit_y+100));
+		credits4.assign<TextItem>("Oliver Heidmann", "font20", color);
+
+		entityx::Entity credits5 = m_entities.create();
+		credits5.assign<Position>(glm::vec2(credit_x, credit_y+125));
+		credits5.assign<TextItem>("Sven-Hendrik Haase", "font20", color);
 	}
 };
 
