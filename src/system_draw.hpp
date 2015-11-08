@@ -96,7 +96,7 @@ class DrawSystem : public entityx::System<DrawSystem> {
         entityx::ComponentHandle<Player> player = player_entity.component<Player>();
         entityx::ComponentHandle<Velocity> velocity = player_entity.component<Velocity>();
         (void)velocity;
-        
+
         // RENDER LIGHT
 
         // Change to render into light rendertexture for now
@@ -119,11 +119,11 @@ class DrawSystem : public entityx::System<DrawSystem> {
         float beta = velocity->m_velocity.t / maximum_rotate;
         std::cout << beta << std::endl;
         float add_rotate = 100.0 * beta * glm::pi<float>()/8;*/
-        
+
         float rotate_by = -rad_to_deg(player_pos->position().y - glm::half_pi<float>());
-        SDL_RenderCopyEx(rendr, m_drawtex, nullptr, nullptr, 
+        SDL_RenderCopyEx(rendr, m_drawtex, nullptr, nullptr,
             rotate_by, nullptr, SDL_FLIP_NONE);
-        SDL_RenderCopyEx(rendr, m_lighttex, nullptr, nullptr, 
+        SDL_RenderCopyEx(rendr, m_lighttex, nullptr, nullptr,
             rotate_by, nullptr, SDL_FLIP_NONE);
 
         render_entity(player_entity, dt, false, 0.0f);
@@ -135,7 +135,7 @@ class DrawSystem : public entityx::System<DrawSystem> {
         dst.x = dst.y = 0;
         SDL_RenderCopyEx(rendr, m_render_buffer, &m_camera, &dst, 0.0, nullptr, SDL_FLIP_NONE);
 
-        
+
         int orbs = 0;
         int bullets = 0;
         for (entityx::Entity entity : es.entities_with_components(position)) {
@@ -171,8 +171,7 @@ class DrawSystem : public entityx::System<DrawSystem> {
 
         SDL_Color c = {200, 200, 200, 100};
         auto current_level = "Level " + std::to_string(m_game->get_current_level_index());
-        SDL_Rect rect{550, 20, 200, 50};
-        draw_text(rendr, m_game->res_manager(), current_level, "font20", &rect, c);
+        draw_text(rendr, m_game->res_manager(), current_level, "font20", 600, 20, c);
         SDL_RenderPresent(rendr);
 
     }
@@ -298,4 +297,3 @@ class DrawSystem : public entityx::System<DrawSystem> {
     SDL_Texture *m_drawtex;
     SDL_Texture *m_render_buffer;
 };
-
