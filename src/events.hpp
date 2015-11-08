@@ -28,6 +28,12 @@ struct HitEvent {
     }
 };
 
+struct GameOverEvent {
+    GameOverEvent(float score) : m_score(score) {
+    }
+    float m_score;
+};
+
 struct LevelChangedEvent
 {
     LevelChangedEvent()
