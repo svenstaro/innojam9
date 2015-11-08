@@ -104,12 +104,12 @@ struct Stage
     }
     static Stage LINEAR_TWO_PULSED()
     {
-        return {{LayerCompound::SIN_TWO_SHOTS(),LayerCompound::PAUSE()},{3,3},1.f};
+        return {{LayerCompound::LINEAR_TWO(),LayerCompound::PAUSE()},{3,3},1.f};
     }
 
     static Stage LINEAR_TWO_PULSED_TWIN()
     {
-        return {{LayerCompound::DUAL_TWIN(),LayerCompound::PAUSE()},{3,3},1.4f}; 
+        return {{LayerCompound::DUAL_TWIN(),LayerCompound::PAUSE()},{3,2},0.7f}; 
     }
 
     static Stage STS_ONE()
@@ -136,11 +136,12 @@ struct Stage
 
 struct Level
 {
-    Level(std::vector<Stage> m_stages,  unsigned int orbs_to_next_level);
+    Level(std::vector<Stage> m_stages,  unsigned int orbs_to_next_level, float rotations_speed);
     unsigned int m_number_of_stages;
     std::vector<Stage> m_stages;
     unsigned int m_orbs_to_next_level;
     unsigned int m_current_stage = 0;
+    float m_rotation_speed = 0;
 
     Stage get_current_stage();
 
@@ -156,19 +157,19 @@ struct Level
          *      anzahl von orbs die eingesammelt werden muessen um den
          *      level abzuschlieszen.
          * */
-        return{{Stage::LINEAR_TWO()}, 5};
+        return{{Stage::LINEAR_TWO()}, 5, 20.f};
     }
 
     static Level LEVEL_TWO()
     {
-        return{{Stage::LINEAR_TWO_PULSED()}, 5};
+        return{{Stage::LINEAR_TWO_PULSED()}, 5, 20.f};
     }
 
     static Level LEVEL_THREE()
     {
-        return{{Stage::LINEAR_TWO_PULSED_TWIN()}, 5};
+        return{{Stage::LINEAR_TWO_PULSED_TWIN()}, 5, 20.f};
     }
-
+/*
     static Level LEVEL_FOUR()
     {
         return{{Stage::LINEAR_FOUR_PULSED_TWIN()}, 5};
@@ -193,6 +194,6 @@ struct Level
     {
         return{{Stage::SPIRAL_ONE()}, 20};
     }
-
+*/
 };
 #endif
