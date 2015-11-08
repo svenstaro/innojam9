@@ -62,11 +62,14 @@ class HighscoreSystem : public entityx::System<HighscoreSystem>,
         if (e1 && e3) {
             hit = true;
             damage_enem = copy.m_second;
+            Mix_PlayChannel(2, m_game->res_manager().sound("sound3"), 0);
         }
     }
 
     void receive(const LevelChangedEvent &level_changed_event) {
+        (void) level_changed_event;
         m_game->m_orbs_collected = 0;
+        Mix_PlayChannel(2, m_game->res_manager().sound("sound4"), 0);
     }
 
   private:

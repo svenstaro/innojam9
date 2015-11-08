@@ -67,10 +67,15 @@ int Game::init() {
     m_res_manager.load_texture("inner_bound", "res/inner_bound.png", m_render);
     m_res_manager.load_texture("outer_bound", "res/outer_bound.png", m_render);
     m_res_manager.load_texture("bound", "res/bound.png", m_render);
+
     m_res_manager.load_music("music1", "res/pocket_destroyer.ogg");
     m_res_manager.load_music("music2", "res/orbital_colossus.ogg");
+
     m_res_manager.load_sound("sound1", "res/whomp.wav");
     m_res_manager.load_sound("sound2", "res/whoomp.wav");
+    m_res_manager.load_sound("sound3", "res/hit.wav");
+    m_res_manager.load_sound("sound4", "res/levelup.wav");
+
     m_res_manager.load_texture("bar", "res/bar.png", m_render);
     m_res_manager.load_texture("magma", "res/magma.png", m_render);
 
@@ -99,10 +104,12 @@ int Game::init() {
     //Setting order of levels
     m_level_vector = {Level::LEVEL_ONE(), Level::LEVEL_ONE()};
 
-    if(DEBUG)
+    if(DEBUG) {
+        m_difficulty = DEBUGDIF;
         m_states.push({"main", std::make_unique<MainState>(this)});
-    else
+    } else {
         m_states.push({"main_menu", std::make_unique<MainMenuState>(this)});
+    }
 
     m_states.top().second->init();
 
