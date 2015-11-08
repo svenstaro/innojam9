@@ -143,10 +143,11 @@ class DrawSystem : public entityx::System<DrawSystem> {
           for(entityx::Entity entity : es.entities_with_components(enemy))
             entity.destroy();
           m_game->m_clear_bullets = false;
+          events.emit<OrbCollectedEvent>(0, m_game->get_current_level().m_orbs_to_next_level);
         }
-        
+
         SDL_SetTextureColorMod(m_render_buffer, 255 - 255 * alpha, 255 - 255 * alpha, 255 - 255 * alpha);
-        
+
         SDL_SetRenderTarget(rendr, nullptr);
 
         // GENERATE RUMBLE NOISE
@@ -320,7 +321,7 @@ class DrawSystem : public entityx::System<DrawSystem> {
     SDL_Texture *m_lighttex;
     SDL_Texture *m_drawtex;
     SDL_Texture *m_render_buffer;
-    
+
     std::default_random_engine generator;
     std::normal_distribution<float> distribution;
 };

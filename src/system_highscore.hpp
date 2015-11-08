@@ -36,7 +36,7 @@ class HighscoreSystem : public entityx::System<HighscoreSystem>,
         if (immunity > 0.0f) {
             immunity -= dt;
         }
-        if (hit && ! player->m_invincible) {
+        if (hit) {
             hit = false;
             m_game->rumble_for(0.5f);
             damage_enem.destroy();
@@ -60,7 +60,7 @@ class HighscoreSystem : public entityx::System<HighscoreSystem>,
         auto e3 = copy.m_second.component<Enemy>();
         if (e1 && e2) {
             e1->addScore(e2->score());
-            m_events->emit<OrbCollectedEvent>(m_game->m_orbs_collected, m_game->get_current_level().m_orbs_to_next_level);
+            m_events->emit<OrbCollectedEvent>(m_game->m_orbs_collected + 1, m_game->get_current_level().m_orbs_to_next_level);
         }
         if (e1 && e3) {
             hit = true;
