@@ -100,7 +100,7 @@ struct Stage
          *      allgemeiner cooldown. wie schnell werden die schuesse
          *      abgegeben
          * */
-        return {{LayerCompound::SIN_SCYTHE_FOUR_TWO(),LayerCompound::SIN_TWO_SHOTS()},{2,2},1.f};   
+        return {{LayerCompound::SIN_SCYTHE_FOUR_TWO(),LayerCompound::SIN_TWO_SHOTS()}, {2, 2}, 1.f};   
     }
     static Stage LINEAR_TWO_PULSED()
     {
@@ -114,17 +114,17 @@ struct Stage
 
     static Stage STS_ONE()
     {
-        return {{LayerCompound::SIN_TWO_SHOTS()},{1},1.f};
+        return {{LayerCompound::SIN_TWO_SHOTS()}, {1}, 1.f};
     }
 
     static Stage SPIRAL_ONE()
     {
-        return{{LayerCompound::SPIRAL_ONE()},{4},1.f};   
+        return{{LayerCompound::SPIRAL_ONE()}, {4}, 1.f};   
     }
 
     static Stage LINEAR_TWO()
     {
-        return {{LayerCompound::LINEAR_TWO()},{4},1.f};
+        return {{LayerCompound::LINEAR_TWO()}, {4}, 1.f};
     }
 
 };
@@ -151,10 +151,40 @@ struct Level
          *      anzahl von orbs die eingesammelt werden muessen um den
          *      level abzuschlieszen.
          * */
-        return{{Stage::SSFT_SIX_STS_FOUR(),Stage::LINEAR_TWO()},5};
+        return{{Stage::LINEAR_TWO()}, 5};
     }
 
     static Level LEVEL_TWO()
+    {
+        return{{Stage::LINEAR_TWO()}, 5};
+    }
+
+    static Level LEVEL_THREE()
+    {
+        return{{Stage::LINEAR_TWO()}, 5};
+    }
+
+    static Level LEVEL_FOUR()
+    {
+        return{{Stage::SPIRAL_ONE()},5};
+    }
+
+    static Level LEVEL_FIVE()
+    {
+        return{{Stage::SPIRAL_ONE()},5};
+    }
+
+    static Level LEVEL_SIX()
+    {
+        return{{Stage::SPIRAL_ONE()},5};
+    }
+
+    static Level LEVEL_SEVEN()
+    {
+        return{{Stage::SPIRAL_ONE()},5};
+    }
+
+    static Level LEVEL_EIGHT()
     {
         return{{Stage::SPIRAL_ONE()},5};
     }
