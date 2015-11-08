@@ -47,6 +47,31 @@ void MenuState::update(double dt){
 
 	int x, y;
 	SDL_GetMouseState(&x, &y);
+	int w, h;
+	SDL_GetWindowSize(m_game->window(), &w, &h);
+	
+	float real_div_logic_h = h / (float)HEIGHT;
+	float real_div_logic_w = w / (float)WIDTH;
+	float aspect = (float)HEIGHT/WIDTH;
+	float other_size;
+
+	float rel_w, rel_h;
+	if(real_div_logic_h < real_div_logic_w)
+	{
+	  rel_h = (float)y / h;
+	  other_size = h / aspect;
+	  rel_w = (float(x)-((float(w)-other_size)/2.0)) / other_size;
+	}
+	else
+	{
+	  rel_w = (float)x / w;
+	  other_size = aspect * w;
+	  rel_h = (float(y)-((float(h)-other_size)/2.0)) / other_size;
+	}
+
+  x = rel_w * WIDTH;
+  y = rel_h * HEIGHT;
+
 	entityx::Entity ent;
 	bool hit_entity = find_target(x, y, ent);
 	if(hit_entity) {
