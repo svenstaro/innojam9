@@ -38,6 +38,7 @@ class HighscoreSystem : public entityx::System<HighscoreSystem>,
         }
         if (hit) {
             hit = false;
+            m_game->rumble_for(0.5f);
             damage_enem.destroy();
             if (immunity <= 0.0f) {
                 events.emit<HitEvent>();
@@ -76,7 +77,7 @@ class HighscoreSystem : public entityx::System<HighscoreSystem>,
 
   private:
     Game *m_game;
-    float pts_per_sec = -0.1f; // 10 is really high
+    float pts_per_sec = -0.2f; // 10 is really high
     bool hit = false;
     float immunity = 0.0f;
     entityx::Entity damage_enem;

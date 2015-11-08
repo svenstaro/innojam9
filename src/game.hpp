@@ -30,6 +30,7 @@ class Game {
     bool is_debug_mode(void);
     void shutdown();
     void popstate();
+    void rumble_for(float s);
     unsigned int get_current_level_index();
     Level get_current_level();
     void next_level();
@@ -46,7 +47,9 @@ class Game {
     const SDL_Rect &world_size() const;
 
     unsigned int m_orbs_collected = 0;
-
+    float m_remaining_rumble = 0.0f;
+    float m_remaining_lvl_change = 0.0f;
+    bool m_clear_bullets = false;
   private:
     bool m_running = true;
     bool m_debug_mode = false;

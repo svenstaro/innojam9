@@ -29,7 +29,7 @@ class RunesSystem : public entityx::System<RunesSystem>,
         event_manager.subscribe<OrbCollectedEvent>(*this);
     }
 
-    void update(entityx::EntityManager &es, entityx::EventManager &events, double dt) {
+    void update(entityx::EntityManager &es, entityx::EventManager &events, double dt) override {
         if(!init_done) {
             init(es);
             init_done = true;
