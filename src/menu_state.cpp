@@ -11,14 +11,14 @@
 #include <glm/vec2.hpp>
 
 #include <SDL.h>
-#include <experimental/optional>
+#include <iostream>
 
 void new_game(Game* game){
-
+	std::cout << "new game" << std::endl;
 }
 
 void show_highscore(Game* game){
-
+	std::cout << "highscore" << std::endl;
 }
 
 void shutdown(Game* game){
@@ -29,7 +29,9 @@ MenuState::MenuState(Game *game): m_game(game){
 
 }
 
-MenuState::~MenuState(){}
+MenuState::~MenuState(){
+	SDL_DestroyTexture(m_drawtex);
+}
 
 int MenuState::init(){
 	int w, h;
@@ -68,6 +70,20 @@ int MenuState::init(){
 }
 
 void MenuState::update(double dt){
+	entityx::ComponentHandle<Drawable> drawable;
+	for(entityx::Entity entity: m_entities.entities_with_components(drawable)){
+		(void)entity;
+		drawable->m_anim.set_y_index(0);
+	}
+	
+	int x, y;
+	SDL_GetMouseState(&x, &y);
+	entityx::Entity ent;
+	if(find_target(x, y, ent)) {
+		auto d = ent.component<Drawable>();
+		d->m_anim.set_y_index(1);
+	}
+
 	SDL_Event e;
 	while (SDL_PollEvent(&e)) {
 		if (e.type == SDL_QUIT) {
@@ -81,26 +97,15 @@ void MenuState::update(double dt){
 			}
 		}
 		else if (e.type == SDL_MOUSEBUTTONUP){
-			// if(e.button == SDL_BUTTON_LEFT){
-			//
-			// }
+			if(e.button.button == SDL_BUTTON_LEFT){
+				ent.component<MenuItem>()->doClick(m_game);
+			}
 		}
 		else if(e.type == SDL_MOUSEMOTION){
 
 		}
 	}
-	entityx::ComponentHandle<Drawable> drawable;
-	for(entityx::Entity entity: m_entities.entities_with_components(drawable)){
-		(void)entity;
-		drawable->m_anim.set_y_index(0);
-	}
-	int x, y;
-	SDL_GetMouseState(&x, &y);
-	entityx::Entity ent;
-	if(find_target(x, y, ent)) {
-		auto d = ent.component<Drawable>();
-		d->m_anim.set_y_index(1);
-	}
+
 	draw(dt);
 }
 
