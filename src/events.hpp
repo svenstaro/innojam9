@@ -38,15 +38,33 @@ struct HitEvent {
 };
 
 struct GameOverEvent {
-    GameOverEvent(float score) : m_score(score) {
+    GameOverEvent(bool win, float score) : m_win(win), m_score(score) {
     }
-    float m_score;
+
+    bool is_win() const{
+        return m_win;
+    }
+
+    float get_score() const{
+        return m_score;
+    }
+
+    private:
+        bool m_win;
+        float m_score;
 };
 
 struct LevelChangedEvent
 {
-    LevelChangedEvent()
+    LevelChangedEvent(int level): m_level(level)
     {}
+
+    int level() const{
+        return m_level;
+    }
+
+    private:
+        int m_level;
 }
 ;
 

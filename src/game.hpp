@@ -32,11 +32,12 @@ class Game {
     void popstate();
     void rumble_for(float s);
     unsigned int get_current_level_index();
+    int get_max_level_index();
     Level get_current_level();
     void next_level();
     void set_difficulty(Difficulty difficulty);
     Difficulty difficulty();
-    void game_over(float score);
+    void game_over(bool win, float score);
 
     std::stack<std::pair<std::string, std::unique_ptr<State>>> &states();
     const std::string &statename() const;
@@ -54,7 +55,7 @@ class Game {
     bool m_running = true;
     bool m_debug_mode = false;
     int m_last_frame_time = 0;
-    unsigned int m_current_level_index = 0;
+    unsigned int m_current_level_index = DEBUG ? DEBUG_START_LEVEL: 0;
     std::vector<Level> m_level_vector;
     SDL_Rect m_world_size = {0, 0, WORLD_WIDTH, WORLD_HEIGHT};
 

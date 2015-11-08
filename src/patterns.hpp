@@ -19,6 +19,7 @@ struct LayerCompound
                 std::vector<unsigned int> number_of_shots,
                 std::vector<float> offset);
     unsigned int m_number_of_paths;
+    unsigned int m_number_of_shots_done = 0;
     std::vector<Path_Def> m_paths;
     std::vector<unsigned int> m_number_of_shots;
     std::vector<float> m_offset;
@@ -27,12 +28,32 @@ struct LayerCompound
     {
         return {{Path_Def(sin_path)}, {2}, {0.f}}; 
     }
+   
+    static LayerCompound PAUSE()
+    {
+        return {{Path_Def(sin_path)}, {0},{0.f}};
+    }
     
+    static LayerCompound SIN_TWO_SHOTS_FIVE_DEF_OFFSET()
+    {
+        return {{Path_Def(sin_path)}, {2}, {5.f}}; 
+    }
+
     static LayerCompound SIN_FOUR_SHOTS()
     {
         return {{Path_Def(sin_path)}, {4}, {0.f}}; 
     }
 
+    /*
+     *  Parameter 1:
+     *      vetcor von path funtionen die zusammen das Compound ergeben
+     *  Parameter 2:
+     *      vector von unsigned ints. Fuer jede funtion von vorherigen 
+     *      element wird hier die anzahl von schuessen festgelegt
+     *  Parameter 3:
+     *      vector von offsets. geben an wie weit die path funktion
+     *      verschobnen wird.
+     * */
     static LayerCompound SIN_SCYTHE_FOUR_TWO()
     {
         return {{Path_Def(sin_path), Path_Def(scythe_path)},{4,4},{0,0.f}};
@@ -41,6 +62,11 @@ struct LayerCompound
     static LayerCompound SPIRAL_ONE()
     {
         return {{Path_Def(spiral_path)},{1},{0.f}};
+    }
+
+    static LayerCompound DUAL_TWIN()
+    {
+        return {{Path_Def(linear_path),Path_Def(linear_path)},{1,1},{0.f,5.f}};
     }
 
     static LayerCompound LINEAR_TWO()
@@ -63,22 +89,47 @@ struct Stage
 
     static Stage SSFT_SIX_STS_FOUR()
     {
-        return {{LayerCompound::SIN_SCYTHE_FOUR_TWO(),LayerCompound::SIN_TWO_SHOTS()},{2,2},1.f};   
+        /*
+         *  parameter 1: vektor von Compunds die nacheinander 
+         *      ausgefuehrt werden
+         *  Parameter 2:
+         *      fuer jedes Compound wird hier angegeben wie oft
+         *      es ausgefuehrt werden soll bevor das naechste
+         *      ausgefuehrt wirf
+         *  Parameter 3:
+         *      allgemeiner cooldown. wie schnell werden die schuesse
+         *      abgegeben
+         * */
+        return {{LayerCompound::SIN_SCYTHE_FOUR_TWO(),LayerCompound::SIN_TWO_SHOTS()}, {2, 2}, 1.f};   
+    }
+    static Stage LINEAR_TWO_PULSED()
+    {
+        return {{LayerCompound::SIN_TWO_SHOTS(),LayerCompound::PAUSE()},{3,3},1.f};
+    }
+
+    static Stage LINEAR_TWO_PULSED_TWIN()
+    {
+        return {{LayerCompound::DUAL_TWIN(),LayerCompound::PAUSE()},{3,3},1.4f}; 
     }
 
     static Stage STS_ONE()
     {
-        return {{LayerCompound::SIN_TWO_SHOTS()},{1},1.f};
+        return {{LayerCompound::SIN_TWO_SHOTS()}, {1}, 1.f};
+    }
+
+    static Stage SIN_TWO()
+    {
+        return {{LayerCompound::SIN_TWO_SHOTS()}, {1}, 1.f};
     }
 
     static Stage SPIRAL_ONE()
     {
-        return{{LayerCompound::SPIRAL_ONE()},{4},1.f};   
+        return{{LayerCompound::SPIRAL_ONE()}, {4}, 1.f};   
     }
 
     static Stage LINEAR_TWO()
     {
-        return {{LayerCompound::LINEAR_TWO()},{4},1.f};
+        return {{LayerCompound::LINEAR_TWO()}, {4}, 1.f};
     }
 
 };
@@ -98,64 +149,50 @@ struct Level
 
     static Level LEVEL_ONE()
     {
-        return{{Stage::SSFT_SIX_STS_FOUR(),Stage::LINEAR_TWO()},5};
+        /*
+         * Parameter 1: 
+         *      vektor von Stages die nacheinander ausgefuehrt werden
+         *  Parameter 2:
+         *      anzahl von orbs die eingesammelt werden muessen um den
+         *      level abzuschlieszen.
+         * */
+        return{{Stage::LINEAR_TWO()}, 5};
     }
 
     static Level LEVEL_TWO()
     {
-        return{{Stage::SPIRAL_ONE()},5};
+        return{{Stage::LINEAR_TWO_PULSED()}, 5};
+    }
+
+    static Level LEVEL_THREE()
+    {
+        return{{Stage::LINEAR_TWO_PULSED_TWIN()}, 5};
+    }
+
+    static Level LEVEL_FOUR()
+    {
+        return{{Stage::LINEAR_FOUR_PULSED_TWIN()}, 5};
+    }
+
+    static Level LEVEL_FIVE()
+    {
+        return{{Stage::SIN_TWO()}, 5};
+    }
+
+    static Level LEVEL_SIX()
+    {
+        return{{Stage::LINEAR_TWO_SIN_TWO()}, 5};
+    }
+
+    static Level LEVEL_SEVEN()
+    {
+        return{{Stage::SPIRAL_ONE()}, 5};
+    }
+
+    static Level LEVEL_EIGHT()
+    {
+        return{{Stage::SPIRAL_ONE()}, 20};
     }
 
 };
-
-/*
-   class PatternPart {
-   public:
-   PatternPart(std::vector<Path_Def> shot_types,
-   std::vector<int> shots_per_cooldown, std::vector<float> offset,
-   std::vector<unsigned int> pattern_parts_lengths);
-
-   std::vector<Path_Def> m_shot_type;
-   std::vector<int> m_shots_per_cooldown;
-   std::vector<float> m_offset;
-   std::vector<unsigned int> m_pattern_parts_lengths;
-
-
-   static PatternPart SIN_TWO_SHOTS() {
-   return {{Path_Def(sin_path)},{2},{0.f},{3}};
-   }
-
-   static PatternPart SCYTHE_FOUR_SHOT() {
-   return {{Path_Def(scythe_path)},{4},{0.f},{4}};
-   }
-
-   static PatternPart SCYTHE_FOUR_SHOT_SIN_TWO_SHOTS() {
-   return {{Path_Def(scythe_path), Path_Def(sin_path)},{4,2},{0,45.f},{5,2}};
-   }
-
-   };
-
-   class Pattern {
-   public:
-   Pattern(float cooldown, float rotation_speed,
-   std::vector<PatternPart> pattern_parts, int orbs_needed);
-
-   static Pattern level1() {
-   return {1.f,20.f,{PatternPart::SIN_TWO_SHOTS()},2};
-   }
-   static Pattern level2() {
-   return {1.f,20.f,{PatternPart::SCYTHE_FOUR_SHOT()},2};
-   }
-   static Pattern level3() {
-   return {1.f,40.f,{PatternPart::SCYTHE_FOUR_SHOT_SIN_TWO_SHOTS(),PatternPart::SCYTHE_FOUR_SHOT()},10};
-   }
-
-
-
-   float m_cooldown;
-   float m_rotation_speed;
-   std::vector<PatternPart> m_pattern_parts;
-   int m_orbs_needed;
-   };
-   */
 #endif
