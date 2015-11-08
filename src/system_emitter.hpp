@@ -91,7 +91,7 @@ class EmitterSystem : public entityx::System<EmitterSystem> {
 
     void create_bullet(entityx::EntityManager &es, Path_Def path_definition, unsigned int i, unsigned int j) {
         entityx::Entity next = es.create();
-        std::cout << path_definition.get_path_type() << std::endl;
+        // std::cout << path_definition.get_path_type() << std::endl;
 
         switch(path_definition.get_path_type()){
             case PARABLE:
@@ -101,7 +101,7 @@ class EmitterSystem : public entityx::System<EmitterSystem> {
                         20.f);
                 break;
             case NORMAL:
-                std::cout << current_level.m_rotation_speed * m_total_elapsed  <<  std::endl;
+                // std::cout << current_level.m_rotation_speed * m_total_elapsed  <<  std::endl;
                 next.assign<Path>(path_definition.get_path_function(),
                         glm::vec2(0,0),
                         glm::vec2(1, (current_level.m_rotation_speed * m_total_shots) + glm::radians(m_total_elapsed * 1 +
