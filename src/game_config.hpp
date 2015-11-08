@@ -20,6 +20,6 @@ static const int WORLD_HEIGHT = 1200;
 static const int WIDTH = 800;
 static const int HEIGHT = 600;
 
-const float MAX_SPEED = 200.f;
+static const float MAX_SPEED = 200.f;
 
 #endif

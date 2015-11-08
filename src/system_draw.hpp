@@ -1,4 +1,5 @@
 #include "game.hpp"
+#include "game_config.hpp"
 #include "component_drawable.hpp"
 #include "component_position.hpp"
 #include "component_player.hpp"
@@ -86,7 +87,7 @@ class DrawSystem : public entityx::System<DrawSystem> {
                 if (entity.component<Player>())
                     player_entity = entity;
                 else
-                    render_entity(entity, dt, true);
+                    render_entity(entity, dt, true, 0.0f);
             }
           }
         }
@@ -94,7 +95,8 @@ class DrawSystem : public entityx::System<DrawSystem> {
         entityx::ComponentHandle<Position> player_pos = player_entity.component<Position>();
         entityx::ComponentHandle<Player> player = player_entity.component<Player>();
         entityx::ComponentHandle<Velocity> velocity = player_entity.component<Velocity>();
-
+        (void)velocity;
+        
         // RENDER LIGHT
 
         // Change to render into light rendertexture for now
@@ -113,16 +115,18 @@ class DrawSystem : public entityx::System<DrawSystem> {
         // to be on one of the textures used here!
         SDL_SetRenderTarget(rendr, m_render_buffer);
 
-
-        float add_rotate = glm::mix(0.0f, 4*glm::quarter_pi<float>(), velocity->m_alpha);
-        add_rotate *= glm::sign<float>(velocity->m_velocity.t);
+        /*float maximum_rotate = MAX_SPEED / RING_INNER;
+        float beta = velocity->m_velocity.t / maximum_rotate;
+        std::cout << beta << std::endl;
+        float add_rotate = 100.0 * beta * glm::pi<float>()/8;*/
+        
         float rotate_by = -rad_to_deg(player_pos->position().y - glm::half_pi<float>());
         SDL_RenderCopyEx(rendr, m_drawtex, nullptr, nullptr, 
-            rotate_by+add_rotate, nullptr, SDL_FLIP_NONE);
+            rotate_by, nullptr, SDL_FLIP_NONE);
         SDL_RenderCopyEx(rendr, m_lighttex, nullptr, nullptr, 
-            rotate_by+add_rotate, nullptr, SDL_FLIP_NONE);
+            rotate_by, nullptr, SDL_FLIP_NONE);
 
-        render_entity(player_entity, dt, false);
+        render_entity(player_entity, dt, false, 0.0f);
 
         SDL_SetRenderTarget(rendr, nullptr);
 
@@ -202,13 +206,25 @@ class DrawSystem : public entityx::System<DrawSystem> {
       return f / glm::two_pi<float>()*360.0;
     }
 
-    void render_entity(entityx::Entity& e, entityx::TimeDelta dt, bool brotate) {
+    /**
+     * Renders an entity.
+     * TimeDelta used for animation
+     * brotate specifies, whether the entity should be rotated on the world-map, or
+     * if it just stays on the bottomline (like the player)
+     * if brotate is false, add_rotate is added to all angles angle
+     *
+     * The polar coords are translated to euclidean, so that we know where to put the object
+     * here you cann add the angle to move the object relative to the world
+     * Then, the texture is rotated, so that its orientation stays constant
+     * relative to the center.
+     */
+    void render_entity(entityx::Entity& e, entityx::TimeDelta dt, bool brotate, float add_rotate) {
       auto drawable = e.component<Drawable>();
       auto position = e.component<Position>(); //bad name -> change to.. polarpos?
 
       auto cpy = position->position();
       if(!brotate)
-        cpy.y = glm::half_pi<float>();
+        cpy.y = glm::half_pi<float>() + add_rotate;
       glm::vec2 coord_euclid = polar_to_euclid(cpy);
 
       // Copy the coordinates to dest
@@ -235,7 +251,7 @@ class DrawSystem : public entityx::System<DrawSystem> {
       }
 
       SDL_Texture* tex = m_game->res_manager().texture(drawable->texture_key());
-      float rotate = brotate ? rad_to_deg(position->position().y - glm::half_pi<float>()) : 0.0;
+      float rotate = brotate ? rad_to_deg(position->position().y - glm::half_pi<float>()) : add_rotate;
       SDL_RenderCopyEx(m_game->renderer(), tex, src, &dest, rotate, nullptr, SDL_FLIP_NONE);
     }
 
@@ -273,3 +289,4 @@ class DrawSystem : public entityx::System<DrawSystem> {
     SDL_Texture *m_drawtex;
     SDL_Texture *m_render_buffer;
 };
+

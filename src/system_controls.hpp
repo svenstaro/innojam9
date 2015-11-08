@@ -50,11 +50,9 @@ class ControlSystem : public entityx::System<ControlSystem> {
                 velocity *= MAX_SPEED;
                 
                 // adjust angle speed to match "radial" speed via arc length
-                float arc_speed = 1.0;
                 if (position->position()[0] != 0) { // only adjust if radius != 0 ????
-                    arc_speed /= position->position()[0];
+                    velocity[1] /= position->position()[0];
                 }
-                velocity[1] *= arc_speed;
                 
                 velocity_e->m_accelerating = true;
                 glm::vec2 d = velocity_e->m_desired_velocity - velocity;
