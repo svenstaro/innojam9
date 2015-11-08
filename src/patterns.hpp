@@ -114,17 +114,17 @@ struct Stage
     }
     static Stage LINEAR_TWO_PULSED()
     {
-        return {{LayerCompound::LINEAR_TWO(),LayerCompound::PAUSE()},{3,3},1.f};
+        return {{LayerCompound::LINEAR_TWO(),LayerCompound::PAUSE()}, {3,3}, 0.1f};
     }
 
     static Stage LINEAR_TWO_PULSED_TWIN()
     {
-        return {{LayerCompound::DUAL_TWIN(),LayerCompound::PAUSE()},{3,2},0.7f}; 
+        return {{LayerCompound::DUAL_TWIN(),LayerCompound::PAUSE()},{3,2},0.2f}; 
     }
 
     static Stage LINEAR_FOUR_PULSED_TWIN()
     {
-        return {{LayerCompound::FOUR_TWIN(),LayerCompound::PAUSE()},{3,2},0.7f}; 
+        return {{LayerCompound::FOUR_TWIN(),LayerCompound::PAUSE()},{3,2},0.5f}; 
     }
 
     static Stage STS_ONE()
@@ -139,7 +139,7 @@ struct Stage
 
     static Stage SIN_TWO()
     {
-        return {{LayerCompound::SIN_TWO_SHOTS()}, {1}, 1.f};
+        return {{LayerCompound::SIN_TWO_SHOTS()}, {4}, 0.2f};
     }
 
     static Stage SPIRAL_ONE()
