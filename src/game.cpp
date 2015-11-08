@@ -1,7 +1,7 @@
 #include "game.hpp"
 
 #include "main_state.hpp"
-#include "menu_state.hpp"
+#include "mainmenu_state.hpp"
 #include "game_over_state.hpp"
 
 #include "game_config.hpp"
@@ -90,7 +90,8 @@ int Game::init() {
     //Setting order of levels
     m_level_vector = {Pattern::level1(), Pattern::level2(),Pattern::level3(), Pattern::level4()};
     //m_states.push({"main", std::make_unique<MainState>(this)});
-    m_states.push({"menu", std::make_unique<MenuState>(this)});
+    // m_states.push({"menu", std::make_unique<MenuState>(this)});
+    m_states.push({"main_menu", std::make_unique<MainMenuState>(this)});
     m_states.top().second->init();
 
     return 0;
