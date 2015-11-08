@@ -34,6 +34,16 @@ struct LayerCompound
         return {{Path_Def(sin_path)}, {4}, {0.f}}; 
     }
 
+    /*
+     *  Parameter 1:
+     *      vetcor von path funtionen die zusammen das Compound ergeben
+     *  Parameter 2:
+     *      vector von unsigned ints. Fuer jede funtion von vorherigen 
+     *      element wird hier die anzahl von schuessen festgelegt
+     *  Parameter 3:
+     *      vector von offsets. geben an wie weit die path funktion
+     *      verschobnen wird.
+     * */
     static LayerCompound SIN_SCYTHE_FOUR_TWO()
     {
         return {{Path_Def(sin_path), Path_Def(scythe_path)},{4,4},{0,0.f}};
@@ -64,6 +74,17 @@ struct Stage
 
     static Stage SSFT_SIX_STS_FOUR()
     {
+        /*
+         *  parameter 1: vektor von Compunds die nacheinander 
+         *      ausgefuehrt werden
+         *  Parameter 2:
+         *      fuer jedes Compound wird hier angegeben wie oft
+         *      es ausgefuehrt werden soll bevor das naechste
+         *      ausgefuehrt wirf
+         *  Parameter 3:
+         *      allgemeiner cooldown. wie schnell werden die schuesse
+         *      abgegeben
+         * */
         return {{LayerCompound::SIN_SCYTHE_FOUR_TWO(),LayerCompound::SIN_TWO_SHOTS()},{2,2},1.f};   
     }
 
@@ -99,6 +120,13 @@ struct Level
 
     static Level LEVEL_ONE()
     {
+        /*
+         * Parameter 1: 
+         *      vektor von Stages die nacheinander ausgefuehrt werden
+         *  Parameter 2:
+         *      anzahl von orbs die eingesammelt werden muessen um den
+         *      level abzuschlieszen.
+         * */
         return{{Stage::SSFT_SIX_STS_FOUR(),Stage::LINEAR_TWO()},5};
     }
 
@@ -108,55 +136,4 @@ struct Level
     }
 
 };
-
-/*
-   class PatternPart {
-   public:
-   PatternPart(std::vector<Path_Def> shot_types,
-   std::vector<int> shots_per_cooldown, std::vector<float> offset,
-   std::vector<unsigned int> pattern_parts_lengths);
-
-   std::vector<Path_Def> m_shot_type;
-   std::vector<int> m_shots_per_cooldown;
-   std::vector<float> m_offset;
-   std::vector<unsigned int> m_pattern_parts_lengths;
-
-
-   static PatternPart SIN_TWO_SHOTS() {
-   return {{Path_Def(sin_path)},{2},{0.f},{3}};
-   }
-
-   static PatternPart SCYTHE_FOUR_SHOT() {
-   return {{Path_Def(scythe_path)},{4},{0.f},{4}};
-   }
-
-   static PatternPart SCYTHE_FOUR_SHOT_SIN_TWO_SHOTS() {
-   return {{Path_Def(scythe_path), Path_Def(sin_path)},{4,2},{0,45.f},{5,2}};
-   }
-
-   };
-
-   class Pattern {
-   public:
-   Pattern(float cooldown, float rotation_speed,
-   std::vector<PatternPart> pattern_parts, int orbs_needed);
-
-   static Pattern level1() {
-   return {1.f,20.f,{PatternPart::SIN_TWO_SHOTS()},2};
-   }
-   static Pattern level2() {
-   return {1.f,20.f,{PatternPart::SCYTHE_FOUR_SHOT()},2};
-   }
-   static Pattern level3() {
-   return {1.f,40.f,{PatternPart::SCYTHE_FOUR_SHOT_SIN_TWO_SHOTS(),PatternPart::SCYTHE_FOUR_SHOT()},10};
-   }
-
-
-
-   float m_cooldown;
-   float m_rotation_speed;
-   std::vector<PatternPart> m_pattern_parts;
-   int m_orbs_needed;
-   };
-   */
 #endif
