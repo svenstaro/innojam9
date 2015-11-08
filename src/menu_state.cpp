@@ -48,7 +48,8 @@ void MenuState::update(double dt){
 	int x, y;
 	SDL_GetMouseState(&x, &y);
 	entityx::Entity ent;
-	if(find_target(x, y, ent)) {
+	bool hit_entity = find_target(x, y, ent);
+	if(hit_entity) {
 		auto d = ent.component<Drawable>();
 		d->m_anim.set_y_index(1);
 	}
@@ -65,13 +66,13 @@ void MenuState::update(double dt){
 				m_game->toggle_debug_mode();
 			}
 		}
-		else if (e.type == SDL_MOUSEBUTTONUP){
+		else if (hit_entity && e.type == SDL_MOUSEBUTTONUP){
 			if(e.button.button == SDL_BUTTON_LEFT){
-				ent.component<MenuItem>()->doClick(m_game);
+				auto c = ent.component<MenuItem>();
+				if(c) {
+					c->doClick(m_game);
+				}
 			}
-		}
-		else if(e.type == SDL_MOUSEMOTION){
-
 		}
 	}
 

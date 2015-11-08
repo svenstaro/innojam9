@@ -75,11 +75,18 @@ int Game::init() {
     m_res_manager.load_texture("bar", "res/bar.png", m_render);
     m_res_manager.load_texture("magma", "res/magma.png", m_render);
 
+    m_res_manager.load_texture("difficulty_easy", "res/menu/easy.png", m_render);
+    m_res_manager.load_texture("difficulty_medium", "res/menu/medium.png", m_render);
+    m_res_manager.load_texture("difficulty_hard", "res/menu/hard.png", m_render);
+    m_res_manager.load_texture("difficulty_svenstaro", "res/menu/svenstaro.png", m_render);
+
     m_res_manager.load_texture("menu_red_background", "res/menu/background_red.png", m_render);
     m_res_manager.load_texture("menu_background", "res/menu/background.png", m_render);
     m_res_manager.load_texture("menu_newgame", "res/menu/new_game.png", m_render);
     m_res_manager.load_texture("menu_highscore", "res/menu/highscore.png", m_render);
     m_res_manager.load_texture("menu_exit", "res/menu/exit.png", m_render);
+    m_res_manager.load_texture("menu_back", "res/menu/back.png", m_render);
+    m_res_manager.load_texture("menu_game_over", "res/menu/game_over.png", m_render);
 
     m_res_manager.load_font("font20", "res/DejaVuSans.ttf", 20);
 
@@ -90,8 +97,7 @@ int Game::init() {
 
     //Setting order of levels
     m_level_vector = {Pattern::level1(), Pattern::level2(),Pattern::level3(), Pattern::level4()};
-    //m_states.push({"main", std::make_unique<MainState>(this)});
-    // m_states.push({"menu", std::make_unique<MenuState>(this)});
+
     m_states.push({"main_menu", std::make_unique<MainMenuState>(this)});
     m_states.top().second->init();
 
