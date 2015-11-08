@@ -32,7 +32,6 @@ class EmitterSystem : public entityx::System<EmitterSystem>
         {
             m_total_elapsed += dt;
             m_last_spawned += dt;
-
             if (m_last_spawned > current_stage.m_cooldown) {
                 Mix_Volume(1, 20);
                 Mix_PlayChannel(1, m_game->res_manager().sound("sound1"), 0);
@@ -40,11 +39,13 @@ class EmitterSystem : public entityx::System<EmitterSystem>
                 m_last_spawned = 0.f;
 
 
-                for(unsigned int i = 0; i < current_compound.m_number_of_shots.size(); i++)
+                for(unsigned int i = 0; i < current_compound.m_number_of_paths; i++)
                 {
+                    std::cout<< "nop: " <<current_compound.m_number_of_paths << std::endl;
                     for(unsigned int j = 0; j < current_compound.m_number_of_shots[i]; j++)
                     {
-                        create_bullet(es, current_compound.m_paths[i],i);
+                        std::cout << "  nos: " << i <<" - "<< current_compound.m_number_of_shots[i] << std::endl;
+                        create_bullet(es, current_compound.m_paths[i],j);
                     }
                 }
                 current_stage.next();
@@ -60,7 +61,10 @@ class EmitterSystem : public entityx::System<EmitterSystem>
             if(m_game->m_orbs_collected == current_level.m_orbs_to_next_level)
             {
                 m_game->next_level();
-                events.emit<LevelChangedEvent>();  
+                events.emit<LevelChangedEvent>();
+                current_level = m_game->get_current_level();
+                current_stage = current_level.get_current_stage();
+                current_compound = current_stage.get_current_repitition();
             }
         }
     private:
@@ -80,7 +84,7 @@ class EmitterSystem : public entityx::System<EmitterSystem>
     Stage current_stage = current_level.get_current_stage();
     LayerCompound current_compound = current_stage.get_current_repitition(); 
 
-    void create_bullet(entityx::EntityManager &es, Path_Def path_definition, int i) {
+    void create_bullet(entityx::EntityManager &es, Path_Def path_definition, unsigned int i) {
         entityx::Entity next = es.create();
 
         switch(path_definition.get_path_type()){
@@ -93,7 +97,7 @@ class EmitterSystem : public entityx::System<EmitterSystem>
             case NORMAL:
                 next.assign<Path>(path_definition.get_path_function(),
                         glm::vec2(0,0),
-                        glm::vec2(1, glm::radians(m_total_elapsed * 30 +
+                        glm::vec2(1, glm::radians(m_total_elapsed * 1 +
                                 (current_compound.m_offset[i] + (360.f / current_compound.m_number_of_shots[i]) * i))),
                         20.f);
                 break;

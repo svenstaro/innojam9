@@ -27,13 +27,28 @@ struct LayerCompound
     {
         return {{Path_Def(sin_path)}, {2}, {0.f}}; 
     }
-
-    static LayerCompound SIN_SCYTE_FOUR_TWO()
+    
+    static LayerCompound SIN_FOUR_SHOTS()
     {
-        return {{Path_Def(sin_path), Path_Def(scythe_path)},{4,4},{0,45.f}};
+        return {{Path_Def(sin_path)}, {4}, {0.f}}; 
     }
-};
 
+    static LayerCompound SIN_SCYTHE_FOUR_TWO()
+    {
+        return {{Path_Def(sin_path), Path_Def(scythe_path)},{4,4},{0,0.f}};
+    }
+
+    static LayerCompound SPIRAL_ONE()
+    {
+        return {{Path_Def(spiral_path)},{1},{0.f}};
+    }
+
+    static LayerCompound LINEAR_TWO()
+    {
+        return {{Path_Def(linear_path)},{2},{0.f}};
+    }
+
+    };
 struct Stage
 {
     Stage(std::vector<LayerCompound> stages, std::vector<unsigned int> repititions,float cooldown);
@@ -48,13 +63,24 @@ struct Stage
 
     static Stage SSFT_SIX_STS_FOUR()
     {
-        return {{LayerCompound::SIN_SCYTE_FOUR_TWO(),LayerCompound::SIN_TWO_SHOTS()},{6,4},1.f};   
+        return {{LayerCompound::SIN_SCYTHE_FOUR_TWO(),LayerCompound::SIN_TWO_SHOTS()},{2,2},1.f};   
     }
 
     static Stage STS_ONE()
     {
         return {{LayerCompound::SIN_TWO_SHOTS()},{1},1.f};
     }
+
+    static Stage SPIRAL_ONE()
+    {
+        return{{LayerCompound::SPIRAL_ONE()},{4},1.f};   
+    }
+
+    static Stage LINEAR_TWO()
+    {
+        return {{LayerCompound::LINEAR_TWO()},{4},1.f};
+    }
+
 };
 
 struct Level
@@ -72,7 +98,12 @@ struct Level
 
     static Level LEVEL_ONE()
     {
-        return{{Stage::SSFT_SIX_STS_FOUR()},5};
+        return{{Stage::SSFT_SIX_STS_FOUR(),Stage::LINEAR_TWO()},5};
+    }
+
+    static Level LEVEL_TWO()
+    {
+        return{{Stage::SPIRAL_ONE()},5};
     }
 
 };
