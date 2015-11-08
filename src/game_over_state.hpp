@@ -24,7 +24,7 @@ class GameOverState : public State {
     };
     int init() override {
         return 0;
-    };
+    };git
     void update(double dt) override {
         SDL_Event e;
         while(SDL_PollEvent(&e)) {
