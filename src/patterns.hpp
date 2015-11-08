@@ -177,42 +177,42 @@ struct Level
          *      anzahl von orbs die eingesammelt werden muessen um den
          *      level abzuschlieszen.
          * */
-        return{{Stage::LINEAR_TWO()}, 5, glm::radians(20.f)};
+        return{{Stage::LINEAR_TWO()}, 12, glm::radians(20.f)};
     }
 
     static Level LEVEL_TWO()
     {
-        return{{Stage::LINEAR_TWO_PULSED()}, 5, glm::radians(20.f)};
+        return{{Stage::LINEAR_TWO_PULSED()}, 12, glm::radians(20.f)};
     }
 
     static Level LEVEL_THREE()
     {
-        return{{Stage::LINEAR_TWO_PULSED_TWIN()}, 5, glm::radians(20.f)};
+        return{{Stage::LINEAR_TWO_PULSED_TWIN()}, 12, glm::radians(20.f)};
     }
 
     static Level LEVEL_FOUR()
     {
-        return{{Stage::LINEAR_FOUR_PULSED_TWIN()}, 5, 20.f};
+        return{{Stage::LINEAR_FOUR_PULSED_TWIN()}, 12, 20.f};
     }
 
     static Level LEVEL_FIVE()
     {
-        return{{Stage::SIN_TWO()}, 5, 20.f};
+        return{{Stage::SIN_TWO()}, 12, 20.f};
     }
 
     static Level LEVEL_SIX()
     {
-        return{{Stage::LINEAR_TWO_SIN_TWO()}, 5, 20.f};
+        return{{Stage::LINEAR_TWO_SIN_TWO()}, 12, 20.f};
     }
 
     static Level LEVEL_SEVEN()
     {
-        return{{Stage::SPIRAL_ONE()}, 5, 20.f};
+        return{{Stage::SPIRAL_ONE()}, 12, 20.f};
     }
 
     static Level LEVEL_EIGHT()
     {
-        return{{Stage::SPIRAL_ONE()}, 20, 20.f};
+        return{{Stage::SPIRAL_ONE()}, 24, 20.f};
     }
 };
 #endif
