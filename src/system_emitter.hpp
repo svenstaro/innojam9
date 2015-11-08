@@ -45,7 +45,7 @@ class EmitterSystem : public entityx::System<EmitterSystem>
                     for(unsigned int j = 0; j < current_compound.m_number_of_shots[i]; j++)
                     {
                         std::cout << "  nos: " << i <<" - "<< current_compound.m_number_of_shots[i] << std::endl;
-                        create_bullet(es, current_compound.m_paths[i],j);
+                        create_bullet(es, current_compound.m_paths[i],j,i);
                     }
                 }
                 current_stage.next();
@@ -84,7 +84,7 @@ class EmitterSystem : public entityx::System<EmitterSystem>
     Stage current_stage = current_level.get_current_stage();
     LayerCompound current_compound = current_stage.get_current_repitition(); 
 
-    void create_bullet(entityx::EntityManager &es, Path_Def path_definition, unsigned int i) {
+    void create_bullet(entityx::EntityManager &es, Path_Def path_definition, unsigned int i, unsigned int j) {
         entityx::Entity next = es.create();
 
         switch(path_definition.get_path_type()){
@@ -98,7 +98,7 @@ class EmitterSystem : public entityx::System<EmitterSystem>
                 next.assign<Path>(path_definition.get_path_function(),
                         glm::vec2(0,0),
                         glm::vec2(1, glm::radians(m_total_elapsed * 1 +
-                                (current_compound.m_offset[i] + (360.f / current_compound.m_number_of_shots[i]) * i))),
+                                (current_compound.m_offset[j] + (360.f / current_compound.m_number_of_shots[j]) * i))),
                         20.f);
                 break;
         }
