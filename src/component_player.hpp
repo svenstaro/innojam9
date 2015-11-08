@@ -17,7 +17,6 @@ struct Player : entityx::Component<Player> {
 
     void damage(float f) {
         m_hp -= f;
-        std::cout << "OUCH! " << m_hp << "/" << m_max_hp << std::endl;
     }
 
     bool is_dead() {
