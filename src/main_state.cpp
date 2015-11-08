@@ -92,10 +92,6 @@ int MainState::init() {
     background.assign<Position>(glm::vec2(0.f, 0.f));
     background.assign<Drawable>("wood", 1000, 1000, 0);
 
-    entityx::Entity inner_bound = m_entities.create();
-    inner_bound.assign<Position>(glm::vec2(0.f, 0.f));
-    inner_bound.assign<Drawable>("bound", 2 * (int)RING_INNER, 2 * (int)RING_INNER, 1);
-
     entityx::Entity outer_bound = m_entities.create();
     outer_bound.assign<Position>(glm::vec2(0.f, 0.f));
     // for the outer bound we need additional 50 radius,

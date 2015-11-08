@@ -93,6 +93,7 @@ int Game::init() {
     m_res_manager.load_texture("menu_highscore", "res/menu/highscore.png", m_render);
     m_res_manager.load_texture("menu_exit", "res/menu/exit.png", m_render);
     m_res_manager.load_texture("menu_back", "res/menu/back.png", m_render);
+    m_res_manager.load_texture("menu_title", "res/menu/title.png", m_render);
 
     m_res_manager.load_texture("menu_game_over", "res/menu/game_over.png", m_render);
     m_res_manager.load_texture("menu_game_over_back", "res/menu/game_over_back.png", m_render);
@@ -136,6 +137,10 @@ void Game::game_over(bool win, float score) {
 
 void Game::next_level()
 {
+    rumble_for(0.75f);
+    m_remaining_lvl_change = 1.5f;
+    m_clear_bullets = true;
+    //  HIER LEVEL UP SOUND
     m_current_level_index++;
     if(m_current_level_index == m_level_vector.size())
     {
@@ -199,6 +204,12 @@ Difficulty Game::difficulty() {
 
 void Game::popstate() {
     m_states.pop();
+}
+
+/** S in seconds */
+void Game::rumble_for(float s)
+{
+  m_remaining_rumble = s;
 }
 
 unsigned int Game::get_current_level_index()
