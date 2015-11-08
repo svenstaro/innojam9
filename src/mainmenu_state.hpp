@@ -2,6 +2,7 @@
 #define MAINMENU_STATE_MAIN_HPP
 
 #include "menu_state.hpp"
+#include "difficultymenu_state.hpp"
 
 #include "entityx/entityx.h"
 
@@ -16,7 +17,9 @@
 #include <glm/vec2.hpp>
 
 void new_game(Game* game){
-	std::cout << "new game" << std::endl;
+	//open difficulty menu first
+	game->states().push({"difficulty", std::make_unique<DifficultyMenuState>(game)});
+	game->states().top().second->init();
 }
 
 void show_highscore(Game* game){
