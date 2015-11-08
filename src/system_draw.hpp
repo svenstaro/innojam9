@@ -1,3 +1,4 @@
+#include "events.hpp"
 #include "game.hpp"
 #include "game_config.hpp"
 #include "component_drawable.hpp"
@@ -137,8 +138,7 @@ class DrawSystem : public entityx::System<DrawSystem> {
 
         player->m_invincible = alpha >= 0.1;
 
-        if(m_game->m_clear_bullets && alpha >= 0.98)
-        {
+        if(m_game->m_clear_bullets && alpha >= 0.98) {
           entityx::ComponentHandle<Enemy> enemy;
           for(entityx::Entity entity : es.entities_with_components(enemy))
             entity.destroy();
@@ -195,7 +195,7 @@ class DrawSystem : public entityx::System<DrawSystem> {
         render_bar(rendr, player->m_hp, player->m_max_hp);
 
         SDL_Color c = {200, 200, 200, 100};
-        auto current_level = "Level " + std::to_string(m_game->get_current_level_index());
+        auto current_level = "Level " + std::to_string(m_game->get_current_level_index() + 1);
         draw_text(rendr, m_game->res_manager(), current_level, "font20", 600, 20, c);
         SDL_RenderPresent(rendr);
 
