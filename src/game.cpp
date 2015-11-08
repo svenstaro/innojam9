@@ -107,8 +107,8 @@ int Game::init() {
     entity.assign<Position>();
 
     //Setting order of levels
-    m_level_vector = {Level::LEVEL_ONE(), Level::LEVEL_TWO(), Level::LEVEL_THREE(), LeveL::FOUR(), 
-                      Level::LEVEL_FIVE(), Level::SIX(), LeveL::SEVEN(), Level::EIGHT()};
+    m_level_vector = {Level::LEVEL_ONE(), Level::LEVEL_TWO(), Level::LEVEL_THREE(), Level::LEVEL_FOUR(),
+                      Level::LEVEL_FIVE(), Level::LEVEL_SIX(), Level::LEVEL_SEVEN(), Level::LEVEL_EIGHT()};
 
     if(DEBUG) {
         m_difficulty = DEBUGDIF;
