@@ -74,6 +74,7 @@ int Game::init() {
     m_res_manager.load_sound("sound2", "res/whoomp.wav");
     m_res_manager.load_texture("bar", "res/bar.png", m_render);
     m_res_manager.load_texture("magma", "res/magma.png", m_render);
+    m_res_manager.load_texture("runes", "res/symbols.png", m_render);
 
     m_res_manager.load_texture("difficulty_easy", "res/menu/easy.png", m_render);
     m_res_manager.load_texture("difficulty_medium", "res/menu/medium.png", m_render);
