@@ -117,6 +117,7 @@ void Game::game_over(float score) {
 
 void Game::next_level()
 {
+    rumble_for(0.75f);
     m_current_level_index++;
     if(m_current_level_index == m_level_vector.size())
     {
@@ -180,6 +181,12 @@ Difficulty Game::difficulty() {
 
 void Game::popstate() {
     m_states.pop();
+}
+
+/** S in seconds */
+void Game::rumble_for(float s)
+{
+  m_remaining_rumble = s;
 }
 
 unsigned int Game::get_current_level_index()

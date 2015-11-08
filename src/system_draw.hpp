@@ -17,11 +17,11 @@
 #include "strapon/resource_manager/resource_manager.hpp"
 #include "strapon/sdl_helpers/sdl_helpers.hpp"
 
-#include <iostream>
+#include <random>
 
 class DrawSystem : public entityx::System<DrawSystem> {
   public:
-    DrawSystem(Game *game) : m_game(game) {
+    DrawSystem(Game *game) : m_game(game), distribution(0.0,2.5) {
         int w, h;
         float zoom = 4.0/5.0;
         SDL_RenderGetLogicalSize(game->renderer(), &w, &h);
@@ -131,9 +131,16 @@ class DrawSystem : public entityx::System<DrawSystem> {
         SDL_SetRenderTarget(rendr, nullptr);
 
         SDL_Rect dst{0, 0, 800, 600};
+        dst.x += distribution(generator) * m_game->m_remaining_rumble;
+        dst.y += distribution(generator) * m_game->m_remaining_rumble;
+        float angle = dst.x += distribution(generator) * m_game->m_remaining_rumble;
+        SDL_Point rot_ctr;
+        rot_ctr.x = distribution(generator) * m_game->m_remaining_rumble;
+        rot_ctr.y = distribution(generator) * m_game->m_remaining_rumble;
+        m_game->m_remaining_rumble = glm::max(0.0f, m_game->m_remaining_rumble - float(dt));
         SDL_RenderGetViewport(rendr, &dst);
         dst.x = dst.y = 0;
-        SDL_RenderCopyEx(rendr, m_render_buffer, &m_camera, &dst, 0.0, nullptr, SDL_FLIP_NONE);
+        SDL_RenderCopyEx(rendr, m_render_buffer, &m_camera, &dst, angle, nullptr, SDL_FLIP_NONE);
 
 
         int orbs = 0;
@@ -296,4 +303,7 @@ class DrawSystem : public entityx::System<DrawSystem> {
     SDL_Texture *m_lighttex;
     SDL_Texture *m_drawtex;
     SDL_Texture *m_render_buffer;
+    
+    std::default_random_engine generator;
+    std::normal_distribution<float> distribution;
 };

@@ -39,6 +39,7 @@ class HighscoreSystem : public entityx::System<HighscoreSystem>,
         }
         if(hit) {
             hit = false;
+            m_game->rumble_for(0.5f);
             damage_enem.destroy();
             if(immunity <= 0.0f) {
                 events.emit<HitEvent>();
