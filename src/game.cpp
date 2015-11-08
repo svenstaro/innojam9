@@ -75,6 +75,7 @@ int Game::init() {
     m_res_manager.load_texture("bar", "res/bar.png", m_render);
     m_res_manager.load_texture("magma", "res/magma.png", m_render);
 
+    m_res_manager.load_texture("menu_red_background", "res/menu/background_red.png", m_render);
     m_res_manager.load_texture("menu_newgame", "res/menu/new_game.png", m_render);
     m_res_manager.load_texture("menu_highscore", "res/menu/highscore.png", m_render);
     m_res_manager.load_texture("menu_exit", "res/menu/exit.png", m_render);

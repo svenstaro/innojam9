@@ -15,7 +15,7 @@ public:
 	void update(double dt) override;
 
 private:
-	int find_target(int x, int y, entityx::Entity& ret_entity);
+	bool find_target(int x, int y, entityx::Entity& ret_entity);
 	void draw(double dt);
 
 	Game *m_game;
