@@ -63,7 +63,6 @@ class EmitterSystem : public entityx::System<EmitterSystem> {
 
             if(m_game->m_orbs_collected == current_level.m_orbs_to_next_level) {
                 m_game->next_level();
-
                 events.emit<LevelChangedEvent>(m_game->get_current_level_index());
                 current_level = m_game->get_current_level();
                 current_stage = current_level.get_current_stage();
@@ -111,8 +110,14 @@ class EmitterSystem : public entityx::System<EmitterSystem> {
         next.assign<Moving>(100.f);
         next.assign<Enemy>();
         next.assign<Collidable>(10.f);
-        next.assign<Light>("gradient", 0.3f, glm::vec3{255, 100, 0});
-        next.assign<Drawable>("magma", 20, 20, 4, AnimTemplate(6, 6, 14, 0, 40));
+        if(m_game->get_current_level_index() == m_game->get_max_level_index()) {
+            next.assign<Light>("gradient", 0.3f, glm::vec3{0, 0, 255});
+            next.assign<Drawable>("magma", 20, 20, 4, AnimTemplate(6, 6, 14, 0, 40), glm::i8vec3(50, 50, 255));
+        }
+        else {
+            next.assign<Light>("gradient", 0.3f, glm::vec3{255, 100, 0});
+            next.assign<Drawable>("magma", 20, 20, 4, AnimTemplate(6, 6, 14, 0, 40));
+        }
     }
 };
 

@@ -7,6 +7,8 @@
 #include "component_path.hpp"
 #include "component_player.hpp"
 #include "component_moving.hpp"
+#include "component_fire.hpp"
+#include "component_ring.hpp"
 #include "component_velocity.hpp"
 #include "component_light.hpp"
 #include "system_collision.hpp"
@@ -94,16 +96,18 @@ int MainState::init() {
 
     entityx::Entity outer_bound = m_entities.create();
     outer_bound.assign<Position>(glm::vec2(0.f, 0.f));
+    outer_bound.assign<Ring>();
     // for the outer bound we need additional 50 radius,
     // so that the player is inside the circle.
     outer_bound.assign<Drawable>("outer_bound", 2 * (int)RING_OUTER + 100,
-            2 * (int)RING_OUTER + 100, 1);
+            2 * (int)RING_OUTER + 100, 2);
 
     AnimTemplate fire_anim(32, 32, 6, 0, 10);
     entityx::Entity fire = m_entities.create();
     fire.assign<Position>(glm::vec2(0.f, 0.f));
     fire.assign<Drawable>("fire", 100, 100, 1, fire_anim);
     fire.assign<Light>("gradient");
+    fire.assign<Fire>();
 
     Mix_VolumeMusic(50);
     Mix_PlayMusic(m_game->res_manager().music("music1"), -1);

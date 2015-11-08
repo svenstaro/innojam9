@@ -7,7 +7,7 @@
 
 #include "entityx/entityx.h"
 
-class MainState : public State {
+class MainState : public State, public entityx::Receiver<MainState> {
   public:
     MainState(Game *game);
     ~MainState();
