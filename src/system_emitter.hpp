@@ -44,16 +44,16 @@ class EmitterSystem : public entityx::System<EmitterSystem> {
                 }
                 current_compound.m_number_of_shots_done++;
 
-                if(current_compound.m_number_of_shots_done == 
+                if(current_compound.m_number_of_shots_done ==
                         current_stage.m_repititions[current_stage.m_current_repition])
                 {
                     current_stage.next();
                     current_compound = current_stage.get_current_repitition();
-                    
+
                     if(current_stage.is_at_end()) {
                         current_level.next();
                         current_stage = current_level.get_current_stage();
-                        
+
                         if(current_level.is_at_end())
                         {
                         }
@@ -63,7 +63,8 @@ class EmitterSystem : public entityx::System<EmitterSystem> {
 
             if(m_game->m_orbs_collected == current_level.m_orbs_to_next_level) {
                 m_game->next_level();
-                events.emit<LevelChangedEvent>();
+
+                events.emit<LevelChangedEvent>(m_game->get_current_level_index());
                 current_level = m_game->get_current_level();
                 current_stage = current_level.get_current_stage();
                 current_compound = current_stage.get_current_repitition();

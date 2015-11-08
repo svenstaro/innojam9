@@ -32,11 +32,12 @@ class Game {
     void popstate();
     void rumble_for(float s);
     unsigned int get_current_level_index();
+    int get_max_level_index();
     Level get_current_level();
     void next_level();
     void set_difficulty(Difficulty difficulty);
     Difficulty difficulty();
-    void game_over(float score);
+    void game_over(bool win, float score);
 
     std::stack<std::pair<std::string, std::unique_ptr<State>>> &states();
     const std::string &statename() const;

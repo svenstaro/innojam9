@@ -22,11 +22,14 @@ class HighscoreSystem : public entityx::System<HighscoreSystem>,
     void configure(entityx::EventManager &event_manager) override {
         event_manager.subscribe<CollisionEvent>(*this);
         event_manager.subscribe<LevelChangedEvent>(*this);
+        event_manager.subscribe<GameOverEvent>(*this);
     }
 
     void update(entityx::EntityManager &es, entityx::EventManager &events,
                 entityx::TimeDelta dt) override {
         m_events = &events;
+        m_entities = &es;
+
         entityx::ComponentHandle<Player> player;
         for (entityx::Entity entity : es.entities_with_components(player)) {
             (void)entity;
@@ -43,9 +46,9 @@ class HighscoreSystem : public entityx::System<HighscoreSystem>,
             if (immunity <= 0.0f) {
                 events.emit<HitEvent>();
                 player->damage(1.0f);
-                if (player->is_dead()) {
-                    events.emit<GameOverEvent>(player->score);
-                    m_game->game_over(player->score);
+                if(player->is_dead()) {
+                    events.emit<GameOverEvent>(false, player->score);
+                    // m_game->game_over(false, player->score);
                 }
                 immunity = max_immunity;
             }
@@ -73,6 +76,20 @@ class HighscoreSystem : public entityx::System<HighscoreSystem>,
         (void) level_changed_event;
         m_game->m_orbs_collected = 0;
         Mix_PlayChannel(2, m_game->res_manager().sound("sound4"), 0);
+
+        if(level_changed_event.level() == 0){//> m_game->get_max_level_index()){
+            entityx::ComponentHandle<Player> player;
+            for(entityx::Entity entity: m_entities->entities_with_components(player)){
+                (void)entity;
+            }
+            if(player){
+                m_events->emit<GameOverEvent>(true, player->score);
+            }
+        }
+    }
+
+    void receive(const GameOverEvent& event) {
+        m_game->game_over(event.is_win(), event.get_score());
     }
 
   private:
@@ -82,6 +99,7 @@ class HighscoreSystem : public entityx::System<HighscoreSystem>,
     float immunity = 0.0f;
     entityx::Entity damage_enem;
     entityx::EventManager *m_events;
+    entityx::EntityManager *m_entities;
 };
 
 #endif
