@@ -37,7 +37,6 @@ class Game {
     void next_level();
     void set_difficulty(Difficulty difficulty);
     Difficulty difficulty();
-    void show_game_over(void)
     void game_over(bool win, float score);
 
     std::stack<std::pair<std::string, std::unique_ptr<State>>> &states();
@@ -52,12 +51,8 @@ class Game {
     float m_remaining_rumble = 0.0f;
     float m_remaining_lvl_change = 0.0f;
     bool m_clear_bullets = false;
+
   private:
-    //game over state
-    bool m_game_over = false;
-    int m_final_score = 0;
-    bool m_final_win = false;
-    
     bool m_running = true;
     bool m_debug_mode = false;
     int m_last_frame_time = 0;

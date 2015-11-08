@@ -123,13 +123,13 @@ int Game::init() {
     return 0;
 }
 
-void Game::show_game_over(void)
-{
-    if(m_final_win){
-        m_states.push({"win", std::make_unique<WinState>(this, m_final_score)});
+void Game::game_over(bool win, float score) {
+    
+    if(win){
+        m_states.push({"win", std::make_unique<WinState>(this, score)});
     }
     else{
-        m_states.push({"gameover", std::make_unique<GameOverState>(this, m_final_score)});
+        m_states.push({"gameover", std::make_unique<GameOverState>(this, score)});
     }
     m_states.top().second->init();
 
@@ -137,12 +137,6 @@ void Game::show_game_over(void)
     m_last_frame_time = 0;
     m_debug_mode = false;
     m_orbs_collected = 0;
-}
-
-void Game::game_over(bool win, float score) {
-    m_game_over = true;
-    m_final_win = win;
-    m_final_score = score;
 }
 
 void Game::next_level()
@@ -185,7 +179,7 @@ std::stack<std::pair<std::string, std::unique_ptr<State>>> &Game::states() {
 
 bool Game::is_running() {
     return m_running;
-}runnin
+}
 
 void Game::toggle_debug_mode(void)
 {
