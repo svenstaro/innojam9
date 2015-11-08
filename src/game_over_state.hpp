@@ -28,8 +28,8 @@ class GameOverState : public MenuState {
         background.assign<Position>(glm::vec2(0.f, 0.f));
 
         entityx::Entity title = m_entities.create();
-        title.assign<Drawable>("menu_game_over", 64, 256);
-        title.assign<Position>(glm::vec2(0.f, 0.f));
+        title.assign<Drawable>("menu_game_over", 200, 800);
+        title.assign<Position>(glm::vec2(0.f, 80.f));
     }
 };
 

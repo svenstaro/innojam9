@@ -106,6 +106,7 @@ int Game::init() {
 
 void Game::game_over() {
     m_states.push({"gameover", std::make_unique<GameOverState>(this)});
+    m_states.top().second->init();
 }
 
 void Game::next_level()
