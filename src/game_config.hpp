@@ -23,6 +23,6 @@ static const int HEIGHT = 600;
 static const float MAX_SPEED = 200.f;
 
 static const bool DEBUG = true;
-static const int DEBUG_START_LEVEL = 1; // index of first level
+static const int DEBUG_START_LEVEL = 0; // index of first level
 
 #endif
