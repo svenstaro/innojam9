@@ -40,8 +40,7 @@ struct Stage
     std::vector<LayerCompound> m_path_layers;
     std::vector<unsigned int> m_repititions;
     float m_cooldown;
-    unsigned int m_current_repition;
-
+    unsigned int m_current_repition = 0;
     LayerCompound get_current_repitition();
 
     bool is_at_end();
@@ -64,7 +63,7 @@ struct Level
     unsigned int m_number_of_stages;
     std::vector<Stage> m_stages;
     unsigned int m_orbs_to_next_level;
-    unsigned int m_current_stage;
+    unsigned int m_current_stage = 0;
 
     Stage get_current_stage();
 

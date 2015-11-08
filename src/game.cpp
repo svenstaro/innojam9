@@ -98,7 +98,7 @@ int Game::init() {
     entity.assign<Position>();
 
     //Setting order of levels
-    m_level_vector = {Level::LEVEL_ONE()};
+    m_level_vector = {Level::LEVEL_ONE(), Level::LEVEL_ONE()};
 
     m_states.push({"main_menu", std::make_unique<MainMenuState>(this)});
     m_states.top().second->init();

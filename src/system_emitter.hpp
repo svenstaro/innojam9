@@ -57,6 +57,11 @@ class EmitterSystem : public entityx::System<EmitterSystem>
                     }
                 }
             }
+            if(m_game->m_orbs_collected == current_level.m_orbs_to_next_level)
+            {
+                m_game->next_level();
+                events.emit<LevelChangedEvent>();  
+            }
         }
     private:
             Game *m_game;
