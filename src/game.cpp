@@ -128,7 +128,7 @@ void Game::game_over(float score) {
 
 void Game::next_level()
 {
-    rumble_for(0.75f);
+    rumble_for(1.5f);
     m_remaining_lvl_change = 1.5f;
     m_clear_bullets = true;
     //  HIER LEVEL UP SOUND
