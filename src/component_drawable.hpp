@@ -9,10 +9,18 @@
 #include <glm/glm.hpp>
 
 struct Drawable : entityx::Component<Drawable> {
+
     Drawable(std::string key, float new_height, float new_width, int layer = 0,
-             AnimTemplate anim = AnimTemplate(0, 0), glm::i8vec3 colorize = {0, 0, 0}, bool pulse = false)
-        : m_texture_map_key(key), m_height(new_height), m_width(new_width), m_time(0.0),
-          m_layer(layer), m_animation_index(0), m_anim(anim), m_colorize(colorize), m_pulse(pulse) {
+             AnimTemplate anim = AnimTemplate(0, 0), glm::i8vec3 colorize = {0, 0, 0}, bool pulse = false) :
+        m_texture_map_key(key),
+        m_height(new_height),
+        m_width(new_width),
+        m_time(0.0),
+        m_layer(layer),
+        m_animation_index(0),
+        m_anim(anim),
+        m_colorize(colorize),
+        m_pulse(pulse) {
     }
 
     float height() {
@@ -67,7 +75,5 @@ struct Drawable : entityx::Component<Drawable> {
     AnimTemplate m_anim;
     glm::i8vec3 m_colorize;
     bool m_pulse;
-
-  private:
 };
 #endif

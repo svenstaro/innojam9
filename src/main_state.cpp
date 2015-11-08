@@ -19,6 +19,7 @@
 #include "system_orbspawn.hpp"
 
 #include "entityx/entityx.h"
+#include <glm/vec2.hpp>
 
 #include <SDL.h>
 

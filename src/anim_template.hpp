@@ -30,6 +30,11 @@ struct AnimTemplate {
     double fps() {
         return m_fps;
     };
+
+    void set_y_index(int index){
+        m_y_index = index;
+    }
+    
   private:
     int m_frame_width;
     int m_frame_height;
