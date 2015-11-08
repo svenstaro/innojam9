@@ -130,7 +130,7 @@ void Game::game_over(bool win, float score) {
     }
     m_states.top().second->init();
 
-    m_current_level_index = 0;
+    m_current_level_index = DEBUG ? DEBUG_START_LEVEL: 0;
     m_last_frame_time = 0;
     m_debug_mode = false;
     m_orbs_collected = 0;
