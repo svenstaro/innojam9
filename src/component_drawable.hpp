@@ -9,13 +9,13 @@
 
 struct Drawable : entityx::Component<Drawable> {
     Drawable(std::string key, float new_height, float new_width, int layer = 0, AnimTemplate anim = AnimTemplate(0, 0)) :
+        m_anim(anim),
         m_texture_map_key(key),
         m_height(new_height),
         m_width(new_width),
         m_time(0.0),
         m_layer(layer),
-        m_animation_index(0),
-        m_anim(anim) {
+        m_animation_index(0) {
     }
 
     float height() {
@@ -61,6 +61,7 @@ struct Drawable : entityx::Component<Drawable> {
             m_animation_index = (m_animation_index + 1) % m_anim.length();
         }
     }
+    AnimTemplate m_anim;
 
   private:
     std::string m_texture_map_key;
@@ -68,6 +69,5 @@ struct Drawable : entityx::Component<Drawable> {
     double m_time;
     int m_layer;
     int m_animation_index;
-    AnimTemplate m_anim;
 };
 #endif
