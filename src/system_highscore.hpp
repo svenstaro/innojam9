@@ -76,6 +76,7 @@ class HighscoreSystem : public entityx::System<HighscoreSystem>,
     }
 
     void receive(const BossLevelEvent &evt) {
+        Mix_PlayMusic(m_game->res_manager().music("music2"), -1);
         entityx::ComponentHandle<Ring> ring;
         entityx::ComponentHandle<Rune> rune;
         entityx::ComponentHandle<Fire> fire;
