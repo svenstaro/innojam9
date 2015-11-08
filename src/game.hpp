@@ -59,7 +59,7 @@ class Game {
     SDL_Window *m_window;
     std::stack<std::pair<std::string, std::unique_ptr<State>>> m_states;
     entityx::EntityX m_ex;
-    Difficulty m_difficulty;
+    Difficulty m_difficulty = SVENSTARO;
     ResourceManager m_res_manager;
 };
 

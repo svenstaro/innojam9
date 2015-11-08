@@ -22,4 +22,6 @@ static const int HEIGHT = 600;
 
 static const float MAX_SPEED = 200.f;
 
+static const bool DEBUG = true;
+
 #endif

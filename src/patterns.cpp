@@ -79,5 +79,6 @@ void Level::next()
 
 Stage Level::get_current_stage()
 {
+    std::cout << m_current_stage << "HEER IS DEBUG CODE FINDE MICHT" << std::endl;
     return m_stages[m_current_stage];
 }
