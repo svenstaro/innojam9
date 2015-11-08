@@ -37,18 +37,23 @@ class EmitterSystem : public entityx::System<EmitterSystem> {
             Mix_PlayChannel(1, m_game->res_manager().sound("sound1"), 0);
 
             m_last_spawned = 0.f;
-            for(int i = 0; i < m_current_shots_per_cooldown; i++)
+            for(unsigned int j = 0; j < m_current_number_of_parts; j++)
             {
-                create_bullet(es, m_current_path_function,i);
+                for(int i = 0; i < m_current_shots_per_cooldown; i++)
+                {
+                    create_bullet(es, m_current_pattern_part.m_shot_type[j],i);
+                }
             }
             m_current_shot++;
             if(m_current_shot == m_current_number_of_max_shots)
             {
+                std::cout << m_current_shot << std::endl;
                 m_current_pattern_part_index++;
-                if(m_current_pattern_part_index == m_current_number_of_parts)
+                if(m_current_pattern_part_index == m_current_pattern_length)
                 {
                     m_current_pattern_part_index = 0;
                 }
+                std::cout << "start_updating " << m_current_pattern_part_index << "  " << m_current_shot << std::endl;
                 update_current_pattern_part();
                 m_current_shot = 0;
             }
@@ -59,6 +64,7 @@ class EmitterSystem : public entityx::System<EmitterSystem> {
                 events.emit<LevelChangedEvent>();
                 m_current_pattern_part_index = 0;
                 m_current_shot = 0;
+                m_current_pattern = m_game->get_current_level();
                 update_current_pattern();
                 update_current_pattern_part();
             }
@@ -78,7 +84,7 @@ class EmitterSystem : public entityx::System<EmitterSystem> {
      */
     float m_total_elapsed = 0.f;
     unsigned int m_current_pattern_part_index = 0;
-    unsigned long m_current_shot;
+    unsigned long m_current_shot = 0;
     unsigned long m_current_pattern_length;
 
     Pattern m_current_pattern = {1.f,1.f,{PatternPart::SIN_TWO_SHOTS()},10};
@@ -103,6 +109,7 @@ class EmitterSystem : public entityx::System<EmitterSystem> {
 
     void update_current_pattern_part()
     {
+        std::cout << "I REALZ DIE HIER"<< " " << m_current_pattern.m_pattern_parts.size() << std::endl;
         m_current_pattern_part = 
             m_current_pattern.m_pattern_parts[m_current_pattern_part_index];
         m_current_path_function = 

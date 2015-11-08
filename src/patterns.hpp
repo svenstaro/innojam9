@@ -33,6 +33,10 @@ class PatternPart {
     static PatternPart SCYTHE_FOUR_SHOT() {
         return {{Path_Def(scythe_path)},{4},{0.f},{4}};
     }
+
+    static PatternPart SCYTHE_FOUR_SHOT_SIN_TWO_SHOTS() {
+        return {{Path_Def(scythe_path), Path_Def(sin_path)},{4,2},{0,45.f},{5,2}};
+    }
     
 };
 
@@ -46,6 +50,9 @@ class Pattern {
         }
         static Pattern level2() {
             return {1.f,20.f,{PatternPart::SCYTHE_FOUR_SHOT()},5};
+        }
+        static Pattern level3() {
+            return {1.f,40.f,{PatternPart::SCYTHE_FOUR_SHOT_SIN_TWO_SHOTS(),PatternPart::SCYTHE_FOUR_SHOT()},10};
         }
 
         
