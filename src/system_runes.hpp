@@ -15,7 +15,7 @@
 #include <SDL2/SDL.h>
 #include "game_config.hpp"
 
-static const int rune_count = 8;
+static const int rune_count = 12;
 static const glm::i8vec3 rune_color_off{50, 50, 50};
 static const glm::i8vec3 rune_color_on{255, 255, 255};
 
@@ -73,7 +73,7 @@ class RunesSystem : public entityx::System<RunesSystem>,
         for(int i = 0; i < rune_count; i++) {
             entityx::Entity rune = es.create();
             rune.assign<Rune>(i);
-            rune.assign<Drawable>("runes", 64, 64, 1, AnimTemplate(32, 32, 1, i), rune_color_off);
+            rune.assign<Drawable>("runes", 40, 40, 1, AnimTemplate(32, 32, 1, i), rune_color_off);
             rune.assign<Position>(glm::vec2(radius, i*step));
         }
     }
