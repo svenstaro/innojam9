@@ -61,7 +61,7 @@ class ControlSystem : public entityx::System<ControlSystem> {
                   velocity_e->m_desired_velocity = velocity;
                   velocity_e->m_start_velocity = velocity_e->m_velocity;
                   velocity_e->m_alpha = 0.0f;
-                  velocity_e->m_alpha_step = 0.1;
+                  velocity_e->m_alpha_step = ACCELERATION_STEP;
                 }
             }
         }

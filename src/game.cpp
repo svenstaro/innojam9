@@ -67,7 +67,6 @@ int Game::init() {
     m_res_manager.load_texture("wood", "res/wood.png", m_render);
     m_res_manager.load_texture("inner_bound", "res/inner_bound.png", m_render);
     m_res_manager.load_texture("outer_bound", "res/outer_bound.png", m_render);
-    m_res_manager.load_texture("outer_bound_boss", "res/outer_bound_boss.png", m_render);
     m_res_manager.load_texture("bound", "res/bound.png", m_render);
 
     m_res_manager.load_music("music1", "res/pocket_destroyer.ogg");
@@ -110,7 +109,6 @@ int Game::init() {
     //Setting order of levels
     m_level_vector = {Level::LEVEL_ONE(), Level::LEVEL_TWO(), Level::LEVEL_THREE(), Level::LEVEL_FOUR(),
                       Level::LEVEL_FIVE(), Level::LEVEL_SIX(), Level::LEVEL_SEVEN(), Level::LEVEL_EIGHT()};
-    // m_level_vector = {Level::LEVEL_ONE(), Level::LEVEL_TWO(), Level::LEVEL_THREE()};
 
     if(DEBUG) {
         m_difficulty = DEBUGDIF;

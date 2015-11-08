@@ -1,6 +1,7 @@
 #ifndef VELOCITY_HPP
 #define VELOCITY_HPP
 
+#include "game_config.hpp"
 #include "entityx/entityx.h"
 #include <glm/vec2.hpp>
 #include <SDL2/SDL.h>
@@ -62,7 +63,7 @@ private:
     {
       m_was_accelerating = false;
       m_alpha = 0.f;
-      m_alpha_step = 0.05f;
+      m_alpha_step = DECELERATION_STEP;
       m_start_velocity = m_velocity;
       m_desired_velocity.x = 0.f;
       m_desired_velocity.y = 0.f;
