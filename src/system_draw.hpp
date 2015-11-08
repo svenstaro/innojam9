@@ -230,7 +230,16 @@ class DrawSystem : public entityx::System<DrawSystem> {
 
       SDL_Texture* tex = m_game->res_manager().texture(drawable->texture_key());
       float rotate = brotate ? rad_to_deg(position->position().y - glm::half_pi<float>()) : 0.0;
+
+      if (drawable->m_colorize != glm::i8vec3{0}) {
+          SDL_SetTextureColorMod(tex, drawable->m_colorize.r, drawable->m_colorize.g, drawable->m_colorize.b);
+      }
+
       SDL_RenderCopyEx(m_game->renderer(), tex, src, &dest, rotate, nullptr, SDL_FLIP_NONE);
+
+      if (drawable->m_colorize != glm::i8vec3{0}) {
+          SDL_SetTextureColorMod(tex, 0, 0, 0);
+      }
     }
 
     void render_light(entityx::Entity entity)
