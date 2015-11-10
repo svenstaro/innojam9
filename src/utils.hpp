@@ -50,7 +50,6 @@ inline glm::vec2 cathesian_to_polar(glm::vec2 cathesian)
     { 
         angle += 2 * glm::pi<float>();
     }
-        //std::cout << "angle "<< glm::degrees(angle) << std::endl;
     return glm::vec2(radius, glm::abs(angle));
 }
 

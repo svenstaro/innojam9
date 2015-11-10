@@ -113,7 +113,6 @@ class OrbSpawnSystem : public entityx::System<OrbSpawnSystem>,
         orb.assign<Collidable>(10);
         orb.assign<Light>("gradient", 0.30f, glm::vec3{255, 100, 255});
         orb.assign<Orb>();
-        //std::cout << "spawning at " << dt << " " << glm::to_string(new_pos) << std::endl;
     }
 
     float m_min_dist;

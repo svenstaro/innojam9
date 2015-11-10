@@ -3,11 +3,13 @@
 
 #include "events.hpp"
 #include "game.hpp"
+#include "component_main_emitter.hpp"
 #include "component_player.hpp"
 #include "component_orb.hpp"
 #include "component_enemy.hpp"
 #include "component_rune.hpp"
 #include "component_light.hpp"
+#include "component_ring.hpp"
 
 #include "entityx/entityx.h"
 
@@ -78,10 +80,10 @@ class HighscoreSystem : public entityx::System<HighscoreSystem>,
     void receive(const BossLevelEvent &evt) {
         Mix_HaltMusic();
         Mix_PlayMusic(m_game->res_manager().music("music2"), -1);
+        entityx::ComponentHandle<Drawable> draw;
         entityx::ComponentHandle<Ring> ring;
         entityx::ComponentHandle<Rune> rune;
-        entityx::ComponentHandle<Fire> fire;
-        entityx::ComponentHandle<Drawable> draw;
+        entityx::ComponentHandle<MainEmitter> main_emitter;
         for(entityx::Entity ent : m_entities->entities_with_components(ring, draw)) {
             (void)ent;
             draw->m_texture_map_key = "outer_bound_boss";
@@ -92,7 +94,7 @@ class HighscoreSystem : public entityx::System<HighscoreSystem>,
             ent.assign<Light>("gradient", 0.7f, glm::vec3{0, 0, 200});
             draw->m_colorize = glm::i8vec3(0, 0, 0);
         }
-        for(entityx::Entity ent : m_entities->entities_with_components(fire, draw)) {
+        for(entityx::Entity ent : m_entities->entities_with_components(main_emitter, draw)) {
             (void)ent;
             draw->m_anim = AnimTemplate(32, 32, 1, 2);
         }

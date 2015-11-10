@@ -39,11 +39,6 @@ int MenuState::init(){
 
 	init_menuitems(w, h);
 
-    glm::vec2 test(1,glm::radians(45.f));
-    glm::vec2 result = polar_to_cathesian(test);
-    std::cout << result.x << " " << result.y << std::endl;
-    result = cathesian_to_polar(result);
-    std::cout << result.x << " " << glm::degrees(result.y) << std::endl;
 	return 0;
 }
 

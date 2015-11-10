@@ -7,10 +7,11 @@
 #include "component_path.hpp"
 #include "component_player.hpp"
 #include "component_moving.hpp"
-#include "component_fire.hpp"
+#include "component_emitter.hpp"
 #include "component_ring.hpp"
 #include "component_velocity.hpp"
 #include "component_light.hpp"
+#include "component_main_emitter.hpp"
 #include "system_collision.hpp"
 #include "system_controls.hpp"
 #include "system_draw.hpp"
@@ -107,7 +108,8 @@ int MainState::init() {
     fire.assign<Position>(glm::vec2(0.f, 0.f));
     fire.assign<Drawable>("fire", 100, 100, 1, fire_anim);
     fire.assign<Light>("gradient");
-    fire.assign<Fire>();
+    fire.assign<Emitter>(m_game->get_current_level());
+    fire.assign<MainEmitter>();
 
     Mix_VolumeMusic(50);
     Mix_PlayMusic(m_game->res_manager().music("music1"), -1);

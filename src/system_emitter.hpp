@@ -40,7 +40,6 @@ class EmitterSystem : public entityx::System<EmitterSystem> {
                 for(unsigned int i = 0; i < current_compound.m_number_of_paths; i++) {
                     for(unsigned int j = 0; j < current_compound.m_number_of_shots[i]; j++) {
                         create_bullet(es, current_compound.m_paths[i],i,j);
-                        std::cout << j << " " << i << std::endl;
                     }
                 }
                 current_compound.m_number_of_shots_done++;

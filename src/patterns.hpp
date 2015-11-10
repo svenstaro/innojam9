@@ -223,7 +223,5 @@ static Level LEVEL_ONE() {
  {
  return{{Stage::BOSS()}, 20, 20.f};
  }
-
-
 };
 #endif

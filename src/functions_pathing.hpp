@@ -87,10 +87,6 @@ inline glm::vec2 linear_path(glm::vec2 origin, glm::vec2 velocity, float current
 {
     glm::vec2 origin_cathesian = polar_to_cathesian(origin);
     origin_cathesian += glm::normalize(polar_to_cathesian(velocity)) * current_lifetime * velocity.x;
-    //std::cout <<"c "<< current_lifetime << std::endl;
-    //std::cout << "p " << origin_cathesian.x << " " << origin_cathesian.y << std::endl;
-    //std::cout << "v " << velocity.x << " " << velocity.y << std::endl;
-    //std::cout << "  " <<current_lifetime << std::endl;
     return glm::vec2(cathesian_to_polar(origin_cathesian)); 
 }
 #endif
