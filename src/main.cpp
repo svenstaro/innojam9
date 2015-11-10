@@ -3,7 +3,7 @@
 #endif
 
 #include "game.hpp"
-
+#include "utils.hpp"
 void mainloop(void *args) {
     auto game = static_cast<Game *>(args);
     game->mainloop();
@@ -18,7 +18,8 @@ int main() {
 #ifdef __EMSCRIPTEN__
     emscripten_set_main_loop_arg(mainloop, &game, 0, true);
 #else
-    while (game.is_running()) {
+
+        while (game.is_running()) {
         mainloop(&game);
     }
 #endif

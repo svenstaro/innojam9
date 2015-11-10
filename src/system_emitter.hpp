@@ -4,7 +4,6 @@
 #include <iostream>
 
 #include "game.hpp"
-#include "path_definition.hpp"
 
 #include "entityx/entityx.h"
 #include "events.hpp"
@@ -40,7 +39,8 @@ class EmitterSystem : public entityx::System<EmitterSystem> {
 
                 for(unsigned int i = 0; i < current_compound.m_number_of_paths; i++) {
                     for(unsigned int j = 0; j < current_compound.m_number_of_shots[i]; j++) {
-                        create_bullet(es, current_compound.m_paths[i],j,i);
+                        create_bullet(es, current_compound.m_paths[i],i,j);
+                        std::cout << j << " " << i << std::endl;
                     }
                 }
                 current_compound.m_number_of_shots_done++;
@@ -89,35 +89,30 @@ class EmitterSystem : public entityx::System<EmitterSystem> {
     Stage current_stage = current_level.get_current_stage();
     LayerCompound current_compound = current_stage.get_current_repitition();
 
-    void create_bullet(entityx::EntityManager &es, Path_Def path_definition, unsigned int i, unsigned int j) {
+    void create_bullet(entityx::EntityManager &es, std::function< glm::vec2(glm::vec2, glm::vec2, float)> path, unsigned int i, unsigned int j) {
+        
         entityx::Entity next = es.create();
-        // std::cout << path_definition.get_path_type() << std::endl;
+        glm::vec2 test = glm::vec2(100.f, 10.f * current_level.m_rotation_speed * m_total_elapsed
+                    + glm::radians(current_compound.m_offset[i] 
+                        + ((360.f / current_compound.m_number_of_shots[i]) * j)));
 
-        switch(path_definition.get_path_type()){
-            case PARABLE:
-                next.assign<Path>(path_definition.get_parable_function(),
-                        path_definition.get_origin(),
-                        path_definition.get_direction(),
-                        20.f);
-                break;
-            case NORMAL:
-                // std::cout << current_level.m_rotation_speed * m_total_elapsed  <<  std::endl;
-                next.assign<Path>(path_definition.get_path_function(),
-                        glm::vec2(0,0),
-                        glm::vec2(1, (current_level.m_rotation_speed * m_total_shots) + glm::radians(m_total_elapsed * 1 +
-                                (current_compound.m_offset[j] + (360.f / current_compound.m_number_of_shots[j]) *  i))),
-                        20.f);
-                break;
-        }
+        next.assign<Path>(path,
+                glm::vec2(0.f,0.f),
+                test,
+                20.f);
+        
         next.assign<Position>(glm::vec2(0.f, 0.f));
         next.assign<Moving>(100.f);
         next.assign<Enemy>();
         next.assign<Collidable>(10.f);
-        if(m_game->get_current_level_index() == m_game->get_max_level_index()) {
+        
+        if(m_game->get_current_level_index() == m_game->get_max_level_index())
+        {
             next.assign<Light>("gradient", 0.3f, glm::vec3{0, 0, 255});
             next.assign<Drawable>("magma", 20, 20, 4, AnimTemplate(6, 6, 14, 0, 40), glm::i8vec3(100, 100, 100));
         }
-        else {
+        else
+        {
             next.assign<Light>("gradient", 0.3f, glm::vec3{255, 100, 0});
             next.assign<Drawable>("magma", 20, 20, 4, AnimTemplate(6, 6, 14, 0, 40));
         }

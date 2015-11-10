@@ -1,6 +1,10 @@
 #include "patterns.hpp"
+#include <glm/glm.hpp>
+#include <glm/vec2.hpp>
+#include <functional>
 
-LayerCompound::LayerCompound(std::vector<Path_Def> paths,
+LayerCompound::LayerCompound(
+        std::vector<std::function<glm::vec2 (glm::vec2, glm::vec2, float)>> paths,
                          std::vector<unsigned int> number_of_shots,
                          std::vector<float> offset
                          )
@@ -24,6 +28,7 @@ void Stage::next()
         m_current_repition = 0;
     }
 }
+
 LayerCompound Stage::get_current_repitition()
     {
         return m_path_layers[m_current_repition];
@@ -34,6 +39,7 @@ LayerCompound Stage::get_current_repitition()
 {
     m_number_of_stages = stages.size();
 }
+
 bool Level::is_at_end()
 {
     if(m_current_stage == 0)

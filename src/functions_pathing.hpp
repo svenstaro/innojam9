@@ -1,6 +1,8 @@
 #ifndef FUNCTIONS_PATHING_HPP
 #define FUNCTIONS_PATHING_HPP
 
+#include "utils.hpp"
+
 #include <iostream>
 
 #include <glm/glm.hpp>
@@ -11,7 +13,7 @@
 #include "component_position.hpp"
 #include "component_moving.hpp"
 #include "component_path.hpp"
-
+/*
 inline auto create_parable(glm::vec2 p1, glm::vec2 p2, glm::vec2 p3) {
     float a1h2 = p1[1] * p1[1];
     float a2h2 = p2[1] * p2[1];
@@ -48,60 +50,47 @@ inline glm::vec2 parable_path(entityx::Entity entity) {
     // std::cout << entity.id() << ": " << path->get_direction()[1] << " * " << speed << " * " << current_lifetime << " = " << a_t << std::endl;
     return path->get_parable()(a_t);
 }
+*/
 
-inline glm::vec2 linear_path(entityx::Entity entity)
+inline glm::vec2 scythe_path(glm::vec2 origin, glm::vec2 velocity, float current_lifetime)
 {
-    auto moving = entity.component<Moving>();
-    auto path = entity.component<Path>();
-
-    glm::vec2 direction = path->get_direction();
-    float speed = moving->speed();
-    float current_lifetime = path->get_current_lifetime();
-
-    direction.x = speed * current_lifetime;
-    return direction;
+    glm::vec2 origin_cathesian = polar_to_cathesian(origin);
+    glm::vec2 next_position(velocity.x * current_lifetime, sin(current_lifetime) + 45);
+    next_position = polar_to_cathesian(next_position);
+    return cathesian_to_polar(origin_cathesian + next_position);
 }
 
-inline glm::vec2 scythe_path(entityx::Entity entity)
+inline glm::vec2 spiral_path(glm::vec2 origin, glm::vec2 velocity, float current_lifetime)
 {
-    auto moving = entity.component<Moving>();
-    auto path = entity.component<Path>();
+    float speed = velocity.x; 
+    glm::vec2 origin_cathesian = polar_to_cathesian(origin); 
+    glm::vec2 next_position(speed * current_lifetime, 10 * sin(current_lifetime));
 
-    glm::vec2 direction = path->get_direction();
-    float speed = moving->speed();
-    float current_lifetime = path->get_current_lifetime();
+    next_position = polar_to_cathesian(next_position);
 
-    direction.x = speed * current_lifetime;
-    direction.y += sin(current_lifetime) + 45;
-    return direction;
+    return cathesian_to_polar(origin_cathesian + next_position);
 }
 
-inline glm::vec2 spiral_path(entityx::Entity entity)
+inline glm::vec2 sin_path(glm::vec2 origin, glm::vec2 velocity, float current_lifetime)
 {
-    auto moving = entity.component<Moving>();
-    auto path = entity.component<Path>();
+    float speed = velocity.x;
+    glm::vec2 origin_cathesian = polar_to_cathesian(origin);
+    glm::vec2 next_position(speed * current_lifetime, sin(current_lifetime * 4) / (current_lifetime * 4));
 
-    glm::vec2 direction = path->get_direction();
-    float speed = moving->speed();
-    float current_lifetime = path->get_current_lifetime();
-
-    direction.x = speed * current_lifetime;
-    direction.y += 10 * sin(current_lifetime) ;
-    return direction;
+    next_position = polar_to_cathesian(next_position);
+            
+    return cathesian_to_polar(origin_cathesian + next_position);
 }
 
 
-inline glm::vec2 sin_path(entityx::Entity entity)
+inline glm::vec2 linear_path(glm::vec2 origin, glm::vec2 velocity, float current_lifetime)
 {
-    auto moving = entity.component<Moving>();
-    auto path = entity.component<Path>();
-
-    glm::vec2 direction = path->get_direction();
-    float speed = moving->speed();
-    float current_lifetime = path->get_current_lifetime();
-
-    direction.x = speed * current_lifetime;
-    direction.y += sin(current_lifetime * 4) / (current_lifetime * 4);
-    return direction;
+    glm::vec2 origin_cathesian = polar_to_cathesian(origin);
+    origin_cathesian += glm::normalize(polar_to_cathesian(velocity)) * current_lifetime * velocity.x;
+    //std::cout <<"c "<< current_lifetime << std::endl;
+    //std::cout << "p " << origin_cathesian.x << " " << origin_cathesian.y << std::endl;
+    //std::cout << "v " << velocity.x << " " << velocity.y << std::endl;
+    //std::cout << "  " <<current_lifetime << std::endl;
+    return glm::vec2(cathesian_to_polar(origin_cathesian)); 
 }
 #endif
