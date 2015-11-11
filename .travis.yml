@@ -27,7 +27,7 @@ matrix:
       env: CXX=clang++-3.7
 
     - os: linux
-      compiler: clang
+      compiler: gcc
       addons:
         apt:
           sources: ['george-edison55-precise-backports', 'ubuntu-toolchain-r-test']
