@@ -30,9 +30,9 @@ matrix:
       compiler: clang
       addons:
         apt:
-          sources: ['george-edison55-precise-backports']
-          packages: ['cmake', 'cmake-data']
-      env: WEB=1
+          sources: ['george-edison55-precise-backports', 'ubuntu-toolchain-r-test']
+          packages: ['cmake', 'cmake-data', 'g++-5']
+      env: CXX=g++-5 WEB=1
 
 script:
     if [[ $WEB ]]; then
