@@ -1,6 +1,8 @@
 # innojam9
 
-Game tbd
+[![Build Status](https://travis-ci.org/svenstaro/innojam9.svg?branch=master)](https://travis-ci.org/svenstaro/innojam9)
+
+Rick's Rediculous Ritual Rumble
 
 ![](screenshot.png)
 
