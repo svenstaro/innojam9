@@ -3,11 +3,12 @@ language: cpp
 install:
     - wget https://s3.amazonaws.com/mozilla-games/emscripten/releases/emsdk-portable.tar.gz
     - tar xf emsdk-portable.tar.gz
-    - cd emsdk_portable && python2 emsdk update && python2 emsdk install -j2 latest
+    - cd emsdk_portable && python2 emsdk update && CXX=g++-5 python2 emsdk install -j2 latest
 
 cache:
     directories:
         - $HOME/emsdk_portable
+
 matrix:
   include:
     - os: linux
@@ -32,10 +33,10 @@ matrix:
         apt:
           sources: ['george-edison55-precise-backports', 'ubuntu-toolchain-r-test']
           packages: ['cmake', 'cmake-data', 'g++-5']
-      env: CXX=g++-5 WEB=1
+      env: EMSCRIPTEN=1
 
 script:
-    if [[ $WEB ]]; then
+    if [[ $EMSCRIPTEN ]]; then
         python2 emsdk_portable/emsdk activate latest
         source emsdk_portble/
         make web
