@@ -13,7 +13,7 @@ if(${EMSCRIPTEN})
     set(CMAKE_CXX_LINK_FLAGS "-Oz -s USE_SDL=2 -s USE_SDL_IMAGE=2 -s USE_SDL_TTF=2 -s SDL2_IMAGE_FORMATS='[\"png\"]' -s TOTAL_MEMORY=32000000 --emrun --preload-file ../res -o index.html")
 else()
     include(FindPkgConfig)
-    pkg_check_modules(SDL2 REQUIRED sdl2 SDL2_gfx SDL2_image SDL2_mixer SDL2_ttf)
+    pkg_check_modules(SDL2 REQUIRED sdl2 SDL2_image SDL2_mixer SDL2_ttf)
 endif()
 
 set(ENTITYX_BUILD_TESTING false CACHE BOOL "")
