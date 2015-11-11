@@ -5,7 +5,7 @@ services:
 
 before_install:
     - docker pull base/archlinux
-    - docker run base/archlinux pacman -S base-devel emscripten sdl2 sdl2_gfx sdl2_image sd2_mixer sdl2_ttf cmake clang
+    - docker run base/archlinux pacman -S base-devel emscripten sdl2 sdl2_gfx sdl2_image sdl2_mixer sdl2_ttf cmake clang
 
 matrix:
   include:
