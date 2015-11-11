@@ -7,7 +7,7 @@ before_install:
     - docker pull base/archlinux
     - docker run base/archlinux pacman-key --init
     - docker run base/archlinux pacman-key --populate archlinux
-    - docker run base/archlinux pacman -Sy archlinux-keyring
+    - docker run base/archlinux pacman -Sy --noconfirm archlinux-keyring
     - docker run base/archlinux pacman -Syu --noconfirm base-devel emscripten sdl2 sdl2_gfx sdl2_image sdl2_mixer sdl2_ttf cmake clang
 
 matrix:
