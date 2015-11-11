@@ -1,48 +1,23 @@
-language: cpp
 sudo: required
-dist: trusty
+language: cpp
+services:
+    - docker
+
+before_install:
+    - docker pull base/archlinux
+    - docker run base/archlinux pacman -S base-devel emscripten sdl2 sdl2_gfx sdl2_image sd2_mixer sdl2_ttf cmake clang
 
 matrix:
   include:
-    - os: linux
-      compiler: gcc
-      addons:
-        apt:
-          sources: ['george-edison55-precise-backports', 'ubuntu-toolchain-r-test']
-          packages: ['libsdl2-dev', 'libsdl2-image-dev', 'libsdl2-mixer-dev', 'libsdl2-ttf-dev', 'cmake', 'cmake-data', 'g++-5']
-
-    - os: linux
-      compiler: clang
-      addons:
-        apt:
-          sources: ['george-edison55-precise-backports', 'ubuntu-toolchain-r-test', 'llvm-toolchain-precise-3.7']
-          packages: ['libsdl2-dev', 'libsdl2-image-dev', 'libsdl2-mixer-dev', 'libsdl2-ttf-dev', 'cmake', 'cmake-data', 'clang-3.7']
-
-    - os: linux
-      compiler: gcc
-      addons:
-        apt:
-          sources: ['george-edison55-precise-backports', 'ubuntu-toolchain-r-test']
-          packages: ['cmake', 'cmake-data', 'g++-5']
-      env: EMSCRIPTEN=1
-      install:
-          - wget https://s3.amazonaws.com/mozilla-games/emscripten/releases/emsdk-portable.tar.gz
-          - tar xf emsdk-portable.tar.gz
-          - cd emsdk_portable && python2 emsdk update && CXX=g++-5 python2 emsdk install -j2 latest
-
-
-cache:
-    directories:
-        - $HOME/emsdk_portable
+    - env: COMPILER="gcc"
+    - env: COMPILER="clang"
+    - env: COMPILER="emscripten"
 
 script:
-    if [[ $EMSCRIPTEN ]]; then
-        python2 emsdk_portable/emsdk activate latest;
-        source emsdk_portble/;
-        make web;
-    else
-        [[ $CXX = 'g++' ]] && export CXX='g++-5';
-        [[ $CXX = 'clang++' ]] && export CXX='clang++-3.7';
-
-        make;
+    if [[ $COMPILER = 'gcc' ]]; then
+        docker run -v ${TRAVIS_BUILD_DIR}:ro base/archlinux /bin/sh -c "cd ${TRAVIS_BUILD_DIR}; make";
+    elif [[ $COMPILER = 'clang' ]]; then
+        docker run -v ${TRAVIS_BUILD_DIR}:ro base/archlinux /bin/sh -c "cd ${TRAVIS_BUILD_DIR}; make clang";
+    elif [[ $COMPILER = 'emscripten' ]]; then
+        docker run -v ${TRAVIS_BUILD_DIR}:ro base/archlinux /bin/sh -c "cd ${TRAVIS_BUILD_DIR}; make web";
     fi
