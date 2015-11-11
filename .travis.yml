@@ -1,7 +1,5 @@
 language: cpp
 
-packages: ['libsdl2-dev', 'libsdl2-gfx-dev', 'libsdl2-image-dev', 'libsdl2-mixer-dev', 'libsdl2-ttf-dev']
-
 matrix:
   include:
     - os: linux
@@ -9,7 +7,7 @@ matrix:
       addons:
         apt:
           sources: ['george-edison55-precise-backports', 'ubuntu-toolchain-r-test']
-          packages: ['cmake', 'cmake-data', 'g++-5']
+          packages: ['libsdl2-dev', 'libsdl2-gfx-dev', 'libsdl2-image-dev', 'libsdl2-mixer-dev', 'libsdl2-ttf-dev', 'cmake', 'cmake-data', 'g++-5']
       env: CXX=g++-5
 
     - os: linux
@@ -17,7 +15,7 @@ matrix:
       addons:
         apt:
           sources: ['george-edison55-precise-backports', 'ubuntu-toolchain-r-test', 'llvm-toolchain-precise-3.7']
-          packages: ['cmake', 'cmake-data', 'clang-3.7']
+          packages: ['libsdl2-dev', 'libsdl2-gfx-dev', 'libsdl2-image-dev', 'libsdl2-mixer-dev', 'libsdl2-ttf-dev','cmake', 'cmake-data', 'clang-3.7']
       env: CXX=clang++-3.7
 
     - os: linux
@@ -31,6 +29,7 @@ matrix:
           - wget https://s3.amazonaws.com/mozilla-games/emscripten/releases/emsdk-portable.tar.gz
           - tar xf emsdk-portable.tar.gz
           - cd emsdk_portable && python2 emsdk update && CXX=g++-5 python2 emsdk install -j2 latest
+
 
 cache:
     directories:
