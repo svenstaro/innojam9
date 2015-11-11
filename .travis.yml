@@ -5,6 +5,8 @@ services:
 
 before_install:
     - docker pull pritunl/archlinux:latest
+    - docker run base/archlinux pacman-key --populate archlinux
+    - docker run base/archlinux pacman-key --refresh-keys
     - docker run base/archlinux pacman -Syu --noconfirm base-devel emscripten sdl2 sdl2_gfx sdl2_image sdl2_mixer sdl2_ttf cmake clang
 
 matrix:
