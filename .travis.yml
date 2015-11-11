@@ -36,9 +36,9 @@ cache:
 
 script:
     if [[ $EMSCRIPTEN ]]; then
-        python2 emsdk_portable/emsdk activate latest
-        source emsdk_portble/
-        make web
+        python2 emsdk_portable/emsdk activate latest;
+        source emsdk_portble/;
+        make web;
     else
-        make
+        make;
     fi
