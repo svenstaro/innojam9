@@ -19,6 +19,5 @@ struct Emitter : entityx::Component<Emitter> {
         LayerCompound m_current_compound;
         float m_total_elapsed;
         float m_last_spawned;
-
 };
 #endif

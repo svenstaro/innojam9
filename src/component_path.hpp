@@ -46,6 +46,7 @@
         }
         
         std::function<glm::vec2 (glm::vec2, glm::vec2, float)> m_path;
+        std::function<void()> m_despawn;
 
         glm::vec2 m_origin;
         glm::vec2 m_velocity;
