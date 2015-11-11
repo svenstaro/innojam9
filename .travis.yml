@@ -1,4 +1,6 @@
 language: cpp
+sudo: required
+dist: trusty
 
 matrix:
   include:
@@ -15,7 +17,7 @@ matrix:
       addons:
         apt:
           sources: ['george-edison55-precise-backports', 'ubuntu-toolchain-r-test', 'llvm-toolchain-precise-3.7']
-          packages: ['libsdl2-dev', 'libsdl2-gfx-dev', 'libsdl2-image-dev', 'libsdl2-mixer-dev', 'libsdl2-ttf-dev','cmake', 'cmake-data', 'clang-3.7']
+          packages: ['libsdl2-dev', 'libsdl2-gfx-dev', 'libsdl2-image-dev', 'libsdl2-mixer-dev', 'libsdl2-ttf-dev', 'cmake', 'cmake-data', 'clang-3.7']
       env: CXX=clang++-3.7
 
     - os: linux
