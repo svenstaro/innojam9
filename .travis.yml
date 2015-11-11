@@ -10,7 +10,6 @@ matrix:
         apt:
           sources: ['george-edison55-precise-backports', 'ubuntu-toolchain-r-test']
           packages: ['libsdl2-dev', 'libsdl2-image-dev', 'libsdl2-mixer-dev', 'libsdl2-ttf-dev', 'cmake', 'cmake-data', 'g++-5']
-      env: CXX=g++-5
 
     - os: linux
       compiler: clang
@@ -18,7 +17,6 @@ matrix:
         apt:
           sources: ['george-edison55-precise-backports', 'ubuntu-toolchain-r-test', 'llvm-toolchain-precise-3.7']
           packages: ['libsdl2-dev', 'libsdl2-image-dev', 'libsdl2-mixer-dev', 'libsdl2-ttf-dev', 'cmake', 'cmake-data', 'clang-3.7']
-      env: CXX=clang++-3.7
 
     - os: linux
       compiler: gcc
@@ -43,5 +41,8 @@ script:
         source emsdk_portble/;
         make web;
     else
+        [[ $CXX = 'g++' ]] && export CXX='g++-5';
+        [[ $CXX = 'clang++' ]] && export CXX='clang++-3.7';
+
         make;
     fi
