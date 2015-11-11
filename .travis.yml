@@ -15,7 +15,7 @@ matrix:
       addons:
         apt:
           sources: ['george-edison55-precise-backports', 'ubuntu-toolchain-r-test']
-          packages: ['cmake', 'g++-5']
+          packages: ['cmake', 'cmake-data', 'g++-5']
       env: CXX=g++-5
 
     - os: linux
@@ -23,7 +23,7 @@ matrix:
       addons:
         apt:
           sources: ['george-edison55-precise-backports', 'ubuntu-toolchain-r-test', 'llvm-toolchain-precise-3.7']
-          packages: ['cmake', 'clang-3.7']
+          packages: ['cmake', 'cmake-data', 'clang-3.7']
       env: CXX=clang++-3.7
 
     - os: linux
@@ -31,7 +31,7 @@ matrix:
       addons:
         apt:
           sources: ['george-edison55-precise-backports']
-          packages: ['cmake']
+          packages: ['cmake', 'cmake-data']
       env: WEB=1
 
 script:
