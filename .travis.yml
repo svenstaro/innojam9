@@ -18,6 +18,6 @@ script:
         docker run -v ${TRAVIS_BUILD_DIR}:ro pritunl/archlinux bash -c "cd ${TRAVIS_BUILD_DIR}; make";
     elif [[ $COMPILER = 'clang' ]]; then
         docker run -v ${TRAVIS_BUILD_DIR}:ro pritunl/archlinux bash -c "cd ${TRAVIS_BUILD_DIR}; make clang";
-    elif [[ $COMPILER = 'emscripten' ]]; thenpritunl
+    elif [[ $COMPILER = 'emscripten' ]]; thenpritunl; then
         docker run -v ${TRAVIS_BUILD_DIR}:ro pritunl/archlinux bash -c "cd ${TRAVIS_BUILD_DIR}; make web";
     fi
