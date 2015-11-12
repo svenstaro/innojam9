@@ -19,5 +19,5 @@ script:
     elif [[ $COMPILER = 'clang' ]]; then
         docker run -v ${TRAVIS_BUILD_DIR}:/tmp pritunl/archlinux bash -c "pacman -Syu --noconfirm ${PACKAGES}; cd /tmp; make clang";
     elif [[ $COMPILER = 'emscripten' ]]; then
-        docker run -v ${TRAVIS_BUILD_DIR}:/tmp pritunl/archlinux bash -c "pacman -Syu --noconfirm ${PACKAGES}; cd /tmp; make web";
+        docker run -v ${TRAVIS_BUILD_DIR}:/tmp pritunl/archlinux bash -c "pacman -Syu --noconfirm ${PACKAGES}; cd /tmp; make web; make web";
     fi
