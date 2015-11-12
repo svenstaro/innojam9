@@ -4,9 +4,8 @@ services:
     - docker
 
 before_install:
-    - docker pull base/archlinux
-    - docker run base/archlinux sed -i "s/SigLevel.*/SigLevel = Never/g" /etc/pacman.conf
-    - docker run base/archlinux pacman -Syu --noconfirm base-devel emscripten sdl2 sdl2_gfx sdl2_image sdl2_mixer sdl2_ttf cmake clang
+    - docker pull pritunl/archlinux
+    - docker run pritunl/archlinux pacman -Syu --noconfirm base-devel emscripten sdl2 sdl2_gfx sdl2_image sdl2_mixer sdl2_ttf cmake clang
 
 matrix:
   include:
