@@ -5,8 +5,6 @@ services:
 
 before_install:
     - docker pull pritunl/archlinux
-    - docker run pritunl/archlinux pacman -Syu --noconfirm base-devel
-    - docker run pritunl/archlinux pacman -Syu --noconfirm emscripten sdl2 sdl2_gfx sdl2_image sdl2_mixer sdl2_ttf cmake clang
 
 matrix:
   include:
@@ -15,10 +13,11 @@ matrix:
     - env: COMPILER="emscripten"
 
 script:
+    packages='base-devel emscripten sdl2 sdl2_gfx sdl2_image sdl2_mixer sdl2_ttf cmake clang'
     if [[ $COMPILER = 'gcc' ]]; then
-        docker run -v ${TRAVIS_BUILD_DIR}:/tmp pritunl/archlinux bash -c "cd /tmp; make";
+        docker run -v ${TRAVIS_BUILD_DIR}:/tmp pritunl/archlinux bash -c "pacman -Syu --noconfirm ${PACKAGES}; cd /tmp; make";
     elif [[ $COMPILER = 'clang' ]]; then
-        docker run -v ${TRAVIS_BUILD_DIR}:/tmp pritunl/archlinux bash -c "cd /tmp; make clang";
+        docker run -v ${TRAVIS_BUILD_DIR}:/tmp pritunl/archlinux bash -c "pacman -Syu --noconfirm ${PACKAGES}; cd /tmp; make clang";
     elif [[ $COMPILER = 'emscripten' ]]; then
-        docker run -v ${TRAVIS_BUILD_DIR}:/tmp pritunl/archlinux bash -c "cd /tmp; make web";
+        docker run -v ${TRAVIS_BUILD_DIR}:/tmp pritunl/archlinux bash -c "pacman -Syu --noconfirm ${PACKAGES}; cd /tmp; make web";
     fi
