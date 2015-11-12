@@ -15,9 +15,9 @@ matrix:
 
 script:
     if [[ $COMPILER = 'gcc' ]]; then
-        docker run -v ${TRAVIS_BUILD_DIR}:ro pritunl/archlinux bash -c "cd ${TRAVIS_BUILD_DIR}; make";
+        docker run -v ${TRAVIS_BUILD_DIR}:/tmp pritunl/archlinux bash -c "cd /tmp; make";
     elif [[ $COMPILER = 'clang' ]]; then
-        docker run -v ${TRAVIS_BUILD_DIR}:ro pritunl/archlinux bash -c "cd ${TRAVIS_BUILD_DIR}; make clang";
+        docker run -v ${TRAVIS_BUILD_DIR}:/tmp pritunl/archlinux bash -c "cd /tmp; make clang";
     elif [[ $COMPILER = 'emscripten' ]]; then
-        docker run -v ${TRAVIS_BUILD_DIR}:ro pritunl/archlinux bash -c "cd ${TRAVIS_BUILD_DIR}; make web";
+        docker run -v ${TRAVIS_BUILD_DIR}:/tmp pritunl/archlinux bash -c "cd /tmp; make web";
     fi
