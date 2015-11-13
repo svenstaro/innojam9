@@ -29,7 +29,7 @@ class MainState : public State, public entityx::Receiver<MainState> {
     std::vector<Level> m_level_vector;
     unsigned int m_current_level_index;
     unsigned int m_number_of_collected_orbs;
-    unsigned int m_number_if_needed_orbs;
+    unsigned int m_number_of_needed_orbs;
     unsigned int m_orbs_collected;
 };
 
