@@ -28,16 +28,16 @@
 class EmitterSystem : public entityx::System<EmitterSystem> {
   public:
     void update(entityx::EntityManager &es, entityx::EventManager &events, double dt) {
-        (void) events;
+        (void)events;
         entityx::ComponentHandle<Emitter> emitter;
         entityx::ComponentHandle<Position> position;
         for (entityx::Entity entity : es.entities_with_components(emitter, position)) {
-            (void) entity;
+            (void)entity;
             emitter->m_total_elapsed += dt;
             emitter->m_last_spawned += dt;
-//TODO: seperate level and emitter and make it so that each level a new "main" 
-// emitter is spawned and at the end of a level deleted
-//TODO:
+            // TODO: seperate level and emitter and make it so that each level a new "main"
+            // emitter is spawned and at the end of a level deleted
+            // TODO:
             Stage current_stage = emitter->m_current_stage;
             LayerCompound current_compound = emitter->m_current_compound;
 
@@ -64,7 +64,6 @@ class EmitterSystem : public entityx::System<EmitterSystem> {
                     }
                 }
             }
-
         }
     }
 
@@ -88,18 +87,18 @@ class EmitterSystem : public entityx::System<EmitterSystem> {
         next.assign<Enemy>();
         next.assign<Collidable>(10.f);
         next.assign<LifeTime>(20.f);
-            next.assign<Light>("gradient", 0.3f, glm::vec3{255, 100, 0});
-            next.assign<Drawable>("magma", 20, 20, 4, AnimTemplate(6, 6, 14, 0, 40));
-/*
-        if (Level == m_main_state->get_max_level_index()) {
-            next.assign<Light>("gradient", 0.3f, glm::vec3{0, 0, 255});
-            next.assign<Drawable>("magma", 20, 20, 4, AnimTemplate(6, 6, 14, 0, 40),
-                                  glm::i8vec3(100, 100, 100));
-        } else {
-            next.assign<Light>("gradient", 0.3f, glm::vec3{255, 100, 0});
-            next.assign<Drawable>("magma", 20, 20, 4, AnimTemplate(6, 6, 14, 0, 40));
-        }
-        */
+        next.assign<Light>("gradient", 0.3f, glm::vec3{255, 100, 0});
+        next.assign<Drawable>("magma", 20, 20, 4, AnimTemplate(6, 6, 14, 0, 40));
+        /*
+                if (Level == m_main_state->get_max_level_index()) {
+                    next.assign<Light>("gradient", 0.3f, glm::vec3{0, 0, 255});
+                    next.assign<Drawable>("magma", 20, 20, 4, AnimTemplate(6, 6, 14, 0, 40),
+                                          glm::i8vec3(100, 100, 100));
+                } else {
+                    next.assign<Light>("gradient", 0.3f, glm::vec3{255, 100, 0});
+                    next.assign<Drawable>("magma", 20, 20, 4, AnimTemplate(6, 6, 14, 0, 40));
+                }
+                */
     }
 };
 

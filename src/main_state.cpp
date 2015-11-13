@@ -178,6 +178,7 @@ void MainState::update(double dt) {
     }
     if(m_number_of_collected_orbs == m_number_if_needed_orbs)
     {
+        std::cout << "LEVELUP" << std::endl;
         update_level(); 
     }
     m_systems.update<DrawSystem>(dt);

@@ -1,6 +1,6 @@
 
-#ifndef COMPONENT_LIFETIMME_HPP
-#define COMPONENT_LIFETIMME_HPP
+#ifndef COMPONENT_LIFETIME_HPP
+#define COMPONENT_LIFETIME_HPP
 
 #include "entityx/entityx.h"
 
