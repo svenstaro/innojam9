@@ -14,8 +14,8 @@ struct PlayerInstructionEvent {
     entityx::Entity m_entity;
 };
 
-struct CollisionEvent {
-    CollisionEvent(entityx::Entity first, entityx::Entity second)
+struct PlayerBulletCollison {
+    PlayerBulletCollison(entityx::Entity first, entityx::Entity second)
         : m_first(first), m_second(second) {
     }
 
@@ -30,6 +30,13 @@ struct OrbCollectedEvent {
 
     unsigned int m_collected;
     unsigned int m_needed;
+};
+
+struct PlayerOrbCollison {
+    PlayerOrbCollison(unsigned int score, entityx::Entity orb) : m_score(score), m_orb(orb){
+    }
+    unsigned int m_score;
+    entityx::Entity m_orb;
 };
 
 struct HitEvent {
@@ -56,6 +63,9 @@ struct GameOverEvent {
     private:
         bool m_win;
         float m_score;
+};
+
+struct NewWave {   
 };
 
 struct LevelChangedEvent

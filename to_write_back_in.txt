@@ -1,0 +1,2 @@
+1. Level anzeige
+2. rumble if hit

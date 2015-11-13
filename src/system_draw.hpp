@@ -6,6 +6,8 @@
 #include "component_player.hpp"
 #include "component_enemy.hpp"
 #include "component_orb.hpp"
+#include "component_light.hpp"
+#include "component_velocity.hpp"
 
 #include "entityx/entityx.h"
 #include <glm/vec2.hpp>
@@ -137,20 +139,10 @@ class DrawSystem : public entityx::System<DrawSystem> {
                           ? 1.f - (m_game->m_remaining_lvl_change - 1.f) / 0.5f
                           : m_game->m_remaining_lvl_change / 0.5f;
         alpha = glm::clamp(alpha, 0.0f, 1.0f);
+        // TODO MAINSTATE OWN M_REMAINING...
         m_game->m_remaining_lvl_change -= dt;
-
+        // TODO PLAYER SHIT NOT HERE
         player->m_invincible = alpha >= 0.1;
-
-        if (m_game->m_clear_bullets && alpha >= 0.98) {
-            entityx::ComponentHandle<Enemy> enemy;
-            for (entityx::Entity entity : es.entities_with_components(enemy))
-                entity.destroy();
-            m_game->m_clear_bullets = false;
-            events.emit<OrbCollectedEvent>(0, m_game->get_current_level().m_orbs_to_next_level);
-            if (m_game->get_current_level_index() == m_game->get_max_level_index()) {
-                events.emit<BossLevelEvent>();
-            }
-        }
 
         SDL_SetTextureColorMod(m_render_buffer, 255 - 255 * alpha, 255 - 255 * alpha,
                                255 - 255 * alpha);
@@ -180,29 +172,32 @@ class DrawSystem : public entityx::System<DrawSystem> {
 
         if (m_game->is_debug_mode()) {
             SDL_Color c = {200, 200, 200, 100};
-            std::string score = "Score: " + std::to_string(player->score);
+            //TODO std::string score = "Score: " + std::to_string(player->score);
             std::string pos = "Pos - Radius: " + std::to_string(player_pos->position()[0]) +
                               " Angle: " + std::to_string(player_pos->position()[1]);
             auto bulletstr = "Bullets: " + std::to_string(bullets);
             auto orbstr = "Orbs: " + std::to_string(orbs);
             auto orbs_collected = "Orbs collected " + std::to_string(m_game->m_orbs_collected);
             auto fps = "FPS: " + std::to_string(1.0 / dt);
-            draw_text(rendr, m_game->res_manager(), score, "font20", 0, 0, c);
+            //draw_text(rendr, m_game->res_manager(), score, "font20", 0, 0, c);
             draw_text(rendr, m_game->res_manager(), pos, "font20", 0, 20, c);
             draw_text(rendr, m_game->res_manager(), bulletstr, "font20", 0, 40, c);
             draw_text(rendr, m_game->res_manager(), orbstr, "font20", 0, 60, c);
             draw_text(rendr, m_game->res_manager(), orbs_collected, "font20", 0, 80, c);
             draw_text(rendr, m_game->res_manager(), fps, "font20", 0, 100, c);
         } else {
-            auto score = "Score: " + std::to_string((int)player->score);
-            SDL_Color c = {200, 200, 200, 0};
-            draw_text(rendr, m_game->res_manager(), score, "font20", 20, 20, c);
+//TODO: 
+            //auto score = "Score: " + std::to_string((int)player->score);
+            //SDL_Color c = {200, 200, 200, 0};
+            //draw_text(rendr, m_game->res_manager(), score, "font20", 20, 20, c);
         }
         render_bar(rendr, player->m_hp, player->m_max_hp);
 
-        SDL_Color c = {200, 200, 200, 100};
-        auto current_level = "Level " + std::to_string(m_game->get_current_level_index() + 1);
-        draw_text(rendr, m_game->res_manager(), current_level, "font20", 600, 20, c);
+        // TODO: TO DA MAINSTATE!
+        // SDL_Color c = {200, 200, 200, 100};
+        // auto current_level = "Level " + std::to_string(m_main_state->get_current_level_index() +
+        // 1);
+        // draw_text(rendr, m_game->res_manager(), current_level, "font20", 600, 20, c);
         SDL_RenderPresent(rendr);
     }
 

@@ -11,25 +11,27 @@
 #include "component_path.hpp"
 #include "component_position.hpp"
 #include "component_moving.hpp"
+#include "component_emitt_on_death.hpp"
+#include "component_lifetime.hpp"
+
 class PathSystem : public entityx::System<PathSystem> {
   public:
     void update(entityx::EntityManager &es, entityx::EventManager &events, double dt) {
+        (void)events;
         entityx::ComponentHandle<Path> path;
         entityx::ComponentHandle<Position> position;
         entityx::ComponentHandle<Moving> moving;
+        entityx::ComponentHandle<LifeTime> life_time;
 
         glm::vec2 next_step;
         glm::vec2 new_position;
 
-        for (entityx::Entity entity : es.entities_with_components(path, position, moving)) {
-            if (path->get_time_left() > 0 && position->position().x < 320.f) {
-                glm::vec2 new_position =
-                    path->m_path(path->m_origin, path->m_velocity, path->m_current_lifetime);
-                position->set_position(new_position);
-                path->m_current_lifetime += dt;
-            } else {
-                entity.destroy();
-            }
+        for (entityx::Entity entity :
+             es.entities_with_components(life_time, path, position, moving)) {
+            (void)entity;
+            glm::vec2 new_position =
+                path->m_path(path->m_origin, path->m_velocity, life_time->get_current_time_lived());
+            position->set_position(new_position);
         }
     }
 };

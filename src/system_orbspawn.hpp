@@ -36,7 +36,7 @@ class OrbSpawnSystem : public entityx::System<OrbSpawnSystem>,
     }
 
     void configure(entityx::EventManager &event_manager) override {
-        event_manager.subscribe<CollisionEvent>(*this);
+        event_manager.subscribe<PlayerOrbCollison>(*this);
 
         // Add initial orbs
         for (int i = 0; i < MAX_ORBS; ++i) {
@@ -71,7 +71,6 @@ class OrbSpawnSystem : public entityx::System<OrbSpawnSystem>,
                 e.remove<Light>();
                 e.remove<Orb>();
                 e.remove<Collectable>();
-                Mix_PlayChannel(1, m_game->res_manager().sound("sound2"), 0);
                 m_game->m_orbs_collected += 1;
             }
             auto pos = e.component<Position>();
@@ -90,13 +89,8 @@ class OrbSpawnSystem : public entityx::System<OrbSpawnSystem>,
         orbs_to_delete.insert(orbs_to_delete.end(), new_vec.begin(), new_vec.end());
     }
 
-    void receive(const CollisionEvent &event) {
-        auto copy = event;
-        auto e = copy.m_first.component<Orb>();
-        auto p = copy.m_second.component<Player>();
-        if (e && p) {
-            orbs_to_delete.push_back(copy.m_first);
-        }
+    void receive(const PlayerOrbCollison &event) {
+        orbs_to_delete.push_back(event.m_orb);
     }
 
   private:

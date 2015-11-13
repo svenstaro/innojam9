@@ -107,10 +107,7 @@ int Game::init() {
     entityx::Entity entity = m_ex.entities.create();
     entity.assign<Position>();
 
-    //Setting order of levels
-    m_level_vector = {Level::LEVEL_ONE(), Level::LEVEL_TWO(), Level::LEVEL_THREE(), Level::LEVEL_FOUR(),
-                      Level::LEVEL_FIVE(), Level::LEVEL_SIX(), Level::LEVEL_SEVEN(), Level::LEVEL_EIGHT()};
-    if(DEBUG) {
+        if(DEBUG) {
         m_difficulty = DEBUGDIF;
         m_states.push({"main", std::make_unique<MainState>(this)});
     } else {
@@ -135,20 +132,6 @@ void Game::game_over(bool win, float score) {
     m_last_frame_time = 0;
     m_debug_mode = false;
     m_orbs_collected = 0;
-}
-
-void Game::next_level()
-{
-    rumble_for(0.75f);
-    m_remaining_lvl_change = 1.5f;
-    m_clear_bullets = true;
-    //  HIER LEVEL UP SOUND
-    m_current_level_index++;
-    if(m_current_level_index == m_level_vector.size())
-    {
-        //TODO GAMEOVER KRAM -> HERE
-        m_current_level_index = 0;
-    }
 }
 
 void Game::mainloop() {
@@ -206,26 +189,6 @@ Difficulty Game::difficulty() {
 
 void Game::popstate() {
     m_states.pop();
-}
-
-/** S in seconds */
-void Game::rumble_for(float s)
-{
-  m_remaining_rumble = s;
-}
-
-unsigned int Game::get_current_level_index()
-{
-    return m_current_level_index;
-}
-
-unsigned int Game::get_max_level_index(){
-    return m_level_vector.size()-1;
-}
-
-Level Game::get_current_level()
-{
-    return m_level_vector[m_current_level_index];
 }
 
 const std::string &Game::statename() const {

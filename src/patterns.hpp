@@ -17,6 +17,7 @@ struct LayerCompound {
                   std::vector<unsigned int> number_of_shots, std::vector<float> offset);
 
     std::vector<std::function<glm::vec2(glm::vec2, glm::vec2, float)>> m_paths;
+    std::vector<std::function<glm::vec2()>> m_on_death;
     std::vector<unsigned int> m_number_of_shots;
     std::vector<float> m_offset;
     unsigned int m_number_of_paths;
@@ -48,41 +49,37 @@ struct LayerCompound {
      *      vector von offsets. geben an wie weit die path funktion
      *      verschobnen wird.
      */
-     static LayerCompound SIN_SCYTHE_FOUR_TWO()
-     {
-     return {{sin_path, scythe_path},{4,4},{0,0.f}};
-     }
+    static LayerCompound SIN_SCYTHE_FOUR_TWO() {
+        return {{sin_path, scythe_path}, {4, 4}, {0, 0.f}};
+    }
 
-     static LayerCompound SPIRAL_ONE()
-     {
-     return {{spiral_path},{1},{0.f}};
-     }
+    static LayerCompound SPIRAL_ONE() {
+        return {{spiral_path}, {1}, {0.f}};
+    }
 
-     static LayerCompound DUAL_TWIN()
-     {
-     return {{linear_path, linear_path}, {2, 2}, {0.f, 5.f}};
-     }
+    static LayerCompound DUAL_TWIN() {
+        return {{linear_path, linear_path}, {2, 2}, {0.f, 5.f}};
+    }
 
-     static LayerCompound FOUR_TWIN()
-     {
-     return {{linear_path, linear_path, linear_path, linear_path}, {4, 4, 4, 4},{0.f,5.f,10.f,15.f}};
-     }
+    static LayerCompound FOUR_TWIN() {
+        return {{linear_path, linear_path, linear_path, linear_path},
+                {4, 4, 4, 4},
+                {0.f, 5.f, 10.f, 15.f}};
+    }
 
-     static LayerCompound FOUR_TWIN_PLUSLINEAR()
-     {
-     return {{linear_path, linear_path, linear_path,
-   linear_path,linear_path}, {4, 4, 4, 4,8},{0.f,5.f,10.f,15.f,45.f+7.5f}};
-     }
+    static LayerCompound FOUR_TWIN_PLUSLINEAR() {
+        return {{linear_path, linear_path, linear_path, linear_path, linear_path},
+                {4, 4, 4, 4, 8},
+                {0.f, 5.f, 10.f, 15.f, 45.f + 7.5f}};
+    }
 
-     static LayerCompound LINEAR_TWO_SIN_TWO()
-     {
-     return {{linear_path, sin_path}, {10, 4}, {0.f, 2.f}};
-     }
+    static LayerCompound LINEAR_TWO_SIN_TWO() {
+        return {{linear_path, sin_path}, {10, 4}, {0.f, 2.f}};
+    }
 
-     static LayerCompound LINEAR_TWO()
-     {
-     return {{linear_path}, {2}, {0.f}};
-     }
+    static LayerCompound LINEAR_TWO() {
+        return {{linear_path}, {2}, {0.f}};
+    }
 };
 struct Stage {
     Stage(std::vector<LayerCompound> stages, std::vector<unsigned int> repititions, float cooldown);
@@ -115,53 +112,45 @@ struct Stage {
      return {{LayerCompound::SIN_SCYTHE_FOUR_TWO(),LayerCompound::SIN_TWO_SHOTS()}, {2, 2}, 1.f};
      }
      */
-     static Stage LINEAR_TWO_PULSED()
-     {
-     return {{LayerCompound::LINEAR_TWO(),LayerCompound::PAUSE()}, {3,3}, 0.25f};
-     }
+    static Stage LINEAR_TWO_PULSED() {
+        return {{LayerCompound::LINEAR_TWO(), LayerCompound::PAUSE()}, {3, 3}, 0.25f};
+    }
 
-     static Stage LINEAR_TWO_PULSED_TWIN()
-     {
-     return {{LayerCompound::DUAL_TWIN(),LayerCompound::PAUSE()},{3,2},0.4f};
-     }
+    static Stage LINEAR_TWO_PULSED_TWIN() {
+        return {{LayerCompound::DUAL_TWIN(), LayerCompound::PAUSE()}, {3, 2}, 0.4f};
+    }
 
-     static Stage LINEAR_FOUR_PULSED_TWIN()
-     {
-     return {{LayerCompound::FOUR_TWIN(),LayerCompound::PAUSE()},{3,2},1.f};
-     }
+    static Stage LINEAR_FOUR_PULSED_TWIN() {
+        return {{LayerCompound::FOUR_TWIN(), LayerCompound::PAUSE()}, {3, 2}, 1.f};
+    }
 
-     static Stage STS_ONE()
-     {
-     return {{LayerCompound::SIN_TWO_SHOTS()}, {1}, 1.f};
-     }
+    static Stage STS_ONE() {
+        return {{LayerCompound::SIN_TWO_SHOTS()}, {1}, 1.f};
+    }
 
-     static Stage LINEAR_TWO_SIN_TWO()
-     {
-     return {{LayerCompound::LINEAR_TWO_SIN_TWO()}, {1}, 1.f};
-     }
+    static Stage LINEAR_TWO_SIN_TWO() {
+        return {{LayerCompound::LINEAR_TWO_SIN_TWO()}, {1}, 1.f};
+    }
 
-     static Stage BOSS()
-     {
-     return
-     {{LayerCompound::FOUR_TWIN(),LayerCompound::PAUSE(),LayerCompound::FOUR_TWIN_PLUSLINEAR(),
-     LayerCompound::PAUSE(), LayerCompound::SIN_SCYTHE_FOUR_TWO()},{3,3,3,3,6},0.2f};
-     }
+    static Stage BOSS() {
+        return {{LayerCompound::FOUR_TWIN(), LayerCompound::PAUSE(),
+                 LayerCompound::FOUR_TWIN_PLUSLINEAR(), LayerCompound::PAUSE(),
+                 LayerCompound::SIN_SCYTHE_FOUR_TWO()},
+                {3, 3, 3, 3, 6},
+                0.2f};
+    }
 
-     static Stage SIN_TWO()
-     {
-     return {{LayerCompound::SIN_TWO_SHOTS()}, {4}, 0.2f};
-     }
+    static Stage SIN_TWO() {
+        return {{LayerCompound::SIN_TWO_SHOTS()}, {4}, 0.2f};
+    }
 
-     static Stage SPIRAL_ONE()
-     {
-     return{{LayerCompound::SPIRAL_ONE()}, {4}, 1.f};
-     }
+    static Stage SPIRAL_ONE() {
+        return {{LayerCompound::SPIRAL_ONE()}, {4}, 1.f};
+    }
 
-     static Stage LINEAR_TWO()
-     {
-     return {{LayerCompound::LINEAR_TWO()}, {4}, 1.f};
-     }
-     
+    static Stage LINEAR_TWO() {
+        return {{LayerCompound::LINEAR_TWO()}, {4}, 1.f};
+    }
 };
 
 struct Level {
@@ -185,43 +174,36 @@ struct Level {
  *      anzahl von orbs die eingesammelt werden muessen um den
  *      level abzuschlieszen.
  */
-static Level LEVEL_ONE() {
- return{{Stage::LINEAR_TWO()}, 12, glm::radians(20.f)};
- }
+    static Level LEVEL_ONE() {
+        return {{Stage::LINEAR_TWO()}, 12, glm::radians(20.f)};
+    }
 
- static Level LEVEL_TWO()
- {
- return{{Stage::LINEAR_TWO_PULSED()}, 12, glm::radians(20.f)};
- }
+    static Level LEVEL_TWO() {
+        return {{Stage::LINEAR_TWO_PULSED()}, 12, glm::radians(20.f)};
+    }
 
- static Level LEVEL_THREE()
- {
- return{{Stage::LINEAR_TWO_PULSED_TWIN()}, 12, glm::radians(20.f)};
- }
+    static Level LEVEL_THREE() {
+        return {{Stage::LINEAR_TWO_PULSED_TWIN()}, 12, glm::radians(20.f)};
+    }
 
- static Level LEVEL_FOUR()
- {
- return{{Stage::LINEAR_FOUR_PULSED_TWIN()}, 12, 20.f};
- }
+    static Level LEVEL_FOUR() {
+        return {{Stage::LINEAR_FOUR_PULSED_TWIN()}, 12, 20.f};
+    }
 
- static Level LEVEL_FIVE()
- {
- return{{Stage::SIN_TWO()}, 12, 20.f};
- }
+    static Level LEVEL_FIVE() {
+        return {{Stage::SIN_TWO()}, 12, 20.f};
+    }
 
- static Level LEVEL_SIX()
- {
- return{{Stage::LINEAR_TWO_SIN_TWO()}, 12, 20.f};
- }
+    static Level LEVEL_SIX() {
+        return {{Stage::LINEAR_TWO_SIN_TWO()}, 12, 20.f};
+    }
 
- static Level LEVEL_SEVEN()
- {
- return{{Stage::SPIRAL_ONE()}, 12, 20.f};
- }
+    static Level LEVEL_SEVEN() {
+        return {{Stage::SPIRAL_ONE()}, 12, 20.f};
+    }
 
- static Level LEVEL_EIGHT()
- {
- return{{Stage::BOSS()}, 20, 20.f};
- }
+    static Level LEVEL_EIGHT() {
+        return {{Stage::BOSS()}, 20, 20.f};
+    }
 };
 #endif

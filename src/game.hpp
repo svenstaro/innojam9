@@ -30,11 +30,6 @@ class Game {
     bool is_debug_mode(void);
     void shutdown();
     void popstate();
-    void rumble_for(float s);
-    unsigned int get_current_level_index();
-    unsigned int get_max_level_index();
-    Level get_current_level();
-    void next_level();
     void set_difficulty(Difficulty difficulty);
     Difficulty difficulty();
     void game_over(bool win, float score);

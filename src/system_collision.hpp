@@ -3,10 +3,16 @@
 
 #include "component_position.hpp"
 #include "component_collidable.hpp"
+#include "component_player.hpp"
+#include "component_orb.hpp"
+
 #include "events.hpp"
-#include "game.hpp"
+
+#include "main_state.hpp"
 
 #include "entityx/entityx.h"
+
+#include "utils.hpp"
 
 #include <glm/vec2.hpp>
 #include <glm/glm.hpp>
@@ -15,28 +21,60 @@
 
 class CollisionSystem : public entityx::System<CollisionSystem> {
   public:
-    CollisionSystem() {
+    CollisionSystem(MainState *main_state) : m_main_state(main_state) {
     }
 
     void update(entityx::EntityManager &es, entityx::EventManager &events, double dt) {
-        entityx::ComponentHandle<Position> position1, position2;
-        entityx::ComponentHandle<Collidable> collidable1, collidable2;
-        for (entityx::Entity entity1 : es.entities_with_components(position1, collidable1)) {
-            for (entityx::Entity entity2 : es.entities_with_components(position2, collidable2)) {
-                if (entity1 != entity2) {
-                    glm::vec2 p1 = position1->position(),
-                        p2 = position2->position();
-                    float x = glm::cos(p1.y) * p1.x - glm::cos(p2.y) * p2.x;
-                    float y = glm::sin(p1.y) * p1.x - glm::sin(p2.y) * p2.x;
-                    glm::vec2 intersect = glm::vec2(x, y);
-                    float dist = glm::length(intersect);
-                    if(dist <= collidable1->radius() + collidable2->radius()) {
-                        events.emit<CollisionEvent>(entity1, entity2);
-                    }
+        (void)dt;
+
+        entityx::ComponentHandle<Position> position_player, position_other;
+        entityx::ComponentHandle<Collidable> collidable_player, collidable_other;
+
+        entityx::ComponentHandle<Player> player;
+        entityx::ComponentHandle<Path> path;
+
+        //Here we check for collision betweet the player and a bullet 
+        for (entityx::Entity player_entity :
+             es.entities_with_components(player, position_player, collidable_player)) {
+            for (entityx::Entity bullet_entity :
+                 es.entities_with_components(position_other, collidable_other, path)) {
+                if (check_for_collision(position_player, position_other, collidable_player,
+                                        collidable_other)) {
+                    events.emit<PlayerBulletCollison>(player_entity, bullet_entity);
+                    bullet_entity.destroy();
+                }
+            }
+        }
+
+        //Here we check for collision betweet the player and an orb
+        entityx::ComponentHandle<Orb> orb;
+
+        for (entityx::Entity player_entity :
+             es.entities_with_components(player, position_player, collidable_player)) {
+            (void)player_entity;
+            for (entityx::Entity orb_entity :
+                 es.entities_with_components(orb, position_other, collidable_other)) {
+                if (check_for_collision(position_player, position_other, collidable_player,
+                                        collidable_other)) {
+                    m_main_state->update_orb_count();
+                    events.emit<PlayerOrbCollison>(orb->score(), orb_entity);
+                    std::cout << "collision detected" << std::endl;
                 }
             }
         }
     }
-};
 
+  private:
+    MainState *m_main_state;
+
+    bool check_for_collision(entityx::ComponentHandle<Position> position_player,
+                             entityx::ComponentHandle<Position> position_other,
+                             entityx::ComponentHandle<Collidable> collidable_player,
+                             entityx::ComponentHandle<Collidable> collidable_other) {
+        float dist = glm::length(polar_to_cathesian(
+            position_player->position()) - polar_to_cathesian(position_other->position()));
+
+        return dist <= collidable_player->radius() + collidable_other->radius();
+    }
+};
 #endif
