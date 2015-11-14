@@ -30,25 +30,23 @@ class SoundSystem : public entityx::System<SoundSystem>, public entityx::Receive
     }
 
     void receive(const NewWave &event) {
-        (void) event;
+        (void)event;
         Mix_Volume(1, 40);
         Mix_PlayChannel(1, m_res_manager->sound("sound1"), 0);
-        std::cout << "Playing new Wave sound" << std::endl;
     }
 
-    void receive(const LevelChangedEvent &event)
-    {
-        (void) event;
+    void receive(const LevelChangedEvent &event) {
+        (void)event;
         Mix_Volume(2, 40);
         Mix_PlayChannel(2, m_res_manager->sound("sound4"), 0);
-         
     }
 
-    void update(entityx::EntityManager &es, entityx::EventManager &events, double dt) override{
-    (void) es;
-    (void) events;
-    (void) dt;
+    void update(entityx::EntityManager &es, entityx::EventManager &events, double dt) override {
+        (void)es;
+        (void)events;
+        (void)dt;
     }
+
   private:
     ResourceManager *m_res_manager;
     Mix_Music *m_current_song;

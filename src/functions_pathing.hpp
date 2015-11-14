@@ -79,7 +79,10 @@ inline glm::vec2 sin_path(glm::vec2 origin, glm::vec2 velocity, float current_li
 
     next_position = polar_to_cathesian(next_position);
             
-    return cathesian_to_polar(origin_cathesian + next_position);
+    next_position = cathesian_to_polar(origin_cathesian + next_position);
+
+    next_position.y += velocity.y;
+    return next_position;
 }
 
 

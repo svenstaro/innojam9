@@ -1,7 +1,7 @@
 #include "game.hpp"
 
 #include "main_state.hpp"
-#include "mainmenu_state.hpp"
+#include "main_menu_state.hpp"
 #include "game_over_state.hpp"
 #include "win_state.hpp"
 
@@ -32,7 +32,8 @@ int Game::init() {
 
     SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "0");
 
-    m_window = SDL_CreateWindow("Hello World!", 100, 100, WIDTH, HEIGHT, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
+    m_window = SDL_CreateWindow("Hello World!", 100, 100, WIDTH, HEIGHT,
+                                SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
     if (m_window == nullptr) {
         std::cerr << "SDL_CreateWindow Error: " << SDL_GetError() << std::endl;
         SDL_Quit();
@@ -107,7 +108,7 @@ int Game::init() {
     entityx::Entity entity = m_ex.entities.create();
     entity.assign<Position>();
 
-        if(DEBUG) {
+    if (DEBUG) {
         m_difficulty = DEBUGDIF;
         m_states.push({"main", std::make_unique<MainState>(this)});
     } else {
@@ -120,15 +121,14 @@ int Game::init() {
 }
 
 void Game::game_over(bool win, float score) {
-    if(win){
+    if (win) {
         m_states.push({"win", std::make_unique<WinState>(this, score)});
-    }
-    else{
+    } else {
         m_states.push({"gameover", std::make_unique<GameOverState>(this, score)});
     }
     m_states.top().second->init();
 
-    m_current_level_index = DEBUG ? DEBUG_START_LEVEL: 0;
+    m_current_level_index = DEBUG ? DEBUG_START_LEVEL : 0;
     m_last_frame_time = 0;
     m_debug_mode = false;
     m_orbs_collected = 0;
@@ -162,14 +162,12 @@ bool Game::is_running() {
     return m_running;
 }
 
-void Game::toggle_debug_mode(void)
-{
-  m_debug_mode = !m_debug_mode;
+void Game::toggle_debug_mode(void) {
+    m_debug_mode = !m_debug_mode;
 }
 
-bool Game::is_debug_mode(void)
-{
-  return m_debug_mode;
+bool Game::is_debug_mode(void) {
+    return m_debug_mode;
 }
 
 void Game::shutdown() {

@@ -24,7 +24,7 @@ struct LayerCompound {
     unsigned int m_number_of_shots_done = 0;
 
     static LayerCompound SIN_TWO_SHOTS() {
-        return {{linear_path}, {2}, {0.f}};
+        return {{sin_path}, {2}, {0.f}};
     }
 
     static LayerCompound PAUSE() {
@@ -74,7 +74,7 @@ struct LayerCompound {
     }
 
     static LayerCompound LINEAR_TWO_SIN_TWO() {
-        return {{linear_path, sin_path}, {10, 4}, {0.f, 2.f}};
+        return {{linear_path, sin_path}, {10, 10}, {0.f, 2.f}};
     }
 
     static LayerCompound LINEAR_TWO() {
@@ -175,31 +175,31 @@ struct Level {
  *      level abzuschlieszen.
  */
     static Level LEVEL_ONE() {
-        return {{Stage::LINEAR_TWO()}, 12, glm::radians(20.f)};
+        return {{Stage::SIN_TWO()}, 5, glm::radians(10.f)};
     }
 
     static Level LEVEL_TWO() {
-        return {{Stage::LINEAR_TWO_PULSED()}, 12, glm::radians(20.f)};
+        return {{Stage::LINEAR_TWO_PULSED()}, 5, glm::radians(20.f)};
     }
 
     static Level LEVEL_THREE() {
-        return {{Stage::LINEAR_TWO_PULSED_TWIN()}, 12, glm::radians(20.f)};
+        return {{Stage::LINEAR_TWO_PULSED_TWIN()}, 5, glm::radians(20.f)};
     }
 
     static Level LEVEL_FOUR() {
-        return {{Stage::LINEAR_FOUR_PULSED_TWIN()}, 12, 20.f};
+        return {{Stage::LINEAR_FOUR_PULSED_TWIN()}, 5, 20.f};
     }
 
     static Level LEVEL_FIVE() {
-        return {{Stage::SIN_TWO()}, 12, 20.f};
+        return {{Stage::SIN_TWO()}, 5, 20.f};
     }
 
     static Level LEVEL_SIX() {
-        return {{Stage::LINEAR_TWO_SIN_TWO()}, 12, 20.f};
+        return {{Stage::LINEAR_TWO_SIN_TWO()}, 5, 20.f};
     }
 
     static Level LEVEL_SEVEN() {
-        return {{Stage::SPIRAL_ONE()}, 12, 20.f};
+        return {{Stage::SPIRAL_ONE()}, 5, 20.f};
     }
 
     static Level LEVEL_EIGHT() {

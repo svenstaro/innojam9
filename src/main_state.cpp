@@ -113,6 +113,8 @@ int MainState::init() {
     m_level_vector = {Level::LEVEL_ONE(),   Level::LEVEL_TWO(),  Level::LEVEL_THREE(),
                       Level::LEVEL_FOUR(),  Level::LEVEL_FIVE(), Level::LEVEL_SIX(),
                       Level::LEVEL_SEVEN(), Level::LEVEL_EIGHT()};
+    m_current_level_index = 0;
+    m_number_of_collected_orbs = 0;
     load_level(0);
     return 0;
 }
@@ -126,7 +128,7 @@ void MainState::update_level() {
     clear_level();
 
     m_number_of_collected_orbs = 0;
-    m_number_if_needed_orbs = m_level_vector[m_current_level_index].m_orbs_to_next_level;
+    load_level(m_current_level_index);
 }
 
 void MainState::load_level(unsigned int level_index) {
@@ -136,11 +138,15 @@ void MainState::load_level(unsigned int level_index) {
     fire.assign<Drawable>("fire", 100, 100, 1, fire_anim);
     fire.assign<Light>("gradient");
     fire.assign<Emitter>(m_level_vector[level_index]);
+    m_number_of_needed_orbs = m_level_vector[level_index].m_orbs_to_next_level;
 }
 void MainState::clear_level() {
     entityx::ComponentHandle<Path> path;
     entityx::ComponentHandle<Emitter> emitter;
-    for (entityx::Entity entity : m_entities.entities_with_components(path, emitter)) {
+    for (entityx::Entity entity : m_entities.entities_with_components(emitter)) {
+        entity.destroy();
+    }
+    for (entityx::Entity entity : m_entities.entities_with_components(path)) {
         entity.destroy();
     }
 }
@@ -159,7 +165,7 @@ Level MainState::get_current_level() {
 
 void MainState::update_orb_count()
 {
-    m_orbs_collected++;
+    m_number_of_collected_orbs++;
 }
 
 void MainState::update(double dt) {
@@ -178,7 +184,6 @@ void MainState::update(double dt) {
     }
     if(m_number_of_collected_orbs == m_number_of_needed_orbs)
     {
-        std::cout << "LEVELUP" << std::endl;
         update_level(); 
     }
     m_systems.update<DrawSystem>(dt);

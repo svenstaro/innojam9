@@ -35,40 +35,35 @@ class EmitterSystem : public entityx::System<EmitterSystem> {
             (void)entity;
             emitter->m_total_elapsed += dt;
             emitter->m_last_spawned += dt;
-            // TODO: seperate level and emitter and make it so that each level a new "main"
-            // emitter is spawned and at the end of a level deleted
-            // TODO:
-            Stage current_stage = emitter->m_current_stage;
-            LayerCompound current_compound = emitter->m_current_compound;
 
-            if (emitter->m_last_spawned > current_stage.m_cooldown) {
+            if (emitter->m_last_spawned > emitter->m_current_stage.m_cooldown) {
                 events.emit<NewWave>();
 
                 emitter->m_last_spawned = 0.f;
 
-                for (unsigned int i = 0; i < current_compound.m_number_of_paths; i++) {
-                    for (unsigned int j = 0; j < current_compound.m_number_of_shots[i]; j++) {
-                        create_bullet(es, current_compound.m_paths[i], i, j, emitter, position);
+                for (unsigned int i = 0; i < emitter->m_current_compound.m_number_of_paths; i++) {
+                    for (unsigned int j = 0; j < emitter->m_current_compound.m_number_of_shots[i]; j++) {
+                        create_bullet(es, emitter->m_current_compound.m_paths[i], i, j, emitter, position);
                     }
                 }
-                current_compound.m_number_of_shots_done++;
+                emitter->m_current_compound.m_number_of_shots_done++;
+                if (emitter->m_current_compound.m_number_of_shots_done ==
+                    emitter->m_current_stage.m_repititions[emitter->m_current_stage.m_current_repition]) {
+                    emitter->m_current_stage.next();
 
-                if (current_compound.m_number_of_shots_done ==
-                    current_stage.m_repititions[current_stage.m_current_repition]) {
-                    current_stage.next();
-                    current_compound = current_stage.get_current_repitition();
 
-                    if (current_stage.is_at_end()) {
-                        m_level->next();
-                        current_stage = m_level->get_current_stage();
+                    if (emitter->m_current_stage.is_at_end()) {
+                        emitter->m_current_level.next();
+                        emitter->m_current_stage = emitter->m_current_stage;
                     }
+                    std::cout << "next stage " << emitter->m_current_stage.m_current_repition << std::endl;
+                    emitter->m_current_compound = emitter->m_current_stage.get_current_repitition();
                 }
             }
         }
     }
 
   private:
-    Level *m_level;
     void create_bullet(entityx::EntityManager &es,
                        std::function<glm::vec2(glm::vec2, glm::vec2, float)> path, unsigned int i,
                        unsigned int j, entityx::ComponentHandle<Emitter> emitter,

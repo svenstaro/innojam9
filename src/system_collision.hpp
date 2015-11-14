@@ -58,7 +58,6 @@ class CollisionSystem : public entityx::System<CollisionSystem> {
                                         collidable_other)) {
                     m_main_state->update_orb_count();
                     events.emit<PlayerOrbCollison>(orb->score(), orb_entity);
-                    std::cout << "collision detected" << std::endl;
                 }
             }
         }
