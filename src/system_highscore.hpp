@@ -20,7 +20,7 @@
 class HighscoreSystem : public entityx::System<HighscoreSystem>,
                         public entityx::Receiver<HighscoreSystem> {
   public:
-    HighscoreSystem(MainState *main_state) : m_main_state(main_state), m_score(0){};
+    HighscoreSystem(MainState *main_state) : m_main_state(main_state){};
 
     void configure(entityx::EventManager &event_manager) override {
         event_manager.subscribe<PlayerOrbCollison>(*this);
@@ -57,7 +57,7 @@ class HighscoreSystem : public entityx::System<HighscoreSystem>,
     }i
 */
     void receive(const PlayerOrbCollison &event) {
-        m_score += event.m_score;
+       m_main_state->update_score(event.m_score);
     }
     // TODO
     /*
@@ -68,12 +68,9 @@ class HighscoreSystem : public entityx::System<HighscoreSystem>,
   private:
     MainState *m_main_state;
     float pts_per_sec = -0.2f; // 10 is really high
-    bool hit = false;
-    float immunity = 0.0f;
     entityx::Entity damage_enem;
     entityx::EventManager *m_events;
     entityx::EntityManager *m_entities;
-    unsigned int m_score;
 };
 
 #endif

@@ -13,11 +13,11 @@ struct Player : entityx::Component<Player> {
     float m_max_hp;
     float m_hp;
     float m_hurt = 0.0f;
-    bool m_invincible = false;
+    float m_invincible = 0.f;
 
     void damage(float f) {
-      if(!m_invincible)
         m_hp -= f;
+        m_hurt += 0.05f;
     }
 
     bool is_dead() {

@@ -19,8 +19,11 @@ class MainState : public State, public entityx::Receiver<MainState> {
     unsigned int get_max_level_index();
     void load_level(unsigned int level_index);
     void clear_level();
-    void rumble_for(float lol);
+    void rumble_for(float time_s);
     void update_orb_count();
+    Game *game();
+    void update_score(unsigned int orb_score);
+    unsigned int get_score();
   private:
     Game *m_game;
     entityx::EventManager m_events;
@@ -30,6 +33,7 @@ class MainState : public State, public entityx::Receiver<MainState> {
     unsigned int m_current_level_index;
     unsigned int m_number_of_collected_orbs;
     unsigned int m_number_of_needed_orbs;
+    unsigned int m_score;
 };
 
 #endif

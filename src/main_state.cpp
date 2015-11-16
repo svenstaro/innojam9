@@ -22,6 +22,7 @@
 #include "system_runes.hpp"
 #include "system_life_time.hpp"
 #include "system_sound.hpp"
+#include "system_player.hpp"
 
 #include "entityx/entityx.h"
 #include <glm/vec2.hpp>
@@ -55,6 +56,7 @@ int MainState::init() {
     m_systems.add<OrbSpawnSystem>(m_game, m_entities, RING_INNER, RING_OUTER);
     m_systems.add<LifeTimeSystem>();
     m_systems.add<SoundSystem>(&m_game->res_manager());
+    m_systems.add<PlayerSystem>(this);
     //
     //     // glm::vec2 origin = glm::vec2(300, 0);
     //     // auto parable = create_parable(origin, glm::vec2(300, glm::half_pi<float>()),
@@ -113,22 +115,24 @@ int MainState::init() {
     m_level_vector = {Level::LEVEL_ONE(),   Level::LEVEL_TWO(),  Level::LEVEL_THREE(),
                       Level::LEVEL_FOUR(),  Level::LEVEL_FIVE(), Level::LEVEL_SIX(),
                       Level::LEVEL_SEVEN(), Level::LEVEL_EIGHT()};
-    m_current_level_index = 0;
+    m_current_level_index = 5;
     m_number_of_collected_orbs = 0;
-    load_level(0);
+    m_score = 0;
+    load_level(5);
     return 0;
 }
 
 void MainState::update_level() {
-    //rumble_for(0.75f);
+    rumble_for(0.75f);
     m_current_level_index++;
-    if (m_current_level_index == m_level_vector.size()) {
-        // TODO: GAMEOVER STUFF;
-    }
     clear_level();
-
-    m_number_of_collected_orbs = 0;
-    load_level(m_current_level_index);
+    if (m_current_level_index == m_level_vector.size()) {
+        m_game->game_over(true, m_score);
+        std::cout << "WTF" << std::endl;
+    } else {
+        m_number_of_collected_orbs = 0;
+        load_level(m_current_level_index);
+    }
 }
 
 void MainState::load_level(unsigned int level_index) {
@@ -163,9 +167,27 @@ Level MainState::get_current_level() {
     return m_level_vector[m_current_level_index];
 }
 
-void MainState::update_orb_count()
-{
+void MainState::update_orb_count() {
     m_number_of_collected_orbs++;
+}
+
+void MainState::rumble_for(float time_s) {
+    m_game->m_remaining_rumble += time_s;
+    m_game->m_remaining_rumble = glm::min(m_game->m_remaining_rumble,1.5f);
+}
+
+void MainState::update_score(unsigned int orb_score)
+{
+    m_score += orb_score;
+}
+
+unsigned int MainState::get_score()
+{
+    return m_score;
+}
+
+Game *MainState::game(){
+    return m_game;
 }
 
 void MainState::update(double dt) {
@@ -182,9 +204,8 @@ void MainState::update(double dt) {
             }
         }
     }
-    if(m_number_of_collected_orbs == m_number_of_needed_orbs)
-    {
-        update_level(); 
+    if (m_number_of_collected_orbs == m_number_of_needed_orbs) {
+        update_level();
     }
     m_systems.update<DrawSystem>(dt);
     m_systems.update<ControlSystem>(dt);
@@ -196,4 +217,5 @@ void MainState::update(double dt) {
     m_systems.update<PathSystem>(dt);
     m_systems.update<EmitterSystem>(dt);
     m_systems.update<RunesSystem>(dt);
+    m_systems.update<PlayerSystem>(dt);
 }

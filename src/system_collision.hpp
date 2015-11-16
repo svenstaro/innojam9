@@ -39,9 +39,13 @@ class CollisionSystem : public entityx::System<CollisionSystem> {
             for (entityx::Entity bullet_entity :
                  es.entities_with_components(position_other, collidable_other, path)) {
                 if (check_for_collision(position_player, position_other, collidable_player,
-                                        collidable_other)) {
+                                        collidable_other)&& player->m_invincible <= 0.f) {
+
                     events.emit<PlayerBulletCollison>(player_entity, bullet_entity);
                     bullet_entity.destroy();
+                    m_main_state->rumble_for(0.75f);
+                    player->damage(1.f);
+                    player->m_invincible = 1.f;
                 }
             }
         }

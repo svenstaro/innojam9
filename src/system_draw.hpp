@@ -142,7 +142,7 @@ class DrawSystem : public entityx::System<DrawSystem> {
         // TODO MAINSTATE OWN M_REMAINING...
         m_game->m_remaining_lvl_change -= dt;
         // TODO PLAYER SHIT NOT HERE
-        player->m_invincible = alpha >= 0.1;
+        //player->m_invincible = alpha >= 0.1;
 
         SDL_SetTextureColorMod(m_render_buffer, 255 - 255 * alpha, 255 - 255 * alpha,
                                255 - 255 * alpha);

@@ -56,7 +56,6 @@ class EmitterSystem : public entityx::System<EmitterSystem> {
                         emitter->m_current_level.next();
                         emitter->m_current_stage = emitter->m_current_stage;
                     }
-                    std::cout << "next stage " << emitter->m_current_stage.m_current_repition << std::endl;
                     emitter->m_current_compound = emitter->m_current_stage.get_current_repitition();
                 }
             }
