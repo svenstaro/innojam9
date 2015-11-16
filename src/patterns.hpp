@@ -11,7 +11,6 @@
 /*
  *
  */
-
 struct LayerCompound {
     LayerCompound(std::vector<std::function<glm::vec2(glm::vec2, glm::vec2, float)>> paths,
                   std::vector<unsigned int> number_of_shots, std::vector<float> offset);

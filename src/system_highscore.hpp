@@ -54,17 +54,12 @@ class HighscoreSystem : public entityx::System<HighscoreSystem>,
             //TODO SOMETING IS FUCKED UP HERE
             draw->m_anim = AnimTemplate(32, 32, 1, 2);
         }
-    }i
+    }
 */
     void receive(const PlayerOrbCollison &event) {
        m_main_state->update_score(event.m_score);
     }
-    // TODO
-    /*
-    void receive(const GameOverEvent &event) {
-        m_game->game_over(event.is_win(), event.get_score());
-    }*/
-
+        
   private:
     MainState *m_main_state;
     float pts_per_sec = -0.2f; // 10 is really high

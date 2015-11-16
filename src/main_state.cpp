@@ -115,10 +115,10 @@ int MainState::init() {
     m_level_vector = {Level::LEVEL_ONE(),   Level::LEVEL_TWO(),  Level::LEVEL_THREE(),
                       Level::LEVEL_FOUR(),  Level::LEVEL_FIVE(), Level::LEVEL_SIX(),
                       Level::LEVEL_SEVEN(), Level::LEVEL_EIGHT()};
-    m_current_level_index = 5;
+    m_current_level_index = 0;
     m_number_of_collected_orbs = 0;
     m_score = 0;
-    load_level(5);
+    load_level(0);
     return 0;
 }
 
