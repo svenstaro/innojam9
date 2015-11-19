@@ -62,7 +62,6 @@ class HighscoreSystem : public entityx::System<HighscoreSystem>,
 
   private:
     MainState *m_main_state;
-    float pts_per_sec = -0.2f; // 10 is really high
     entityx::Entity damage_enem;
     entityx::EventManager *m_events;
     entityx::EntityManager *m_entities;

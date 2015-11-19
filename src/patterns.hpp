@@ -63,7 +63,7 @@ struct LayerCompound {
     }
 
     static LayerCompound DUAL_TWIN() {
-        return {{linear_path, linear_path}, {nothing}, {2, 2}, {0.f, 5.f}};
+        return {{linear_path, linear_path}, {nothing, nothing}, {2, 2}, {0.f, 5.f}};
     }
 
     static LayerCompound FOUR_TWIN() {
@@ -148,7 +148,7 @@ struct Stage {
     }
 
     static Stage SIN_TWO() {
-        return {{LayerCompound::SIN_TWO_SHOTS()}, {4}, 0.2f};
+        return {{LayerCompound::SIN_TWO_SHOTS()}, {4}, 0.8f};
     }
 
     static Stage SPIRAL_ONE() {
@@ -182,7 +182,7 @@ struct Level {
  *      level abzuschlieszen.
  */
     static Level LEVEL_ONE() {
-        return {{Stage::SIN_TWO()}, 5, glm::radians(10.f)};
+        return {{Stage::SIN_TWO()}, 5, glm::radians(5.f)};
     }
 
     static Level LEVEL_TWO() {

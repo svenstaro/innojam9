@@ -44,7 +44,6 @@ class RunesSystem : public entityx::System<RunesSystem> {
                 if (runes_enabled > 0) {
                     drawable->m_colorize = rune_color_on;
                     if (!lt) {
-                        std::cout << "iam right zou are not" << std::endl;
                         entity.assign<Light>("gradient", 0.7f, glm::vec3{200, 0, 0});
                     }
                     runes_enabled--;
