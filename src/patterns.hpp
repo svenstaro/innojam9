@@ -8,8 +8,6 @@
 #include <vector>
 #include <functional>
 
-
-
 /*
  *
  */
@@ -175,8 +173,8 @@ struct Level {
     bool is_at_end();
     void next();
 
-    /*
-*
+/*
+ *
  * Parameter 1:
  *      vektor von Stages die nacheinander ausgefuehrt werden
  *  Parameter 2:
@@ -214,7 +212,7 @@ struct Level {
     static Level LEVEL_EIGHT() {
         return {{Stage::BOSS()}, 20, 20.f};
     }
-    
+
 
 };
 #endif

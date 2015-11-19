@@ -2,8 +2,8 @@
 #define SYSTEM_LIFE_TIME_HPP
 
 #include "entityx/Entity.h"
-#include "component_lifetime.hpp"
-#include "component_position.hpp"
+#include "components/component_lifetime.hpp"
+#include "components/component_position.hpp"
 
 class LifeTimeSystem : public entityx::System<LifeTimeSystem> {
 

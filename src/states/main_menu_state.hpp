@@ -1,15 +1,15 @@
 #ifndef MAINMENU_STATE_MAIN_HPP
 #define MAINMENU_STATE_MAIN_HPP
 
-#include "menu_state.hpp"
+#include "states/menu_state.hpp"
 #include "difficultymenu_state.hpp"
 
 #include "entityx/entityx.h"
 
-#include "component_position.hpp"
-#include "component_drawable.hpp"
-#include "component_textitem.hpp"
-#include "component_menuitem.hpp"
+#include "components/component_position.hpp"
+#include "components/component_drawable.hpp"
+#include "components/component_textitem.hpp"
+#include "components/component_menuitem.hpp"
 
 #include "anim_template.hpp"
 

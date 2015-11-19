@@ -2,13 +2,13 @@
 #define HIGHSCORE_SYSTEM_CPP
 
 #include "events.hpp"
-#include "main_state.hpp"
-#include "component_player.hpp"
-#include "component_orb.hpp"
-#include "component_enemy.hpp"
-#include "component_rune.hpp"
-#include "component_light.hpp"
-#include "component_ring.hpp"
+#include "states/main_state.hpp"
+#include "components/component_player.hpp"
+#include "components/component_orb.hpp"
+#include "components/component_enemy.hpp"
+#include "components/component_rune.hpp"
+#include "components/component_light.hpp"
+#include "components/component_ring.hpp"
 
 #include "entityx/entityx.h"
 
@@ -59,7 +59,7 @@ class HighscoreSystem : public entityx::System<HighscoreSystem>,
     void receive(const PlayerOrbCollison &event) {
        m_main_state->update_score(event.m_score);
     }
-        
+
   private:
     MainState *m_main_state;
     float pts_per_sec = -0.2f; // 10 is really high

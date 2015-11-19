@@ -4,10 +4,10 @@
 
 #include "entityx/entityx.h"
 
-#include "component_position.hpp"
-#include "component_drawable.hpp"
-#include "component_textitem.hpp"
-#include "component_menuitem.hpp"
+#include "components/component_position.hpp"
+#include "components/component_drawable.hpp"
+#include "components/component_textitem.hpp"
+#include "components/component_menuitem.hpp"
 
 #include "anim_template.hpp"
 
@@ -53,7 +53,7 @@ void MenuState::update(double dt){
 	SDL_GetMouseState(&x, &y);
 	int w, h;
 	SDL_GetWindowSize(m_game->window(), &w, &h);
-	
+
 	float real_div_logic_h = h / (float)HEIGHT;
 	float real_div_logic_w = w / (float)WIDTH;
 	float aspect = (float)HEIGHT/WIDTH;

@@ -1,13 +1,13 @@
 #include "events.hpp"
 #include "game.hpp"
 #include "game_config.hpp"
-#include "component_drawable.hpp"
-#include "component_position.hpp"
-#include "component_player.hpp"
-#include "component_enemy.hpp"
-#include "component_orb.hpp"
-#include "component_light.hpp"
-#include "component_velocity.hpp"
+#include "components/component_drawable.hpp"
+#include "components/component_position.hpp"
+#include "components/component_player.hpp"
+#include "components/component_enemy.hpp"
+#include "components/component_orb.hpp"
+#include "components/component_light.hpp"
+#include "components/component_velocity.hpp"
 
 #include "entityx/entityx.h"
 #include <glm/vec2.hpp>
@@ -186,7 +186,7 @@ class DrawSystem : public entityx::System<DrawSystem> {
             draw_text(rendr, m_game->res_manager(), orbs_collected, "font20", 0, 80, c);
             draw_text(rendr, m_game->res_manager(), fps, "font20", 0, 100, c);
         } else {
-//TODO: 
+//TODO:
             //auto score = "Score: " + std::to_string((int)player->score);
             //SDL_Color c = {200, 200, 200, 0};
             //draw_text(rendr, m_game->res_manager(), score, "font20", 20, 20, c);

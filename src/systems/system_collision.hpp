@@ -1,14 +1,14 @@
 #ifndef COLLISION_SYSTEM_CPP
 #define COLLISION_SYSTEM_CPP
 
-#include "component_position.hpp"
-#include "component_collidable.hpp"
-#include "component_player.hpp"
-#include "component_orb.hpp"
+#include "components/component_position.hpp"
+#include "components/component_collidable.hpp"
+#include "components/component_player.hpp"
+#include "components/component_orb.hpp"
 
 #include "events.hpp"
 
-#include "main_state.hpp"
+#include "states/main_state.hpp"
 
 #include "entityx/entityx.h"
 
@@ -33,7 +33,7 @@ class CollisionSystem : public entityx::System<CollisionSystem> {
         entityx::ComponentHandle<Player> player;
         entityx::ComponentHandle<Path> path;
 
-        //Here we check for collision betweet the player and a bullet 
+        //Here we check for collision betweet the player and a bullet
         for (entityx::Entity player_entity :
              es.entities_with_components(player, position_player, collidable_player)) {
             for (entityx::Entity bullet_entity :

@@ -3,8 +3,8 @@
 
 #include "events.hpp"
 #include "game.hpp"
-#include "component_position.hpp"
-#include "component_velocity.hpp"
+#include "components/component_position.hpp"
+#include "components/component_velocity.hpp"
 
 #include "entityx/entityx.h"
 
@@ -30,7 +30,7 @@ class MovementSystem : public entityx::System<MovementSystem>,
         for (entityx::Entity entity : es.entities_with_components(velocity, position)) {
             (void)entity;
             velocity->handle_tick();
-            
+
             auto new_position = position->position() + velocity->m_velocity;
             if (new_position.s < m_min_dist) {
                 new_position.s = m_min_dist;

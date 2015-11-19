@@ -5,7 +5,7 @@
 
 #include "patterns.hpp"
 
-#include "component_position.hpp"
+#include "components/component_position.hpp"
 
 #include "strapon/state/state.hpp"
 #include "strapon/resource_manager/resource_manager.hpp"

@@ -1,9 +1,9 @@
 #include "game.hpp"
 
-#include "main_state.hpp"
-#include "main_menu_state.hpp"
-#include "game_over_state.hpp"
-#include "win_state.hpp"
+#include "states/main_state.hpp"
+#include "states/main_menu_state.hpp"
+#include "states/game_over_state.hpp"
+#include "states/win_state.hpp"
 
 #include "game_config.hpp"
 

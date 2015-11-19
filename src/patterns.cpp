@@ -3,11 +3,11 @@
 #include <glm/vec2.hpp>
 #include <functional>
 #include "entityx/entityx.h"
-#include "component_emitter.hpp"
-#include "component_lifetime.hpp"
-#include "component_drawable.hpp"
-#include "component_collidable.hpp"
-#include "component_light.hpp"
+#include "components/component_emitter.hpp"
+#include "components/component_lifetime.hpp"
+#include "components/component_drawable.hpp"
+#include "components/component_collidable.hpp"
+#include "components/component_light.hpp"
 
 LayerCompound::LayerCompound(
     std::vector<std::function<glm::vec2(glm::vec2, glm::vec2, float)>> paths,
@@ -78,4 +78,3 @@ void emit_four(entityx::EntityManager &es, glm::vec2 origin)
     new_entity.assign<Collidable>(10.f);
     new_entity.assign<Light>("gradient", 0.3f, glm::vec3{255, 100, 0});
 }
-

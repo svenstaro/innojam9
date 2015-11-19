@@ -1,9 +1,9 @@
 #ifndef SYSTEM_CONTROLS_HPP
 #define SYSTEM_CONTROLS_HPP
 
-#include "component_velocity.hpp"
-#include "component_position.hpp"
-#include "component_player.hpp"
+#include "components/component_velocity.hpp"
+#include "components/component_position.hpp"
+#include "components/component_player.hpp"
 #include "events.hpp"
 
 #include "game_config.hpp"
@@ -48,12 +48,12 @@ class ControlSystem : public entityx::System<ControlSystem> {
                 glm::vec2 direction(radius, angle);
                 glm::vec2 velocity = float(dt) * glm::normalize(direction);
                 velocity *= MAX_SPEED;
-                
+
                 // adjust angle speed to match "radial" speed via arc length
                 if (position->position()[0] != 0) { // only adjust if radius != 0 ????
                     velocity[1] /= position->position()[0];
                 }
-                
+
                 velocity_e->m_accelerating = true;
                 glm::vec2 d = velocity_e->m_desired_velocity - velocity;
                 if(glm::length(d) > 0.01)

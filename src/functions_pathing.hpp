@@ -10,9 +10,9 @@
 #include <glm/gtx/optimum_pow.hpp>
 #include <glm/gtc/constants.hpp>
 
-#include "component_position.hpp"
-#include "component_moving.hpp"
-#include "component_path.hpp"
+#include "components/component_position.hpp"
+#include "components/component_moving.hpp"
+#include "components/component_path.hpp"
 /*
 inline auto create_parable(glm::vec2 p1, glm::vec2 p2, glm::vec2 p3) {
     float a1h2 = p1[1] * p1[1];
@@ -62,8 +62,8 @@ inline glm::vec2 scythe_path(glm::vec2 origin, glm::vec2 velocity, float current
 
 inline glm::vec2 spiral_path(glm::vec2 origin, glm::vec2 velocity, float current_lifetime)
 {
-    float speed = velocity.x; 
-    glm::vec2 origin_cathesian = polar_to_cathesian(origin); 
+    float speed = velocity.x;
+    glm::vec2 origin_cathesian = polar_to_cathesian(origin);
     glm::vec2 next_position(speed * current_lifetime, 10 * sin(current_lifetime));
 
     next_position = polar_to_cathesian(next_position);
@@ -78,7 +78,7 @@ inline glm::vec2 sin_path(glm::vec2 origin, glm::vec2 velocity, float current_li
     glm::vec2 next_position(speed * current_lifetime, sin(current_lifetime * 4) / (current_lifetime * 4));
 
     next_position = polar_to_cathesian(next_position);
-            
+
     next_position = cathesian_to_polar(origin_cathesian + next_position);
 
     next_position.y += velocity.y;
@@ -90,6 +90,6 @@ inline glm::vec2 linear_path(glm::vec2 origin, glm::vec2 velocity, float current
 {
     glm::vec2 origin_cathesian = polar_to_cathesian(origin);
     origin_cathesian += glm::normalize(polar_to_cathesian(velocity)) * current_lifetime * velocity.x;
-    return glm::vec2(cathesian_to_polar(origin_cathesian)); 
+    return glm::vec2(cathesian_to_polar(origin_cathesian));
 }
 #endif

@@ -2,8 +2,8 @@
 #define SYSTEM_PLAYER_HPP
 
 #include "entityx/entityx.h"
-#include "component_player.hpp"
-#include "main_state.hpp"
+#include "components/component_player.hpp"
+#include "states/main_state.hpp"
 
 class PlayerSystem : public entityx::System<PlayerSystem> {
   public:

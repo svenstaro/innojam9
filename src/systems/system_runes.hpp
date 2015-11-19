@@ -1,11 +1,11 @@
 #ifndef RUNES_SYS
 #define RUNES_SYS
 
-#include "main_state.hpp"
+#include "states/main_state.hpp"
 
-#include "component_position.hpp"
-#include "component_rune.hpp"
-#include "component_light.hpp"
+#include "components/component_position.hpp"
+#include "components/component_rune.hpp"
+#include "components/component_light.hpp"
 #include "events.hpp"
 #include "game.hpp"
 
@@ -28,7 +28,7 @@ class RunesSystem : public entityx::System<RunesSystem> {
 
     void configure(entityx::EventManager &event_manager) override {
     }
-//TODO: This has to be refactored! 
+//TODO: This has to be refactored!
     void update(entityx::EntityManager &es, entityx::EventManager &events, double dt) override {
         if (!init_done) {
             init(es);

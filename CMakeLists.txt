@@ -3,7 +3,7 @@ project(innojam9)
 
 add_definitions("-g -Wall -Wextra -pedantic -Werror -std=c++14 -Wno-unused-parameter")
 
-file(GLOB sources src/*.cpp)
+file(GLOB_RECURSE sources src/*.cpp src/*.hpp)
 
 add_executable(innojam9 ${sources})
 
@@ -24,6 +24,7 @@ include_directories(SYSTEM
     glm/
     entityx/
     strapon/
+    src/
 )
 
 target_link_libraries(innojam9

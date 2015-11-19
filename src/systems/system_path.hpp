@@ -8,10 +8,10 @@
 #include "glm/gtx/optimum_pow.hpp"
 #include <glm/gtx/string_cast.hpp>
 
-#include "component_path.hpp"
-#include "component_position.hpp"
-#include "component_moving.hpp"
-#include "component_lifetime.hpp"
+#include "components/component_path.hpp"
+#include "components/component_position.hpp"
+#include "components/component_moving.hpp"
+#include "components/component_lifetime.hpp"
 
 class PathSystem : public entityx::System<PathSystem> {
   public:

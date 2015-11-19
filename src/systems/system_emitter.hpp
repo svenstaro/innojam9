@@ -3,7 +3,7 @@
 
 #include <iostream>
 
-#include "main_state.hpp"
+#include "states/main_state.hpp"
 
 #include "entityx/entityx.h"
 #include "events.hpp"
@@ -12,15 +12,15 @@
 #include "glm/gtx/optimum_pow.hpp"
 #include "game_config.hpp"
 #include "patterns.hpp"
-#include "component_enemy.hpp"
-#include "component_collidable.hpp"
-#include "component_orb.hpp"
-#include "component_moving.hpp"
-#include "component_path.hpp"
-#include "component_light.hpp"
-#include "component_drawable.hpp"
-#include "component_emitter.hpp"
-#include "component_lifetime.hpp"
+#include "components/component_enemy.hpp"
+#include "components/component_collidable.hpp"
+#include "components/component_orb.hpp"
+#include "components/component_moving.hpp"
+#include "components/component_path.hpp"
+#include "components/component_light.hpp"
+#include "components/component_drawable.hpp"
+#include "components/component_emitter.hpp"
+#include "components/component_lifetime.hpp"
 
 #include <glm/glm.hpp>
 #include <vector>
