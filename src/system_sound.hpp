@@ -49,6 +49,6 @@ class SoundSystem : public entityx::System<SoundSystem>, public entityx::Receive
 
   private:
     ResourceManager *m_res_manager;
-    Mix_Music *m_current_song;
+    //Mix_Music *m_current_song;
 };
 #endif

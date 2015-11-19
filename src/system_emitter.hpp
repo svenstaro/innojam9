@@ -75,7 +75,7 @@ class EmitterSystem : public entityx::System<EmitterSystem> {
                 glm::radians(emitter->m_current_compound.m_offset[i] +
                              ((360.f / emitter->m_current_compound.m_number_of_shots[i]) * j)));
 
-        next.assign<Path>(path, position->position(), test, 20.f);
+        next.assign<Path>(path, position->position(), test);
         next.assign<Position>(position->position());
         next.assign<Moving>(100.f);
         next.assign<Enemy>();

@@ -72,9 +72,9 @@ void emit_four(entityx::EntityManager &es, glm::vec2 origin)
 {
     entityx::Entity new_entity = es.create();
     new_entity.assign<Position>(origin);
-    new_entity.assign<LifeTime>(nothing,2.f);
+    new_entity.assign<LifeTime>(nothing,0.5f);
     new_entity.assign<Drawable>("magma",20,20,4,AnimTemplate(6, 6, 14,0,40));
-    new_entity.assign<Emitter>(Level::LEVEL_EIGHT());
+    new_entity.assign<Emitter>(Level::LEVEL_TWO());
     new_entity.assign<Collidable>(10.f);
     new_entity.assign<Light>("gradient", 0.3f, glm::vec3{255, 100, 0});
 }

@@ -6,53 +6,33 @@
 #include <glm/vec2.hpp>
 #include <functional>
 
-    struct Path : entityx::Component<Path> {
-        Path(
-                std::function<glm::vec2 (glm::vec2, glm::vec2, float)> pathing_function,
-                glm::vec2 origin,
-                glm::vec2 velocity,
-                float max_lifetime)
-            : m_path(pathing_function), m_origin(origin), m_velocity(velocity), 
-            m_max_lifetime(max_lifetime), m_current_lifetime(0.0f){}   
+struct Path : entityx::Component<Path> {
+    Path(std::function<glm::vec2(glm::vec2, glm::vec2, float)> pathing_function, glm::vec2 origin,
+         glm::vec2 velocity)
+        : m_path(pathing_function), m_origin(origin), m_velocity(velocity)
+          {
+    }
 
-        float get_time_left()
-        {
-            return m_max_lifetime - m_current_lifetime;
-        }
+    glm::vec2 get_direction() {
+        return m_velocity;
+    }
 
-        float get_current_lifetime()
-        {
-            return m_current_lifetime;
-        }
+    glm::vec2 get_origin() {
+        return m_origin;
+    }
 
-        void update(float dt)
-        {
-            
-            m_current_lifetime += dt;
-        }
+    auto get_path() {
+        return m_path;
+    }
 
-        glm::vec2 get_direction()
-        {
-            return m_velocity;
-        }
+    std::function<glm::vec2(glm::vec2, glm::vec2, float)> m_path;
+    std::function<void()> m_despawn;
 
-        glm::vec2 get_origin()
-        {
-            return m_origin;
-        }
+    glm::vec2 m_origin;
+    glm::vec2 m_velocity;
 
-        auto get_path(){
-            return m_path;
-        }
-        
-        std::function<glm::vec2 (glm::vec2, glm::vec2, float)> m_path;
-        std::function<void()> m_despawn;
-
-        glm::vec2 m_origin;
-        glm::vec2 m_velocity;
-
-        float m_max_lifetime;
-        float m_current_lifetime;
-    };
+    float m_max_lifetime;
+    float m_current_lifetime;
+};
 
 #endif
