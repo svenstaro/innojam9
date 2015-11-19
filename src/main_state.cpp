@@ -52,22 +52,11 @@ int MainState::init() {
     m_systems.add<MovementSystem>(RING_INNER, RING_OUTER);
     m_systems.add<HighscoreSystem>(this);
     m_systems.add<EmitterSystem>();
-    m_systems.add<RunesSystem>();
+    m_systems.add<RunesSystem>(this);
     m_systems.add<OrbSpawnSystem>(m_game, m_entities, RING_INNER, RING_OUTER);
     m_systems.add<LifeTimeSystem>();
     m_systems.add<SoundSystem>(&m_game->res_manager());
     m_systems.add<PlayerSystem>(this);
-    //
-    //     // glm::vec2 origin = glm::vec2(300, 0);
-    //     // auto parable = create_parable(origin, glm::vec2(300, glm::half_pi<float>()),
-    //     glm::vec2(glm::one_over_root_two<float>()*300, glm::quarter_pi<float>()));
-    //
-    //     // glm::vec2 origin = glm::vec2(150, 0);
-    //     // auto parable = create_parable(origin, glm::vec2(300, glm::half_pi<float>()),
-    //     glm::vec2(150, glm::pi<float>()));
-    //     //
-    //     // m_systems.add<EmitterSystem>(m_game, parable, origin, 1, 10, 0.3);
-    //     m_systems.add<EmitterSystem>(m_game, linear_path, 0.5, 0.3);
 
     m_systems.configure();
 
@@ -190,6 +179,13 @@ Game *MainState::game(){
     return m_game;
 }
 
+unsigned int MainState::orbs_to_next_level(){
+    return m_number_of_needed_orbs;
+}
+
+unsigned int MainState::number_of_collected_orbs(){
+    return m_number_of_collected_orbs;
+}
 void MainState::update(double dt) {
     SDL_Event e;
     while (SDL_PollEvent(&e)) {

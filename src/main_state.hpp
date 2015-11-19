@@ -24,6 +24,8 @@ class MainState : public State, public entityx::Receiver<MainState> {
     Game *game();
     void update_score(unsigned int orb_score);
     unsigned int get_score();
+    unsigned int orbs_to_next_level();
+    unsigned int number_of_collected_orbs();
   private:
     Game *m_game;
     entityx::EventManager m_events;

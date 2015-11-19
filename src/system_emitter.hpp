@@ -80,7 +80,7 @@ class EmitterSystem : public entityx::System<EmitterSystem> {
         next.assign<Moving>(100.f);
         next.assign<Enemy>();
         next.assign<Collidable>(10.f);
-        next.assign<LifeTime>(20.f);
+        next.assign<LifeTime>(emitter->m_current_compound.m_on_death[i],2.f);
         next.assign<Light>("gradient", 0.3f, glm::vec3{255, 100, 0});
         next.assign<Drawable>("magma", 20, 20, 4, AnimTemplate(6, 6, 14, 0, 40));
         /*

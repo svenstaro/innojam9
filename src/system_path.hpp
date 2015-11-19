@@ -11,7 +11,6 @@
 #include "component_path.hpp"
 #include "component_position.hpp"
 #include "component_moving.hpp"
-#include "component_emit_on_death.hpp"
 #include "component_lifetime.hpp"
 
 class PathSystem : public entityx::System<PathSystem> {

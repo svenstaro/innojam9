@@ -8,34 +8,41 @@
 #include <vector>
 #include <functional>
 
+
+
 /*
  *
  */
+ void emit_four(entityx::EntityManager &es, glm::vec2 origin);
+ void nothing(entityx::EntityManager &es, glm::vec2 origin);
+
+
 struct LayerCompound {
     LayerCompound(std::vector<std::function<glm::vec2(glm::vec2, glm::vec2, float)>> paths,
+                  std::vector<std::function<void(entityx::EntityManager &, glm::vec2)>> on_death,
                   std::vector<unsigned int> number_of_shots, std::vector<float> offset);
 
     std::vector<std::function<glm::vec2(glm::vec2, glm::vec2, float)>> m_paths;
-    std::vector<std::function<glm::vec2()>> m_on_death;
+    std::vector<std::function<void(entityx::EntityManager &, glm::vec2)>> m_on_death;
     std::vector<unsigned int> m_number_of_shots;
     std::vector<float> m_offset;
     unsigned int m_number_of_paths;
     unsigned int m_number_of_shots_done = 0;
 
     static LayerCompound SIN_TWO_SHOTS() {
-        return {{sin_path}, {2}, {0.f}};
+        return {{sin_path}, {emit_four}, {2}, {0.f}};
     }
 
     static LayerCompound PAUSE() {
-        return {{sin_path}, {0}, {0.f}};
+        return {{sin_path}, {nothing}, {0}, {0.f}};
     }
 
     static LayerCompound SIN_TWO_SHOTS_FIVE_DEF_OFFSET() {
-        return {{sin_path}, {2}, {5.f}};
+        return {{sin_path}, {nothing}, {2}, {5.f}};
     }
 
     static LayerCompound SIN_FOUR_SHOTS() {
-        return {{sin_path}, {4}, {0.f}};
+        return {{sin_path}, {nothing}, {4}, {0.f}};
     }
     /*
      *
@@ -44,40 +51,43 @@ struct LayerCompound {
      *  Parameter 2:
      *      vector von unsigned ints. Fuer jede funtion von vorherigen
      *      element wird hier die anzahl von schuessen festgelegt
+     *
      *  Parameter 3:
      *      vector von offsets. geben an wie weit die path funktion
      *      verschobnen wird.
      */
     static LayerCompound SIN_SCYTHE_FOUR_TWO() {
-        return {{sin_path, scythe_path}, {4, 4}, {0, 0.f}};
+        return {{sin_path, scythe_path}, {nothing, nothing}, {4, 4}, {0, 0.f}};
     }
 
     static LayerCompound SPIRAL_ONE() {
-        return {{spiral_path}, {1}, {0.f}};
+        return {{spiral_path}, {nothing}, {1}, {0.f}};
     }
 
     static LayerCompound DUAL_TWIN() {
-        return {{linear_path, linear_path}, {2, 2}, {0.f, 5.f}};
+        return {{linear_path, linear_path}, {nothing}, {2, 2}, {0.f, 5.f}};
     }
 
     static LayerCompound FOUR_TWIN() {
         return {{linear_path, linear_path, linear_path, linear_path},
+                {nothing, nothing, nothing, nothing},
                 {4, 4, 4, 4},
                 {0.f, 5.f, 10.f, 15.f}};
     }
 
     static LayerCompound FOUR_TWIN_PLUSLINEAR() {
         return {{linear_path, linear_path, linear_path, linear_path, linear_path},
+                {nothing, nothing, nothing, nothing, nothing},
                 {4, 4, 4, 4, 8},
                 {0.f, 5.f, 10.f, 15.f, 45.f + 7.5f}};
     }
 
     static LayerCompound LINEAR_TWO_SIN_TWO() {
-        return {{linear_path, sin_path}, {10, 10}, {0.f, 2.f}};
+        return {{linear_path, sin_path}, {nothing, nothing}, {10, 10}, {0.f, 2.f}};
     }
 
     static LayerCompound LINEAR_TWO() {
-        return {{linear_path}, {2}, {0.f}};
+        return {{linear_path}, {nothing}, {2}, {0.f}};
     }
 };
 struct Stage {
@@ -204,5 +214,7 @@ struct Level {
     static Level LEVEL_EIGHT() {
         return {{Stage::BOSS()}, 20, 20.f};
     }
+    
+
 };
 #endif
