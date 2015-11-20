@@ -1,0 +1,20 @@
+name: Waking Up
+difficulty: easy
+dependencies: Good Morning          # This level depends on the level "Good Morning" to be played in order to be selected in the menu.
+orbs: 5
+next: Getting Coffee
+
+agenda:
+    execute: loop
+    repeat: infinite
+    angle:
+        initial: 0deg
+        increment: +20deg
+    scope:
+      - execute: wave
+        pattern: linear two
+        bullet: magma ball
+        shots: 3
+        delay: 250ms
+      - execute: pause              # The spawner pauses for the given amount of time.
+      - duration: 750ms             # Pause for 0.75 seconds.

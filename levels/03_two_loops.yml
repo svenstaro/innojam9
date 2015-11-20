@@ -1,0 +1,39 @@
+name: Getting Coffee
+difficulty: easy
+dependencies: Waking Up
+orbs: 5
+
+agenda:
+    execute: loop
+    repeat: infinite
+    angle:
+        initial: 0deg
+        increment: +20deg
+    scope:
+      - execute: loop                   # Loops can be defined recursively
+        repeat: 8                       # This loop will be executed 8 times
+        angle:
+            increment: +10deg           # Here the angle increment is overwritten to +10 degrees per repeat. Thous this loop is slower.
+        scope:
+          - execute: wave
+            pattern: linear two
+            bullet: magma ball
+            shots: 3
+            delay: 250ms
+          - execute: pause
+            duration: 750ms
+      - execute: pause
+        duration: 2s
+      - execute: loop
+        repeat: 8
+        angle:
+            increment: +50deg           # The angle increment is overwritten to +50 degrees per repeat. Faster loop.
+            # Defining "initial: 90deg" here would reset the angle each time the loop is entered. A "jump".
+        scope:
+          - execute: wave
+            pattern: sin two
+            bullet: magma ball
+            shots: 3
+            delay: 300ms
+          - execute: pause
+            duration: 750ms

@@ -1,0 +1,25 @@
+#
+# Header of the level
+#
+name: Good Morning                      # Name of the level. Must be unique.
+difficulty: easy                        # A difficulty which can be displayed to the player
+dependencies:                           # List of Levels on which this level depends.
+orbs: 5                                 # Amount of orbs to be collected.
+next: Waking Up                         # Which level should be started next.
+
+#
+# Actual level.
+# This defines what should happen
+#
+agenda:                                 # Here come the whole game setup.
+    execute: loop                       # Indicates a loop will be started.
+    repeat: infinite                    # How often the loop should be executed.
+    angle:                              # The initial angle. Can be set in each loop overwriting each other.
+        initial: 0deg                   # Reset the angle when the loop is entered to this value.
+        increment: +20deg               # Each time the loop is executed the angle is changed by this value.
+    scope:                              # This list of commands will be executed each iteration.
+      - execute: wave                   # This executes a wave of bullets
+        pattern: sin two                # A pattern by which the bullets should be spawned, predefined.
+        bullet: magma ball              # The bullet type. Predefined.
+        shots: 4                        # How much shots should be fired.
+        delay: 800ms                    # How much delay between each shot.
