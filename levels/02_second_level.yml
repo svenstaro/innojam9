@@ -17,4 +17,4 @@ agenda:
         shots: 3
         delay: 250ms
       - execute: pause              # The spawner pauses for the given amount of time.
-      - duration: 750ms             # Pause for 0.75 seconds.
+        duration: 750ms             # Pause for 0.75 seconds.
