@@ -16,7 +16,7 @@ agenda:                                 # Here come the whole game setup.
     repeat: infinite                    # How often the loop should be executed.
     angle:                              # The initial angle. Can be set in each loop overwriting each other.
         initial: 0deg                   # Reset the angle when the loop is entered to this value.
-        increment: +20deg               # Each time the loop is executed the angle is changed by this value.
+        increment: +20deg               # Each time the loop is executed the angle is changed by this value. Former "Rotation Speed".
     scope:                              # This list of commands will be executed each iteration.
       - execute: wave                   # This executes a wave of bullets
         pattern: sin two                # A pattern by which the bullets should be spawned, predefined.
