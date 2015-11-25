@@ -24,6 +24,8 @@
 #include "systems/system_sound.hpp"
 #include "systems/system_player.hpp"
 
+#include "level_loader.hpp"
+
 #include "entityx/entityx.h"
 #include <glm/vec2.hpp>
 
@@ -101,6 +103,8 @@ int MainState::init() {
     Mix_VolumeMusic(50);
     Mix_PlayMusic(m_game->res_manager().music("music1"), -1);
     // Setting order of levels
+    LevelLoader loader;
+    loader.load();
     m_level_vector = {Level::LEVEL_ONE(),   Level::LEVEL_TWO(),  Level::LEVEL_THREE(),
                       Level::LEVEL_FOUR(),  Level::LEVEL_FIVE(), Level::LEVEL_SIX(),
                       Level::LEVEL_SEVEN(), Level::LEVEL_EIGHT()};

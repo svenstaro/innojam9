@@ -10,7 +10,7 @@ add_executable(innojam9 ${sources})
 if(${EMSCRIPTEN})
     set(CROSS_COMPILING ON)
     add_definitions("-Oz -s USE_SDL=2 -s USE_SDL_IMAGE=2 -s USE_SDL_TTF=2 -s SDL2_IMAGE_FORMATS='[\"png\"]'")
-    set(CMAKE_CXX_LINK_FLAGS "-pg -Oz -s USE_SDL=2 -s USE_SDL_IMAGE=2 -s USE_SDL_TTF=2 -s SDL2_IMAGE_FORMATS='[\"png\"]' -s TOTAL_MEMORY=32000000 --emrun --preload-file ../res -o index.html")
+    set(CMAKE_CXX_LINK_FLAGS "-pg -Oz -s USE_SDL=2 -s USE_SDL_IMAGE=2 -s USE_SDL_TTF=2 -s SDL2_IMAGE_FORMATS='[\"png\"]' -s TOTAL_MEMORY=32000000 --emrun --preload-file ../res ../levels -o index.html")
 else()
     include(FindPkgConfig)
     pkg_check_modules(SDL2 REQUIRED sdl2 SDL2_image SDL2_mixer SDL2_ttf)
@@ -25,9 +25,11 @@ include_directories(SYSTEM
     entityx/
     strapon/
     src/
+    yaml-cpp/yaml-cpp-config.cmake
 )
 
 target_link_libraries(innojam9
     ${SDL2_LIBRARIES}
     entityx
+    yaml-cpp
 )
