@@ -1,0 +1,1 @@
+/usr/lib/emscripten/emar rc libentityx.a  @CMakeFiles/entityx.dir/objects1.rsp
