@@ -1,1 +1,0 @@
-/usr/lib/emscripten/em++  -fPIC  -pedantic -Werror -Wall -Wextra -Wno-unused-parameter -Wno-error=unused-variable -Wno-error=sign-compare -std=c++11 -stdlib=libc++ -g -O2 -DNDEBUG -O2 -shared -Wl,-soname,libentityx.so.1 -o libentityx.so.1.1.2 @CMakeFiles/entityx_shared.dir/objects1.rsp 
